@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_6c7d5c18387b159e4a8ee61d066e317d {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_6c7d5c18387b159e4a8ee61d066e317d" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_6c7d5c18387b159e4a8ee61d066e317d = L.map(
+                "map_6c7d5c18387b159e4a8ee61d066e317d",
+                {
+                    center: [24.86, 67.01],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_385cd776ca84e20a3f964d92a4b297f2 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_385cd776ca84e20a3f964d92a4b297f2.addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            var circle_marker_5b429694bce3ae1fb601a94b938c769e = L.circleMarker(
+                [25.020961, 67.30881],
+                {"bubblingMouseEvents": true, "color": "#BA7517", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#BA7517", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_5b429694bce3ae1fb601a94b938c769e.bindTooltip(
+                `<div>
+                     Bahria Town Karachi
+PKR 5,969/sqft
+Upper Middle
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_28cc5e31d91a126b0e34049c7b3d68bd = L.circleMarker(
+                [24.852173, 67.289715],
+                {"bubblingMouseEvents": true, "color": "#999999", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#999999", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_28cc5e31d91a126b0e34049c7b3d68bd.bindTooltip(
+                `<div>
+                     Bin Qasim Town
+PKR 6,007/sqft
+Other
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5f3420ffabb7614c0c35b15371569cb7 = L.circleMarker(
+                [24.937425, 67.182856],
+                {"bubblingMouseEvents": true, "color": "#E24B4A", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#E24B4A", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_5f3420ffabb7614c0c35b15371569cb7.bindTooltip(
+                `<div>
+                     Cantt
+PKR 11,409/sqft
+Elite
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c307ba2ce250471c91290521eaa289ae = L.circleMarker(
+                [24.820432, 67.029383],
+                {"bubblingMouseEvents": true, "color": "#E24B4A", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#E24B4A", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_c307ba2ce250471c91290521eaa289ae.bindTooltip(
+                `<div>
+                     Clifton
+PKR 12,626/sqft
+Elite
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0ad7b291ca2c47908f4fcdfa1c528c2a = L.circleMarker(
+                [24.80824, 67.064323],
+                {"bubblingMouseEvents": true, "color": "#E24B4A", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#E24B4A", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_0ad7b291ca2c47908f4fcdfa1c528c2a.bindTooltip(
+                `<div>
+                     DHA Defence
+PKR 15,611/sqft
+Elite
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d8711f0a20e05f245e2c1c1c233b53d0 = L.circleMarker(
+                [24.92863, 67.066677],
+                {"bubblingMouseEvents": true, "color": "#378ADD", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#378ADD", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_d8711f0a20e05f245e2c1c1c233b53d0.bindTooltip(
+                `<div>
+                     Federal B Area
+PKR 6,598/sqft
+Middle Class
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0ef79de9ab25cf322ba313eaf53f1ba5 = L.circleMarker(
+                [25.022073, 67.066684],
+                {"bubblingMouseEvents": true, "color": "#1D9E75", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1D9E75", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_0ef79de9ab25cf322ba313eaf53f1ba5.bindTooltip(
+                `<div>
+                     Gadap Town
+PKR 4,979/sqft
+Affordable
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9b9721a66bd08996715409b8842ea5ec = L.circleMarker(
+                [24.923142, 67.130384],
+                {"bubblingMouseEvents": true, "color": "#378ADD", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#378ADD", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_9b9721a66bd08996715409b8842ea5ec.bindTooltip(
+                `<div>
+                     Gulistan-e-Jauhar
+PKR 6,428/sqft
+Middle Class
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3b780fccb9ed82fe48adfb74a6f55928 = L.circleMarker(
+                [24.911726, 67.086039],
+                {"bubblingMouseEvents": true, "color": "#378ADD", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#378ADD", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_3b780fccb9ed82fe48adfb74a6f55928.bindTooltip(
+                `<div>
+                     Gulshan-e-Iqbal Town
+PKR 7,482/sqft
+Middle Class
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ec2fe282d07d96589d98ddb22f1193b6 = L.circleMarker(
+                [24.871447, 67.058573],
+                {"bubblingMouseEvents": true, "color": "#378ADD", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#378ADD", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_ec2fe282d07d96589d98ddb22f1193b6.bindTooltip(
+                `<div>
+                     Jamshed Town
+PKR 10,713/sqft
+Middle Class
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3f30ad97627fec131cec9d86e35f58f0 = L.circleMarker(
+                [24.829322, 67.113206],
+                {"bubblingMouseEvents": true, "color": "#1D9E75", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1D9E75", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_3f30ad97627fec131cec9d86e35f58f0.bindTooltip(
+                `<div>
+                     Korangi
+PKR 5,055/sqft
+Affordable
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f3ff5031967b88a51958feb18033717f = L.circleMarker(
+                [24.903253, 67.052279],
+                {"bubblingMouseEvents": true, "color": "#1D9E75", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1D9E75", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_f3ff5031967b88a51958feb18033717f.bindTooltip(
+                `<div>
+                     Liaquatabad
+PKR 4,408/sqft
+Affordable
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_47935ae77371d27d615e0755819798f9 = L.circleMarker(
+                [24.9052, 67.18748474],
+                {"bubblingMouseEvents": true, "color": "#1D9E75", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1D9E75", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_47935ae77371d27d615e0755819798f9.bindTooltip(
+                `<div>
+                     Malir
+PKR 9,009/sqft
+Affordable
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9a3f726c7fb54f55d2d4eab7b9c50d0f = L.circleMarker(
+                [24.916331, 67.026644],
+                {"bubblingMouseEvents": true, "color": "#378ADD", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#378ADD", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_9a3f726c7fb54f55d2d4eab7b9c50d0f.bindTooltip(
+                `<div>
+                     Nazimabad
+PKR 5,749/sqft
+Middle Class
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d310c413c92e42d485bb3858488db89d = L.circleMarker(
+                [25.001422, 67.061148],
+                {"bubblingMouseEvents": true, "color": "#999999", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#999999", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_d310c413c92e42d485bb3858488db89d.bindTooltip(
+                `<div>
+                     New Karachi
+PKR 7,691/sqft
+Other
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1ff5ba78a5a7fcb46c128b1d405da64d = L.circleMarker(
+                [24.970688, 67.064849],
+                {"bubblingMouseEvents": true, "color": "#378ADD", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#378ADD", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_1ff5ba78a5a7fcb46c128b1d405da64d.bindTooltip(
+                `<div>
+                     North Karachi
+PKR 8,418/sqft
+Middle Class
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5716ec70bd043662768b7cd8e2607f83 = L.circleMarker(
+                [24.941744, 67.05102],
+                {"bubblingMouseEvents": true, "color": "#378ADD", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#378ADD", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_5716ec70bd043662768b7cd8e2607f83.bindTooltip(
+                `<div>
+                     North Nazimabad
+PKR 7,385/sqft
+Middle Class
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_306c99e2807200eb4a50a2960800c727 = L.circleMarker(
+                [24.957361, 67.140593],
+                {"bubblingMouseEvents": true, "color": "#BA7517", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#BA7517", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_6c7d5c18387b159e4a8ee61d066e317d);
+        
+    
+            circle_marker_306c99e2807200eb4a50a2960800c727.bindTooltip(
+                `<div>
+                     Scheme 33
+PKR 6,630/sqft
+Upper Middle
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>
