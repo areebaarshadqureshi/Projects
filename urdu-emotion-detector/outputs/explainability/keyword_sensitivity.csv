@@ -1,0 +1,11 @@
+text,expected_pattern,predicted_label,confidence
+mujhe gussa hai,anger,neutral,0.6193708181381226
+mujhe gussa nahi hai,neutral,neutral,0.5497920513153076
+I am happy,happy,happy,0.9130168557167053
+I am not happy,neutral_or_sad,sad,0.9083354473114014
+yeh bohat acha hai,happy,happy,0.7068044543266296
+yeh bilkul acha nahi hai,neutral_or_sad,neutral,0.48326537013053894
+mujhe dar lag raha hai,fear,fear,0.4520459771156311
+mujhe dar nahi lag raha,neutral,fear,0.44616371393203735
+main bohat khush hoon,happy,happy,0.8331208229064941
+main khush nahi hoon,neutral_or_sad,happy,0.5704008340835571

@@ -1,0 +1,21 @@
+base_text,variant_type,variant_text,predicted_label,confidence,changed_from_original
+yeh bohat acha hai,original,yeh bohat acha hai,happy,0.7068044543266296,False
+yeh bohat acha hai,elongated,yh bohat acha hai,happy,0.8522958159446716,False
+yeh bohat acha hai,extra_punct,yeh bohat acha hai!!!,happy,0.7836464047431946,False
+yeh bohat acha hai,typo,yh bohat acha hai,happy,0.8522958159446716,False
+mujhe bohat khushi hui,original,mujhe bohat khushi hui,happy,0.6841945052146912,False
+mujhe bohat khushi hui,elongated,mjhe bohat khushi hui,happy,0.6913333535194397,False
+mujhe bohat khushi hui,extra_punct,mujhe bohat khushi hui!!!,happy,0.8338333964347839,False
+mujhe bohat khushi hui,typo,mjhe bohat khushi hui,happy,0.6913333535194397,False
+main udaas hoon,original,main udaas hoon,neutral,0.6748267412185669,False
+main udaas hoon,elongated,min udaas hoon,neutral,0.6673367023468018,False
+main udaas hoon,extra_punct,main udaas hoon!!!,neutral,0.5404683351516724,False
+main udaas hoon,typo,min udaas hoon,neutral,0.6673367023468018,False
+yeh bilkul ghalat hai,original,yeh bilkul ghalat hai,anger,0.8114096522331238,False
+yeh bilkul ghalat hai,elongated,yh bilkul ghalat hai,anger,0.7045536041259766,False
+yeh bilkul ghalat hai,extra_punct,yeh bilkul ghalat hai!!!,anger,0.8955514430999756,False
+yeh bilkul ghalat hai,typo,yh bilkul ghalat hai,anger,0.7045536041259766,False
+bohat dar lag raha hai,original,bohat dar lag raha hai,neutral,0.4247351288795471,False
+bohat dar lag raha hai,elongated,bhat dar lag raha hai,anger,0.4549931585788727,True
+bohat dar lag raha hai,extra_punct,bohat dar lag raha hai!!!,surprise,0.6361238360404968,True
+bohat dar lag raha hai,typo,bhat dar lag raha hai,anger,0.4549931585788727,True

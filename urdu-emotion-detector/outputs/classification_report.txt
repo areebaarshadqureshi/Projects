@@ -1,0 +1,24 @@
+VALIDATION SET — CLASSIFICATION REPORT==================================================              precision    recall  f1-score   support
+
+     neutral     0.8229    0.6106    0.7010      1705
+       anger     0.5014    0.7260    0.5931       511
+        fear     0.1250    0.1471    0.1351        34
+       happy     0.5788    0.7372    0.6485       548
+         sad     0.2426    0.3267    0.2785       101
+    surprise     0.1765    0.2903    0.2195        31
+
+    accuracy                         0.6358      2930
+   macro avg     0.4079    0.4730    0.4293      2930
+weighted avg     0.6862    0.6358    0.6461      2930
+TEST SET — CLASSIFICATION REPORT==================================================              precision    recall  f1-score   support
+
+     neutral     0.8116    0.6008    0.6905      1706
+       anger     0.4952    0.7045    0.5816       511
+        fear     0.0820    0.1515    0.1064        33
+       happy     0.5832    0.7468    0.6550       549
+         sad     0.2500    0.2871    0.2673       101
+    surprise     0.2131    0.4194    0.2826        31
+
+    accuracy                         0.6285      2931
+   macro avg     0.4058    0.4850    0.4305      2931
+weighted avg     0.6797    0.6285    0.6394      2931
