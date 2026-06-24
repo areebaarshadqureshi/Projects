@@ -2,13 +2,18 @@
 
 Detects emotions in Roman Urdu–English code-switched social media text using a fine-tuned XLM-RoBERTa model.
 
-## Screenshot
+## Demo
 
-![App screenshot](assets/demo-ss.png)
-
-## Live Demo
-
-![App in action](assets/demo.gif)
+<table>
+<tr>
+<td><img src="assets/dashboard_ss.png" width="400"/></td>
+<td><img src="assets/demo.gif" width="400"/></td>
+</tr>
+<tr>
+<td align="center"><i>Screenshot</i></td>
+<td align="center"><i>Live demo</i></td>
+</tr>
+</table>
 
 [Live Demo](https://huggingface.co/spaces/areebaarshad/urdu-emotion-detector)
 
