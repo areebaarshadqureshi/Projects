@@ -6,8 +6,8 @@ Detects emotions in Roman Urdu–English code-switched social media text using a
 
 <table>
 <tr>
-<td><img src="assets/dashboard_ss.png" height="550" width="500"/></td>
-<td><img src="assets/demo.gif" height="550" width="500"/></td>
+<td><img src="assets/dashboard_ss.png"  width="550"/></td>
+<td><img src="assets/demo.gif" width="550"/></td>
 </tr>
 <tr>
 <td align="center"><i>Screenshot</i></td>
