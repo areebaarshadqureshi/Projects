@@ -68,8 +68,9 @@ Full findings: [`outputs/bias_audit.md`](outputs/bias_audit.md) — 7 audits run
 ```bash
 git clone https://huggingface.co/spaces/areebaarshad/urdu-emotion-detector
 cd urdu-emotion-detector
+cd src
 pip install -r requirements.txt
-streamlit run app.py
+streamlit run streamlit_app.py
 ```
 
 The app downloads the fine-tuned model from [areebaarshad/urdu-emotion-xlmr](https://huggingface.co/areebaarshad/urdu-emotion-xlmr) on first run.
