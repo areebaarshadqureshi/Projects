@@ -4,9 +4,16 @@ Detects emotions in Roman Urdu–English code-switched social media text using a
 
 ## Demo
 
-![App demo](assets/demo-ss.png)
-
-![App in action](assets/demo.gif)
+<table>
+<tr>
+<td><img src="assets/demo-ss.png" width="400"/></td>
+<td><img src="assets/demo.gif" width="400"/></td>
+</tr>
+<tr>
+<td align="center"><i>Screenshot</i></td>
+<td align="center"><i>Live demo</i></td>
+</tr>
+</table>
 
 [Live Demo](https://huggingface.co/spaces/areebaarshad/urdu-emotion-detector)
 
