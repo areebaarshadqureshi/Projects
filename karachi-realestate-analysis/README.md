@@ -4,7 +4,7 @@
 ---
 
 <p align="center">
-  <img src="outputs/dashboard_preview.png" alt="Dashboard Preview" width="900"/>
+  <img src="outputs/dashboard_preview.png" alt="Dashboard Preview" width="500"/>
 </p>
 
 ## Project at a Glance
