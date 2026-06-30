@@ -267,7 +267,7 @@ karachi-realestate-analysis/
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/areebaarshadqureshi/karachi-realestate-analysis.git
+git clone https://github.com/areebaarshadqureshi/Projects//karachi-realestate-analysis.git
 cd karachi-realestate-analysis
 ```
 
