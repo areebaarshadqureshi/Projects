@@ -1,0 +1,36 @@
+# Karachi Real Estate Fraud Detection — Full Environment
+# Includes training (notebooks) + API dependencies.
+# For inference-only deployment, use requirements-api.txt instead.
+
+# --- Core ML ---
+scikit-learn==1.5.2
+xgboost==2.1.3
+lightgbm==4.5.0
+pandas==2.2.0
+numpy==1.26.0
+joblib==1.5.3
+optuna==4.1.0
+shap==0.46.0
+
+# --- Data validation ---
+pandera==0.20.4
+
+# --- Visualization ---
+matplotlib==3.9.0
+seaborn==0.13.2
+
+# --- API ---
+fastapi==0.115.8
+uvicorn[standard]==0.34.0
+pydantic==2.10.6
+python-multipart==0.0.29
+python-dotenv==1.0.1
+
+# --- Notebook environment ---
+jupyter==1.1.1
+jupyterlab==4.3.4
+ipywidgets==8.1.5
+
+# --- Testing ---
+pytest==8.3.4
+requests==2.32.3

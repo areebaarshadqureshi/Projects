@@ -1,0 +1,19 @@
+# Karachi Real Estate Fraud Detection — API Inference Only
+# Minimal dependencies to run the FastAPI service. Does not include
+# notebook/training tools (Jupyter, Optuna, SHAP, matplotlib, etc).
+# Use this for Docker builds and Render deployment.
+
+fastapi==0.115.8
+uvicorn[standard]==0.34.0
+pydantic==2.10.6
+scikit-learn==1.5.2
+xgboost==2.1.3
+lightgbm==4.5.0
+pandas==2.2.0
+numpy==1.26.0
+joblib==1.5.3
+python-multipart==0.0.29
+python-dotenv==1.0.1
+
+# Used by tests/test_api.py
+requests==2.32.3

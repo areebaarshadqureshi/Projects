@@ -1,0 +1,39 @@
+# Data — never push to GitHub
+data/
+*.csv
+*.npy
+
+# Models — too large
+models/
+*.joblib
+*.pkl
+*.bin
+
+# Environment
+venv/
+.env
+*.pyc
+__pycache__/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data — never push to GitHub
+data/
+*.csv
+*.npy
+
+# Models — ignore everything except what the API needs at runtime
+models/*
+!models/fraud_detector_v1.pkl
+!models/artifacts/
+models/artifacts/X_train*.csv
+models/artifacts/X_test*.csv
+models/artifacts/*_robust.npy
+models/artifacts/*_standard.npy
+models/artifacts/optuna_study.db
+models/artifacts/y_train.csv
+models/artifacts/y_test.csv
+models/artifacts/y_ensemble*.csv

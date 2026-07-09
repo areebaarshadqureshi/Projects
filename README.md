@@ -10,6 +10,9 @@ Fine-tuned XLM-RoBERTa model for 6-class emotion detection on Roman Urdu–Engli
 ### [Karachi Real Estate Analytics Dashboard](karachi-realestate-analysis)
 Power BI dashboard analyzing ~44,000 Zameen.com property listings, with DAX-based affordability analysis using PBS CPI data.
 
+### [Karachi Real Estate Anomaly Detection](karachi-fraud-detection)
+End-to-end pseudo-labeled anomaly detection pipeline on ~47,000 Karachi property listings, with a tuned XGBoost model, SHAP-based explainability, a FastAPI + web UI deployed on Render, and a documented post-mortem on why pseudo-label evaluation can mislead you.
+
 ### [PSL Data Analytics Project (2016–2024)](psl-data-analytics)
 End-to-end EDA of Pakistan Super League performance data across a 5-notebook pipeline, with an interactive 5-page Streamlit dashboard covering team, player, match, and season-level insights.
 
