@@ -126,7 +126,7 @@ workbook (`PSL_Business_Report.xlsx`) with:
 - A season timeline sheet with an embedded line chart
 
 ---
-## 🔗 Live Demo
+##  Live Demo
 
 [Try the PSL Analytics Dashboard](https://projects-3ghwrxb5lftpni97c5mkro.streamlit.app)
 
