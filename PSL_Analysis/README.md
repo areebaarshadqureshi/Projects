@@ -1,4 +1,4 @@
-# 🏏 PSL Data Analytics Project (2016–2024)
+#  PSL Data Analytics Project (2016–2024)
 
 End-to-end exploratory data analysis of Pakistan Super League performance data,
 structured as a 5-notebook pipeline with both CSV and Excel deliverables, plus an
