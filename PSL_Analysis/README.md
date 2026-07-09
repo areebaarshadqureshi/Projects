@@ -126,7 +126,11 @@ workbook (`PSL_Business_Report.xlsx`) with:
 - A season timeline sheet with an embedded line chart
 
 ---
+## 🔗 Live Demo
 
+[Try the PSL Analytics Dashboard](https://your-app-name.streamlit.app)
+
+---
 ## Streamlit Dashboard
 
 The dashboard (`app/app.py`) presents the analysis interactively across five pages, with global team filters available throughout:
