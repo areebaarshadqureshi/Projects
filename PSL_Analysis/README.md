@@ -17,15 +17,15 @@ The dashboard is organized into five pages, each covering a different angle of P
 
 | Home | Team Analysis |
 |---|---|
-| ![Home page](assets/screenshots/home.png) | ![Team Analysis page](assets/screenshots/team_analysis.png) |
+| ![Home page](assets/screenshots/home_1.png) | ![Team Analysis page](assets/screenshots/team_analysis.png) |
 
 | Player Analysis | Match Analysis |
 |---|---|
-| ![Player Analysis page](assets/screenshots/player_analysis.png) | ![Match Analysis page](assets/screenshots/match_analysis.png) |
+| ![Player Analysis page](assets/screenshots/player_analysis_1.png) | ![Match Analysis page](assets/screenshots/match_analysis.png) |
 
 | Season Timeline |
 |---|
-| ![Season Timeline page](assets/screenshots/season_timeline.png) |
+| ![Season Timeline page](assets/screenshots/season_timeline_1.png) |
 
 > Screenshots are saved under `assets/screenshots/`. Rename your files to match the paths above, or update the paths to match your filenames.
 
