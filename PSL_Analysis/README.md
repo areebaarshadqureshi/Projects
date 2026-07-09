@@ -27,8 +27,6 @@ The dashboard is organized into five pages, each covering a different angle of P
 |---|
 | ![Season Timeline page](assets/screenshots/season_timeline_1.png) |
 
-> Screenshots are saved under `assets/screenshots/`. Rename your files to match the paths above, or update the paths to match your filenames.
-
 ---
 
 ## Project Structure
@@ -179,7 +177,7 @@ Each stage's output feeds directly into the next, with cleaned and engineered da
 ## Problem Statement
 
 Analysing PSL performance from 2016–2024 to identify what factors make teams win
-(venue advantage, batting first vs chasing, player profiles) — and specifically
+(venue advantage, batting first vs chasing, player profiles) and specifically
 what Karachi Kings need to improve to compete at the top.
 
 ---
