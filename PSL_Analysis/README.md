@@ -119,7 +119,7 @@ Kings performance diagnosis, venue dominance, batting-first vs chasing).
 **Goal:** Go beyond `df.to_excel()` and build a stakeholder-ready dashboard
 workbook (`PSL_Business_Report.xlsx`) with:
 - A **Dashboard** sheet with KPI cards driven by **live Excel formulas**
-  (`INDEX/MATCH`, `MAX`, `COUNTA`) — not hardcoded numbers
+  (`INDEX/MATCH`, `MAX`, `COUNTA`) not hardcoded numbers
 - Ranked batting/bowling leaderboards with conditional formatting (color scales)
 - Team standings with live `Win % = Won/Matches*100` formulas and an embedded
   bar chart
