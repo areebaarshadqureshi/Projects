@@ -2,6 +2,12 @@
 
 Detects emotions in Roman Urdu–English code-switched social media text using a fine-tuned XLM-RoBERTa model.
 
+## Problem Statement
+
+Most emotion and sentiment detection tools are built for monolingual English text, but everyday Pakistani social media communication is dominated by Roman Urdu–English code-switching — mixing scripts, grammar, and vocabulary within the same sentence. This is a low-resource NLP setting: existing pretrained models and off-the-shelf sentiment tools are not designed for it, and mislabeling code-switched emotional content limits their usefulness for applications like social listening, customer feedback analysis, or early signals of user distress on Pakistani platforms.
+
+This project fine-tunes a multilingual transformer to classify six emotions (Neutral, Anger, Fear, Happy, Sad, Surprise) directly on Roman Urdu–English text, and — just as importantly — audits where the model can and can't be trusted, rather than reporting a single accuracy number and stopping there.
+
 ## Demo
 
 <table>
@@ -34,6 +40,18 @@ RU-EN-Emotion Corpus — manually annotated Roman Urdu–English code-switched s
 Each phase uses early stopping (patience-based, monitoring validation macro F1), and only the single best checkpoint is ever saved. Class-weighted cross-entropy loss is used throughout to address severe class imbalance (Fear and Surprise each make up ~1.1% of the data).
 
 Sequences are tokenized to a fixed length of 64 tokens — the empirically measured 95th-percentile token length on the cleaned training text (see `config.py`), not a default.
+
+## Methodology
+
+The project follows a structured pipeline from raw corpus to an audited, deployed model:
+
+1. **Data Preparation** — loaded the single-file RU-EN-Emotion Excel corpus, verified label distribution, and confirmed severe class imbalance (Fear and Surprise each ~1.1% of the data) before choosing a mitigation strategy.
+2. **Tokenization Strategy** — measured the actual token-length distribution of the cleaned text rather than assuming a default, and fixed sequence length at the empirical 95th percentile (64 tokens) to balance information retention against training cost.
+3. **Progressive Fine-Tuning** — trained `xlm-roberta-base` in three phases with increasing unfrozen depth (classifier head only → top 2 layers → full model), each with its own learning rate and early stopping on validation macro F1, to avoid catastrophic forgetting of the pretrained multilingual representations.
+4. **Imbalance Handling** — applied class-weighted cross-entropy loss throughout training so minority emotions (Fear, Surprise) still contribute meaningfully to the loss signal, rather than being drowned out by majority classes.
+5. **Evaluation** — reported per-class precision/recall/F1 and macro F1 (not just accuracy), since accuracy alone would hide the model's weak performance on minority classes.
+6. **Bias & Robustness Auditing** — ran 7 targeted audits post-training (gender sensitivity, negation handling, keyword dependency, rare-class reliability, out-of-distribution robustness, and code-switch ratio sensitivity) to identify where the model's predictions can't yet be trusted, rather than relying on the headline metric alone.
+7. **Deployment** — packaged the fine-tuned model and a Streamlit interface, hosted on Hugging Face Hub and Spaces for public, reproducible access.
 
 ## Results
 
@@ -81,3 +99,13 @@ The app downloads the fine-tuned model from [areebaarshad/urdu-emotion-xlmr](htt
 - Add emotion intensity scoring (mild vs. strong) rather than a single hard label
 - Specifically target Fear and Surprise with additional labeled data — current sample sizes (~30-35 test examples) are too small to draw reliable conclusions about real-world performance on these classes
 - Extend to Punjabi–English code-switching, a related but distinct code-mixing pattern common in the same user base
+
+## Tech Stack
+
+Python · PyTorch · Hugging Face Transformers (XLM-RoBERTa) · Hugging Face Hub & Spaces · Streamlit · Pandas · scikit-learn (evaluation metrics) · OpenPyXL
+
+## Author
+
+**Areeba Arshad**
+Computer Science Graduate — FAST-NUCES
+GitHub: [@areebaarshadqureshi](https://github.com/areebaarshadqureshi)

@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data (keep raw, ignore processed — regenerate via notebooks)
+data/processed/
+
+# OS
+.DS_Store
+Thumbs.db

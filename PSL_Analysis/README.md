@@ -11,7 +11,7 @@ interactive Streamlit dashboard.
 
 ---
 
-## 📸 Streamlit Dashboard Preview
+## Streamlit Dashboard Preview
 
 The dashboard is organized into five pages, each covering a different angle of PSL performance analysis.
 
@@ -31,7 +31,7 @@ The dashboard is organized into five pages, each covering a different angle of P
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 PSL_Project/
@@ -58,7 +58,6 @@ PSL_Project/
 ├── charts/                 ← Exported chart images (optional)
 ├── assets/
 │   ├── screenshots/         ← Dashboard page screenshots (used in this README)
-│   └── logos, images used in dashboard
 │
 ├── requirements.txt
 ├── README.md
@@ -67,7 +66,7 @@ PSL_Project/
 
 ---
 
-## 📂 Datasets (`data/raw/`)
+## Datasets (`data/raw/`)
 
 | File | Category | Description |
 |------|----------|-------------|
@@ -91,7 +90,7 @@ string, `BBI` as a `"4/17"` string.
 
 ---
 
-## 📓 Notebook Guide
+## Notebook Guide
 
 ### NB01 — Data Cleaning
 **Goal:** Fix all data quality issues. Save clean files to `data/preprocessed/` as
@@ -130,7 +129,7 @@ workbook (`PSL_Business_Report.xlsx`) with:
 
 ---
 
-## 🖥️ Streamlit Dashboard
+## Streamlit Dashboard
 
 The dashboard (`app/app.py`) presents the analysis interactively across five pages, with global team filters available throughout:
 
@@ -149,7 +148,7 @@ streamlit run app/app.py
 
 ---
 
-## 🛠 Setup in Google Colab
+## Setup in Google Colab
 
 ```python
 from google.colab import drive
@@ -162,7 +161,22 @@ Set `RAW = '/content/drive/MyDrive/PSL_Project/data/raw/'` in NB01.
 
 ---
 
-## 📌 Problem Statement
+## Methodology
+
+The project follows a structured, end-to-end analytics workflow:
+
+1. **Data Collection** — 12 raw CSVs covering batting, bowling, fielding, and team-level PSL statistics (2016–2024), sourced as separate category-specific files.
+2. **Data Cleaning** — standardised inconsistent formats (not-out markers, placeholder values, string-encoded scores and figures), handled nulls and duplicates, and parsed dates into proper datetime objects (NB01).
+3. **Exploratory Data Analysis** — examined distributions, correlations, and missing-value patterns to understand the raw data before transforming it (NB02).
+4. **Feature Engineering** — derived analytical metrics not present in the raw data, such as batting efficiency scores, bowling impact scores, and effective win percentages, to support deeper comparisons (NB03).
+5. **Insight Generation** — conducted univariate, bivariate, and multivariate analysis to surface concrete, decision-relevant findings, including a focused diagnostic on Karachi Kings' performance (NB04).
+6. **Reporting & Delivery** — translated findings into two deliverable formats: a formula-driven Excel business report for stakeholders who prefer spreadsheets (NB05), and an interactive Streamlit dashboard for real-time exploration across teams, players, matches, and seasons.
+
+Each stage's output feeds directly into the next, with cleaned and engineered datasets saved at every step to keep the pipeline reproducible.
+
+---
+
+## Problem Statement
 
 Analysing PSL performance from 2016–2024 to identify what factors make teams win
 (venue advantage, batting first vs chasing, player profiles) — and specifically
@@ -170,23 +184,14 @@ what Karachi Kings need to improve to compete at the top.
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
-Python · Pandas · NumPy · Matplotlib / Seaborn · Streamlit · OpenPyXL
+Python · Pandas · NumPy · Matplotlib/Seaborn · Plotly · Streamlit · OpenPyXL
 
 ---
 
-## 👤 Author
+## Author
 
 **Areeba Arshad**
 Computer Science Graduate — FAST-NUCES
 GitHub: [@areebaarshadqureshi](https://github.com/areebaarshadqureshi)
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-You are free to use, copy, modify, and distribute this software.
-Provided "as is", without warranty of any kind.
-See the [LICENSE](LICENSE) file for full details.
