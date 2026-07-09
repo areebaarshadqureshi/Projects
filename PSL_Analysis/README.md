@@ -128,7 +128,7 @@ workbook (`PSL_Business_Report.xlsx`) with:
 ---
 ## 🔗 Live Demo
 
-[Try the PSL Analytics Dashboard](https://https://projects-3ghwrxb5lftpni97c5mkro.streamlit.app)
+[Try the PSL Analytics Dashboard](https://projects-3ghwrxb5lftpni97c5mkro.streamlit.app)
 
 ---
 ## Streamlit Dashboard
