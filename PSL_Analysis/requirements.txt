@@ -4,5 +4,4 @@ plotly
 matplotlib
 seaborn
 streamlit
-scikit-learn
 openpyxl
