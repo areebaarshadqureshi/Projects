@@ -51,13 +51,13 @@ PSL_Project/
 │   └── 05_excel_business_report.ipynb
 │
 ├── app/
-│   └── app.py              ← Streamlit dashboard (4 pages)
+│   └── app.py              ← Streamlit dashboard (5 pages)
+├   └── requirements.txt
 │
 ├── charts/                 ← Exported chart images (optional)
 ├── assets/
 │   ├── screenshots/         ← Dashboard page screenshots (used in this README)
 │
-├── requirements.txt
 ├── README.md
 └── .gitignore
 ```
