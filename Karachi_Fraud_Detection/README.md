@@ -9,7 +9,20 @@
 ![Deployed](https://img.shields.io/badge/deployed-FastAPI%20Cloud-05998b.svg)
 ![License](https://img.shields.io/badge/license-Educational-lightgrey.svg)
 
-**[Live Demo](https://karachi-fraud-detection.fastapicloud.dev)** · **[Demo GIF below](#-demo)**
+## Demo
+
+![Demo](reports/assets/demo.gif)
+
+
+| Property Details Form | High-Risk Result |
+|---|---|
+| ![Prediction form](reports/assets/screenshot_form.png) | ![High risk result](reports/assets/screenshot_result_high.png) |
+
+| Similar Listings & Recommendation |
+|---|
+| ![Similar listings](reports/assets/screenshot_similar_listings.png) |
+
+**[Live Demo](https://karachi-fraud-detection.fastapicloud.dev)** ·
 
 ---
 
@@ -479,21 +492,6 @@ A `.fastapicloudignore` file excludes `data/`, `notebooks/`, `reports/`, and the
 ### Alternative: Docker
 
 `Dockerfile` and `docker-compose.yml` are kept in this repo for self-hosted Docker deployment, as an alternative if you'd rather use a platform that requires card verification, or want to self-host.
-
----
-
-## Demo
-
-![Demo](reports/assets/demo.gif)
-
-
-| Property Details Form | High-Risk Result |
-|---|---|
-| ![Prediction form](reports/assets/screenshot_form.png) | ![High risk result](reports/assets/screenshot_result_high.png) |
-
-| Similar Listings & Recommendation |
-|---|
-| ![Similar listings](reports/assets/screenshot_similar_listings.png) |
 
 ---
 
