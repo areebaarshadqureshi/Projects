@@ -6,10 +6,10 @@
 ![XGBoost](https://img.shields.io/badge/XGBoost-2.1.3-orange.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115.8-009688.svg)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)
-![Render](https://img.shields.io/badge/deployed-Render-46E3B7.svg)
+![Deployed](https://img.shields.io/badge/deployed-FastAPI%20Cloud-05998b.svg)
 ![License](https://img.shields.io/badge/license-Educational-lightgrey.svg)
 
-**[Live Demo](#) — replace with your Render URL** · *first request may take 60–90s to wake a free-tier instance*
+**[Live Demo](https://karachi-fraud-detection.fastapicloud.dev)** · **[Demo GIF below](#-demo)**
 
 ---
 
@@ -31,26 +31,26 @@
 - [Limitations](#-limitations)
 - [Future Improvements](#-future-improvements)
 - [How to Run the Project](#-how-to-run-the-project)
-- [Deploying on Render](#-deploying-on-render)
+- [Deploying on FastAPI Cloud](#-deploying-on-fastapi-cloud)
 - [Demo](#-demo)
 - [License](#-license)
 - [Author](#-author)
 
 ---
 
-## 🎯 Problem Statement
+##  Problem Statement
 
 Online real estate marketplaces like Zameen.com are vulnerable to listing-level manipulation: properties reposted dozens of times to dominate search rankings ("ghost listings"), prices deliberately set far outside local norms to lure clicks, and listings with corrupted or fabricated location data. None of these are *labelled* anywhere in the raw data — there is no `is_fraud` column, no human moderation log, no verified ground truth at all.
 
 This project asks: **can a supervised model learn to flag these patterns using only signals derived from the listing data itself, with no verified fraud labels available?**
 
-## 🎯 Business Objective
+## Business Objective
 
 For a property portal, manually reviewing all ~47,000 active listings is infeasible. The objective is to **prioritise a small subset of listings for human review** by surfacing the ones that deviate most from normal market behaviour — not to make autonomous fraud/no-fraud decisions. Precision-at-k (how many of the top-k flagged listings are worth a reviewer's time) matters more than overall accuracy.
 
 ---
 
-## ⚠️ Honest Results Summary
+##  Honest Results Summary
 
 **Read this section before the metrics table below — it explains why the numbers are modest, and that explanation is the most valuable part of this project.**
 
@@ -79,7 +79,7 @@ This honesty is deliberate. A model card with strong-looking numbers that don't 
 
 ---
 
-## 📊 Dataset
+##  Dataset
 
 **Source**: Publicly scraped Zameen.com listings (Pakistan's largest property portal)
 **Location**: Karachi, Pakistan
@@ -107,7 +107,7 @@ Karachi bounding box used for geo-anomaly flagging: latitude `[24.74, 25.19]`, l
 
 ---
 
-## 🏗 Project Architecture
+##  Project Architecture
 
 ```
 Raw Listings (46,667 rows)
@@ -150,26 +150,26 @@ Raw Listings (46,667 rows)
         │
         ▼
 ┌──────────────────┐
-│  FastAPI Service  │  REST API + web UI, Dockerised, deployed to Render
+│  FastAPI Service  │  REST API + web UI, Dockerised, deployed to FastAPI Cloud
 └──────────────────┘
 ```
 
 ---
 
-## ✨ Features
+##  Features
 
 - **Two-stage pseudo-label pipeline**: unsupervised ensemble generates training labels; supervised models learn to generalise the pattern.
 - **43 engineered features** spanning price deviation, location statistics, temporal patterns, and relisting behaviour (see [Methodology](#-methodology)).
 - **Automated hyperparameter search** via Optuna (150 trials per candidate model, 5-fold stratified CV).
 - **SHAP-based explainability**: global feature importance (bar, beeswarm) and individual-prediction explanations (waterfall, dependence plots).
 - **Production REST API**: FastAPI service with single and batch prediction endpoints, human-readable risk factors per prediction, and a built-in caveat in every response.
-- **Single-page web UI** for manual listing checks and CSV batch uploads.
-- **Dockerised local deployment** with a health check, plus a live Render.com deployment.
+- **Single-page web UI** for manual listing checks, with `/predict/batch` also available via the API for programmatic batch scoring (see `/docs`).
+- **Dockerised local deployment** with a health check, plus a live FastAPI Cloud deployment.
 - **Environment-aware notebooks**: auto-detect Google Colab vs. local execution rather than hard-failing outside Colab.
 
 ---
 
-## 🛠 Technologies Used
+##  Technologies Used
 
 | Category | Tools |
 |---|---|
@@ -181,12 +181,12 @@ Raw Listings (46,667 rows)
 | Data validation | Pandera |
 | Visualization | Matplotlib, Seaborn |
 | API | FastAPI, Pydantic, Uvicorn |
-| Deployment | Docker, Docker Compose, Render |
+| Deployment | Docker, Docker Compose, FastAPI Cloud |
 | Notebooks | Jupyter / Google Colab |
 
 ---
 
-## ⚙️ Installation
+##  Installation
 
 ### Prerequisites
 - Python 3.11
@@ -275,7 +275,6 @@ karachi_fraud_detection/
 │
 ├── Dockerfile
 ├── docker-compose.yml
-├── render.yaml
 ├── Makefile
 ├── requirements.txt                      # Full environment (training + API)
 ├── requirements-api.txt                  # Inference-only dependencies
@@ -285,7 +284,7 @@ karachi_fraud_detection/
 
 ---
 
-## 🧠 Methodology
+##  Methodology
 
 ### Feature Engineering (43 features feeding the final model)
 
@@ -452,32 +451,49 @@ curl -X POST http://localhost:8000/predict \
 
 ---
 
-## Deploying on Render
+## Deploying on FastAPI Cloud
 
-This repo ships with a `render.yaml` Blueprint. Since the API only needs `models/fraud_detector_v1.pkl` (~930KB) and ~10 small artifact files (~150KB combined), all inference-required model files are committed directly to this repo — no external download step is needed at build time.
+Since the API only needs `models/fraud_detector_v1.pkl` (~930KB) and ~10 small artifact files (~150KB combined), the whole deployable footprint is under 2MB — no external download step or large-file hosting is needed.
 
-1. Push this repo to GitHub (see the full walkthrough in the project's deployment notes if starting from a purely local project).
-2. Create a free Render account at [render.com](https://render.com) — no credit card required for the free Hobby plan.
-3. In the Render dashboard: **New → Blueprint**, connect your GitHub account if prompted, then select this repo. Render reads `render.yaml` automatically and shows the resources it will create.
-4. Click **Deploy Blueprint**. Render runs `pip install -r requirements-api.txt`, then starts the service with `uvicorn api.main:app --host 0.0.0.0 --port $PORT`.
-5. Free-tier services spin down after 15 minutes of inactivity; the first request afterward can take 60–90 seconds to wake up (cold start) — expected, not a bug.
-6. Once the build finishes, visit `https://<your-service>.onrender.com/docs` to confirm the API is live, then `/health` to confirm the model and artifacts loaded correctly.
+1. Install the CLI (bundled with FastAPI's `standard` extra):
+   ```bash
+   pip install "fastapi[standard]"
+   ```
+2. A root-level `main.py` re-exports the app so the CLI can auto-detect it:
+   ```python
+   from api.main import app
+   ```
+3. Authenticate (opens a browser device-login flow, no card required on the free Hobby plan):
+   ```bash
+   fastapi login
+   ```
+4. Deploy from the project root:
+   ```bash
+   fastapi deploy
+   ```
+5. FastAPI Cloud installs from `requirements.txt`, builds, and returns a live URL like `https:///karachi-fraud-detection.fastapicloud.dev`.
+6. Confirm the deployment: visit `/docs` for the interactive Swagger UI, then `/health` to confirm the model and artifacts loaded correctly.
 
-`Dockerfile` / `docker-compose.yml` are for local or self-hosted Docker deployment; Render's `env: python` Blueprint here does not use them.
+A `.fastapicloudignore` file excludes `data/`, `notebooks/`, `reports/`, and the unused candidate models (`lof.pkl`, `random_forest_v1.pkl`, etc.) from the upload, so only the files `api/predict.py` actually loads at runtime get shipped.
+
+### Alternative: Docker
+
+`Dockerfile` and `docker-compose.yml` are kept in this repo for self-hosted Docker deployment, as an alternative if you'd rather use a platform that requires card verification, or want to self-host.
 
 ---
 
 ## Demo
 
-| Web UI — Single Prediction | Web UI — Result (High Risk) |
-|---|---|
-| `![Prediction form](reports/figures/screenshot_form.png)` | `![High risk result](reports/figures/screenshot_result_high.png)` |
+![Demo](reports/assets/demo.gif)
 
-| API Docs (Swagger) | SHAP Feature Importance |
-|---|---|
-| `![Swagger UI](reports/figures/screenshot_docs.png)` | `![SHAP bar chart](reports/figures/_shap_bar.png)` |
 
-> _Add screenshots above before publishing — see the demo capture plan in the project notes for exact shots, order, and sample inputs._
+| Property Details Form | High-Risk Result |
+|---|---|
+| ![Prediction form](reports/assets/screenshot_form.png) | ![High risk result](reports/assets/screenshot_result_high.png) |
+
+| Similar Listings & Recommendation |
+|---|
+| ![Similar listings](reports/assets/screenshot_similar_listings.png) |
 
 ---
 
@@ -491,7 +507,7 @@ Background: CampusX Data Science Mentorship Program
 
 ---
 
-**Built with**: Python • scikit-learn • XGBoost • LightGBM • Optuna • SHAP • FastAPI • Docker • Render
+**Built with**: Python • scikit-learn • XGBoost • LightGBM • Optuna • SHAP • FastAPI • Docker • FastAPI Cloud
 
 **Trained on**: 46,667 Karachi real estate listings (Aug 2018 – Jul 2019)
 

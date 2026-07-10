@@ -1,7 +1,15 @@
-# Data — too large, not needed for inference
 data/
-
-# Models — keep only what api/predict.py actually loads at runtime
+notebooks/
+reports/
+tests/
+scripts/
+docs/
+*.ipynb
+DEVELOPMENT.md
+README.md
+render.yaml
+docker-compose.yml
+Makefile
 models/lof.pkl
 models/lof_pca.pkl
 models/lof_pca_transform.pkl
@@ -19,14 +27,3 @@ models/artifacts/y_test.csv
 models/artifacts/y_ensemble*.csv
 models/artifacts/optuna_study.db
 models/artifacts/supervised_results_registry.json
-
-# Environment
-venv/
-.env
-*.pyc
-__pycache__/
-.ipynb_checkpoints/
-
-# OS
-.DS_Store
-Thumbs.db
