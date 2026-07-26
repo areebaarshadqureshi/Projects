@@ -124,6 +124,17 @@ scoring and gap-analysis output before each stage was considered done.
 - The job-requirements dataset only grows when
   `scripts/fetch_job_postings.py` is run manually; it isn't refreshed
   automatically.
+- The audit only fetches each repo's **top-level** README and commit
+  history -- it does not recurse into subfolders. A repo containing
+  several distinct projects as subdirectories (a monorepo, e.g. a
+  single "Projects" repo with each real project as its own folder)
+  gets audited as one unit using whatever top-level README exists,
+  not as separate projects. `tools/github_repo_tool.py` has a
+  best-effort heuristic (`possible_monorepo`) that warns the user in
+  the UI when this looks likely, but it doesn't attempt to audit each
+  subfolder individually -- splitting distinct projects into their own
+  top-level GitHub repos is the recommended fix, and arguably better
+  portfolio practice regardless of this tool's limitation.
 
 ## Project Structure
 
@@ -176,30 +187,42 @@ streamlit run app/streamlit_app.py
 
 ## Live Demo / API
 
-**Live app:** https://huggingface.co/spaces/<your-username>/<space-name>
+**Live app:** https://<your-subdomain>.streamlit.app
 
 ## Deployment
 
-Deployed on Hugging Face Spaces (Streamlit SDK, CPU basic tier -- no GPU
-needed, since `configs/settings.py` sets `ENVIRONMENT = "production"`,
-which routes LLM calls through the hosted Inference API rather than
-loading a model locally).
+Deployed on **Streamlit Community Cloud** (free, purpose-built for
+Streamlit apps -- no Docker, no separate config file needed).
+`configs/settings.py` defaults `ENVIRONMENT = "groq"`, which routes LLM
+calls through Groq's hosted API rather than loading a model locally, so
+no GPU is needed here either.
 
 Setup:
-1. Create a Space (SDK: Streamlit), clone it, copy this project's files in
-2. Since the app lives at `app/streamlit_app.py` rather than the repo
-   root, the Space's own README needs a YAML config block at the top
-   setting `app_file: app/streamlit_app.py` (see Hugging Face's Spaces
-   config docs for the full block)
-3. Add `HF_API_TOKEN` (required) and `GITHUB_TOKEN` (recommended, raises
-   the GitHub API rate limit) as Space secrets under Settings ->
-   Variables and secrets -- not committed to `.env`
-4. Build the FAISS index once locally (`python -m scripts.build_job_index`)
-   and commit the resulting `vectorstore/` folder to the **Space repo**
-   specifically (it stays gitignored in this GitHub repo, since it's a
-   build artifact -- the Space repo is a separate git history)
-5. Push -- the Space rebuilds automatically; check its Logs tab for
-   build errors
+1. Push this repo to GitHub. Unlike a Hugging Face Space (a separate
+   deployment repo), Streamlit Cloud deploys directly from this actual
+   repo -- so the `vectorstore/job_requirements/` FAISS index (normally
+   gitignored as a build artifact) needs a one-time exception here:
+   build it locally (`python -m scripts.build_job_index`), then
+   `git add -f vectorstore/job_requirements/` and commit it, or
+   `gap_analysis_chain` will crash on first use once deployed.
+2. Go to [share.streamlit.io](https://share.streamlit.io), sign in with
+   GitHub, authorize repo access.
+3. **Create app** -> **"Yup, I have an app"** -> fill in:
+   - Repository: this repo
+   - Branch: `main`
+   - Main file path: `app/streamlit_app.py` (not at repo root)
+4. Under **Advanced settings**, add secrets in TOML format:
+   ```toml
+   GROQ_API_KEY = "gsk_..."
+   GITHUB_TOKEN = "github_pat_..."
+   ```
+   (`LANGCHAIN_TRACING_V2`, `LANGCHAIN_API_KEY`, `LANGCHAIN_PROJECT` too,
+   if LangSmith tracing is wanted on the deployed version.) Streamlit
+   automatically exposes these as environment variables at runtime, so
+   nothing in the code needs to change -- `configs/llm_client.py`
+   already reads them via `os.getenv()`.
+5. Deploy -- Streamlit Cloud installs from `requirements.txt`
+   automatically. Check the app's build logs if anything fails.
 
 ## Future Work
 
@@ -223,4 +246,4 @@ Areeba -- Computer Science graduate, FAST NUCES Karachi.
 
 ## License
 
-*(add a license here, e.g. MIT, if you intend this repo to be public)*
+MIT -- see [LICENSE](LICENSE).
