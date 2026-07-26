@@ -23,11 +23,13 @@ to test, and easier to explain in an interview than an agent would be.
 
 ## Demo / Screenshot
 
-*(add a screenshot or a link to the deployed app here once available)*
+![Demo](docs/project.gif)
 
 ## Architecture
 
-![Architecture diagram](docs/architecture.png)
+<p align="center">
+  <img src="docs/architecture.png" alt="Architecture diagram" width="800">
+</p>
 
 The backend (`core/`, `chains/`, `tools/`, `utils/`, `schemas/`) has
 **zero Streamlit imports** and is fully testable with plain `pytest` --
@@ -43,7 +45,9 @@ The backend (`core/`, `chains/`, `tools/`, `utils/`, `schemas/`) has
 
 ### Execution flow
 
-![Execution flow diagram](docs/execution_flow.png)
+<p align="center">
+  <img src="docs/execution_flow.png" alt="Execution flow diagram" width="450">
+</p>
 
 A single user session moves through three phases: **input** (username
 + validation), **audited** (per-repo results, clarifying questions if
@@ -196,7 +200,7 @@ streamlit run app/streamlit_app.py
 
 ## Live Demo / API
 
-**Live app:** https://<your-subdomain>.streamlit.app
+**Live app:** https://ai-repo-mentor.streamlit.app/
 
 ## Deployment
 
