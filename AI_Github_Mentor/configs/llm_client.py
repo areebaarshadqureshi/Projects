@@ -72,6 +72,10 @@ def get_llm():
             api_key=groq_key,
             max_tokens=1024,
             temperature=0.1,  # low temp -- used for structured extraction, not creative output
+            max_retries=5,    # default is 2 -- bumped up since concurrent .batch() calls
+                               # (repo audits, contribution filtering) can burst past
+                               # Groq's free-tier rate limit; each retry backs off
+                               # automatically (built into the groq SDK's client)
         )
 
     else:

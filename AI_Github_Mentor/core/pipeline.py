@@ -34,7 +34,7 @@ from utils.skill_extractor import extract_skills_from_repos
 def run_audit_phase(llm, username: str, max_repos: int = 20):
     repos_data = github_repo_tool.invoke({"username": username, "max_repos": max_repos})
     chain = build_full_audit_chain(llm)
-    audit_results = chain.batch(repos_data, config={"max_concurrency": 5})
+    audit_results = chain.batch(repos_data, config={"max_concurrency": 3})
     return repos_data, audit_results
 
 

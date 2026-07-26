@@ -149,7 +149,11 @@ utils/                   Raw API clients, skill extraction, no LangChain
 embeddings/              Shared embedding model config
 configs/                 Environment switch + LLM client construction
 data/job_requirements/   Curated job posting JSON
-vectorstore/             Built FAISS index (regenerate locally, not committed)
+vectorstore/             Built FAISS index -- committed (not gitignored), since
+                         Streamlit Cloud deploys straight from this repo and
+                         needs the index present; rebuild via
+                         scripts/build_job_index.py and commit after editing
+                         data/job_requirements/
 scripts/                 Offline data-prep pipeline (fetch postings, build index)
 tests/                   60+ tests, one file per tool/chain/pipeline module
 docs/                    Architecture and execution-flow diagrams
@@ -200,11 +204,12 @@ no GPU is needed here either.
 Setup:
 1. Push this repo to GitHub. Unlike a Hugging Face Space (a separate
    deployment repo), Streamlit Cloud deploys directly from this actual
-   repo -- so the `vectorstore/job_requirements/` FAISS index (normally
-   gitignored as a build artifact) needs a one-time exception here:
-   build it locally (`python -m scripts.build_job_index`), then
-   `git add -f vectorstore/job_requirements/` and commit it, or
-   `gap_analysis_chain` will crash on first use once deployed.
+   repo -- so `vectorstore/job_requirements/` (the built FAISS index)
+   is committed rather than gitignored, since `gap_analysis_chain`
+   needs it present. Build it locally (`python -m scripts.build_job_index`)
+   and commit it (`git add vectorstore/job_requirements/`) any time
+   `data/job_requirements/` changes -- it's tracked normally now, not a
+   one-off exception.
 2. Go to [share.streamlit.io](https://share.streamlit.io), sign in with
    GitHub, authorize repo access.
 3. **Create app** -> **"Yup, I have an app"** -> fill in:

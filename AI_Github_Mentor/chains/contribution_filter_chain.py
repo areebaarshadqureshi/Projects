@@ -72,7 +72,6 @@ def run_contribution_search(llm, skills: list[str], language: str, max_issues: i
         "issue_url": issue["html_url"],
     } for issue in issues]
 
-    # .batch(), not a Python loop of individual .invoke() calls -- same
-    # concurrency-safe pattern as repo_audit_chain, so this can run in
-    # parallel rather than one sequential LLM round-trip per issue.
-    return chain.batch(inputs)
+
+    # That combined burst was enough to trip Groq's free-tier rate limit.
+    return chain.batch(inputs, config={"max_concurrency": 3})
