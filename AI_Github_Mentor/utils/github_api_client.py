@@ -81,13 +81,22 @@ def check_username_exists(username: str) -> bool:
     backend/frontend boundary decided in Stage 1.
     """
     try:
-        resp = requests.get(f"{BASE_URL}/users/{username}", timeout=(5, 10))
-        return resp.status_code == 200
+        resp = requests.get(f"{BASE_URL}/users/{username}", headers=HEADERS, timeout=(5, 10))
     except requests.RequestException:
         # Network hiccup on *this* quick check -- don't hard-block here;
         # the real audit call right after will surface a clear error
         # (via GitHubAPIError) if GitHub is genuinely unreachable.
         return True
+
+    if resp.status_code == 404:
+        return False
+    if resp.status_code == 200:
+        return True
+    # Anything else (403 rate-limited, 5xx, etc.) is NOT the same as "this
+    # user doesn't exist" -- fail open here and let the real audit call
+    # right after surface a specific, accurate error instead of this quick
+    # pre-check silently misreporting a rate limit as a missing username.
+    return True
 
 
 def get_user_profile(username: str) -> dict:
