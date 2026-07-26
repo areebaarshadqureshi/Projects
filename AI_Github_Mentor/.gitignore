@@ -9,9 +9,6 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 
-# Vector store (regenerate locally via scripts/build_job_index.py instead of committing binary index files)
-vectorstore/
-
 # Generated reports
 output/*.md
 
