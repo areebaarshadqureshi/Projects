@@ -3,6 +3,11 @@ langchain-core
 langchain-huggingface
 langchain-groq
 langchain-community
+transformers
+accelerate
+bitsandbytes
+torch
+torchvision
 faiss-cpu
 requests
 pydantic
@@ -13,3 +18,4 @@ ddgs
 huggingface_hub
 langsmith
 sentence-transformers
+pytest
