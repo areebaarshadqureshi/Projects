@@ -1,0 +1,158 @@
+[
+  {
+    "role": "Machine Learning Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [],
+    "nice_to_have": [],
+    "source_url": "https://pk.indeed.com/q-machine-learning-engineer-l-karachi-jobs.html?vjk=ce86f6e8badf7f67",
+    "notes": "The snippet does not specify any required or preferred skills."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "developing and implementing machine learning algorithms"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://layboard.in/vacancies/jobs-in-pakistan/jobs-in-karachi/for-speciality/machine-learning-engineer",
+    "notes": "The seniority level is inferred from the context."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [],
+    "nice_to_have": [],
+    "source_url": "https://www.glassdoor.com/Job/karachi-machine-learning-engineer-jobs-SRCH_IL.0,7_IM1122_KO8,33.htm",
+    "notes": "No specific skills mentioned in the snippet."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "Artificial Intelligence",
+      "Machine Learning"
+    ],
+    "nice_to_have": [
+      "Automation",
+      "Content Generation",
+      "Analytics",
+      "Intelligent Systems"
+    ],
+    "source_url": "https://pk.indeed.com/q-machine-learning-engineer-jobs-l-karachi-jobs.html",
+    "notes": "The job description does not specify a clear seniority level but mentions hands-on experience or knowledge which suggests it could be entry to mid-level."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "developing and implementing machine learning algorithms",
+      "analyzing large data sets"
+    ],
+    "nice_to_have": [
+      "creating predictive models"
+    ],
+    "source_url": "https://techelix.co/careers/machine-learning-engineer/",
+    "notes": "The seniority level is inferred from the responsibilities listed."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "seniority": "mid",
+    "required_skills": [
+      "expert in machine learning",
+      "passionate about artificial intelligence"
+    ],
+    "nice_to_have": [
+      "stay up-to-date with the latest developments in the field"
+    ],
+    "source_url": "https://jobbox.com.pk/job/machine-learning-engineer",
+    "notes": "The description does not specify exact technical skills but implies a need for expertise in ML and AI."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "designing machine learning models",
+      "implementing machine learning models",
+      "optimizing machine learning models",
+      "collaborating with data scientists",
+      "collaborating with robotic engineers"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://www.rozee.pk/indus-brain-machine-learning-engineer-karachi-jobs-1548802",
+    "notes": "The seniority level is inferred based on the content of the job description."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "mathematics",
+      "statistics"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://layboard.in/vacancy/id797100/machine-learning-engineer",
+    "notes": "The seniority level is inferred based on the lack of explicit mention of seniority."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "designing machine learning applications",
+      "developing machine learning applications",
+      "implementing machine learning applications",
+      "testing machine learning models",
+      "deploying machine learning models in a cloud environment"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://www.rozee.pk/horizon-technologies-machine-learning-engineer-karachi-jobs-1189505.php",
+    "notes": "The seniority level is inferred based on the content of the job description."
+  },
+  {
+    "role": "ML Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "Sound communication skills",
+      "Elucidation of technical concepts to diverse stakeholders"
+    ],
+    "nice_to_have": [
+      "Creative",
+      "Problem-solving oriented",
+      "Passion for tackling complex challenges"
+    ],
+    "source_url": "https://www.rozee.pk/bleed-ai-ml-engineer-karachi-jobs-1471036",
+    "notes": "The description does not specify a particular level of experience but mentions skills that could apply to various levels."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "Python",
+      "scikit-learn",
+      "XGBoost",
+      "LightGBM"
+    ],
+    "nice_to_have": [
+      "supervised learning methods",
+      "unsupervised learning methods",
+      "ensemble learning methods"
+    ],
+    "source_url": "https://pk.indeed.com/viewjob?jk=f40d7315bbf7b3ab",
+    "notes": "The seniority is inferred based on the skills required."
+  },
+  {
+    "role": "AI/Machine Learning Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "machine learning",
+      "deep learning",
+      "k-NN",
+      "Naive Bayes",
+      "SVM",
+      "Decision Forests"
+    ],
+    "nice_to_have": [
+      "TensorFlow"
+    ],
+    "source_url": "https://www.rozee.pk/innovative-solutions-ai-machine-learning-engineer-karachi-jobs-1186758.php",
+    "notes": "The seniority level is inferred from the experience requirement."
+  }
+]

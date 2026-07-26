@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Karachi Real Estate Fraud Detection System - AI-powered anomaly detection for property listings">
+    <meta name="author" content="Fraud Detection Team">
+    <title>Karachi Real Estate Fraud Detector</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #0d1b2a;
+            --secondary-color: #1b3a5c;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --light-bg: #f4f6f9;
+        }
+        
+        body {
+            background: var(--light-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            min-height: 100vh;
+        }
+        
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-card {
+            border-left: 4px solid;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 1rem 0;
+        }
+        
+        .upload-zone {
+            border: 2px dashed #cbd5e1;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-zone:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .risk-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .toast-success {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .toast-error {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .toast-warning {
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .toast-info {
+            border-left: 4px solid var(--info-color);
+        }
+        
+        .toast-icon {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            color: #64748b;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: #0d1b2a;
+            background: white;
+            border-bottom: 3px solid #3b82f6;
+        }
+        
+        .form-label {
+            color: #334155;
+            margin-bottom: 0.5rem;
+        }
+        
+        .input-group-text {
+            background: #f1f5f9;
+            border-right: none;
+        }
+        
+        .form-control, .form-select {
+            border-left: none;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.15);
+            border-color: #3b82f6;
+        }
+
+        .location-suggestions {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .location-suggestions .suggestion-item {
+            padding: 0.55rem 0.9rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .location-suggestions .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .location-suggestions .suggestion-item:hover,
+        .location-suggestions .suggestion-item.active {
+            background: #eff6ff;
+            color: #0d1b2a;
+        }
+
+        .location-suggestions .suggestion-item mark {
+            background: transparent;
+            color: #3b82f6;
+            font-weight: 600;
+            padding: 0;
+        }
+
+        .location-suggestions .suggestion-empty {
+            padding: 0.6rem 0.9rem;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .card {
+                margin-bottom: 1rem;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-gradient-primary text-white py-4 shadow-sm">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="mb-0 fw-bold">
+                        <i class="bi bi-shield-exclamation me-2"></i>
+                        Karachi Fraud Detection Dashboard
+                    </h1>
+                    <p class="mb-0 mt-2 opacity-90">Real-time anomaly detection for real estate listings</p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <div class="d-inline-flex align-items-center bg-white bg-opacity-10 rounded-pill px-3 py-2">
+                        <span class="badge bg-success rounded-circle p-2 me-2" id="apiStatusIndicator">
+                            <i class="bi bi-circle-fill"></i>
+                        </span>
+                        <span class="fw-semibold" id="apiStatusText">API Connected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-4">
+        <div class="row g-3">
+            <div class="col-md-3 col-sm-6">
+                <div class="card stat-card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="text-muted mb-1 small">Total Analyzed</p>
+                                <h3 class="fw-bold mb-0" id="statTotalAnalyzed">0</h3>
+                            </div>
+                            <div class="stat-icon bg-primary bg-opacity-10 rounded-3 p-3">
+                                <i class="bi bi-bar-chart-fill text-primary fs-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card stat-card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="text-muted mb-1 small">Anomalies Detected</p>
+                                <h3 class="fw-bold mb-0" id="statAnomalies">0</h3>
+                            </div>
+                            <div class="stat-icon bg-warning bg-opacity-10 rounded-3 p-3">
+                                <i class="bi bi-exclamation-triangle-fill text-warning fs-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card stat-card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="text-muted mb-1 small">High Risk</p>
+                                <h3 class="fw-bold mb-0 text-danger" id="statHighRisk">0</h3>
+                            </div>
+                            <div class="stat-icon bg-danger bg-opacity-10 rounded-3 p-3">
+                                <i class="bi bi-shield-fill-exclamation text-danger fs-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card stat-card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="text-muted mb-1 small">Avg Fraud Score</p>
+                                <h3 class="fw-bold mb-0" id="statAvgScore">0.00</h3>
+                            </div>
+                            <div class="stat-icon bg-info bg-opacity-10 rounded-3 p-3">
+                                <i class="bi bi-graph-up text-info fs-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="nav nav-tabs mb-4" id="analysisTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="single-tab" data-bs-toggle="tab" data-bs-target="#singleAnalysis" type="button" role="tab">
+                            <i class="bi bi-file-earmark-text me-2"></i>Single Listing Analysis
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="analysisTabContent">
+                    <div class="tab-pane fade show active" id="singleAnalysis" role="tabpanel">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h5 class="card-title mb-4 fw-bold">
+                                    <i class="bi bi-house-door me-2 text-primary"></i>Property Details
+                                </h5>
+                                <form id="listingForm">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="price" class="form-label fw-semibold">
+                                                Price (PKR) <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-currency-rupee"></i></span>
+                                                <input type="number" class="form-control" id="price" name="price" required min="0" placeholder="e.g., 25000000">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="area_sqft" class="form-label fw-semibold">
+                                                Area (sq ft) <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-rulers"></i></span>
+                                                <input type="number" class="form-control" id="area_sqft" name="area_sqft" required min="0" placeholder="e.g., 2000">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="bedrooms" class="form-label fw-semibold">
+                                                Bedrooms <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-door-open"></i></span>
+                                                <input type="number" class="form-control" id="bedrooms" name="bedrooms" required min="0" max="20" placeholder="e.g., 3">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="baths" class="form-label fw-semibold">
+                                                Bathrooms <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-droplet"></i></span>
+                                                <input type="number" class="form-control" id="baths" name="baths" required min="0" max="20" placeholder="e.g., 2">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="property_type" class="form-label fw-semibold">
+                                                Property Type <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                                <select class="form-select" id="property_type" name="property_type" required>
+                                                    <option value="">Select type...</option>
+                                                    <option value="House">House</option>
+                                                    <option value="Flat">Flat</option>
+                                                    <option value="Upper Portion">Upper Portion</option>
+                                                    <option value="Lower Portion">Lower Portion</option>
+                                                    <option value="Farm House">Farm House</option>
+                                                    <option value="Room">Room</option>
+                                                    <option value="Penthouse">Penthouse</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label for="location" class="form-label fw-semibold">
+                                                Location <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="position-relative">
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                                    <input type="text" class="form-control" id="location" name="location" required
+                                                           placeholder="Select or type location..."
+                                                           autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off"
+                                                           role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="locationSuggestions">
+                                                </div>
+                                                <div id="locationSuggestions" class="location-suggestions d-none"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="date_added" class="form-label fw-semibold">
+                                                Date Added <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+                                                <input type="date" class="form-control" id="date_added" name="date_added" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-grid gap-2 mt-4">
+                                        <button type="submit" class="btn btn-primary btn-lg">
+                                            <i class="bi bi-search me-2"></i>Analyze Listing
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="resultSection" class="mt-4 d-none">
+                    <div class="row g-4">
+                        <div class="col-lg-4">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body text-center p-4">
+                                    <h5 class="card-title fw-bold mb-3">Fraud Risk Score</h5>
+                                    <div class="position-relative d-inline-block mb-3">
+                                        <canvas id="riskGauge" width="200" height="200"></canvas>
+                                        <div class="position-absolute top-50 start-50 translate-middle">
+                                            <h2 class="fw-bold mb-0" id="riskScoreValue">0.00</h2>
+                                        </div>
+                                    </div>
+                                    <div class="alert mb-0" id="riskLevelAlert" role="alert">
+                                        <h6 class="fw-bold mb-1" id="riskLevelText">--</h6>
+                                        <p class="mb-0 small" id="riskLevelDescription">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title fw-bold mb-4">Price Analysis</h5>
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="bg-light rounded-3 p-3">
+                                                <p class="text-muted small mb-1">Listed Price</p>
+                                                <h5 class="fw-bold mb-0" id="listedPrice">--</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="bg-light rounded-3 p-3">
+                                                <p class="text-muted small mb-1">Market Average</p>
+                                                <h5 class="fw-bold mb-0" id="marketAverage">--</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="bg-light rounded-3 p-3">
+                                                <p class="text-muted small mb-1">Price Deviation</p>
+                                                <h5 class="fw-bold mb-0" id="priceDeviation">--</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <canvas id="priceComparisonChart" height="100"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title fw-bold mb-4">
+                                        <i class="bi bi-exclamation-diamond me-2 text-warning"></i>Detected Risk Factors
+                                    </h5>
+                                    <div id="riskFactorsContainer">
+                                        <p class="text-muted">No risk factors detected</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title fw-bold mb-4">
+                                        <i class="bi bi-diagram-3 me-2 text-info"></i>Model Decisions
+                                    </h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Model</th>
+                                                    <th>Decision</th>
+                                                    <th>Confidence</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="modelDecisionsTable">
+                                                <tr>
+                                                    <td id="modelNameDisplay">Loading...</td>
+                                                    <td><span class="badge bg-secondary">--</span></td>
+                                                    <td>--</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title fw-bold mb-4">
+                                        <i class="bi bi-houses me-2 text-success"></i>Similar Listings in Area
+                                    </h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Property Type</th>
+                                                    <th>Price</th>
+                                                    <th>Area (sq ft)</th>
+                                                    <th>Beds</th>
+                                                    <th>Baths</th>
+                                                    <th>Price/sq ft</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="similarListingsTable">
+                                                <tr>
+                                                    <td colspan="6" class="text-center text-muted">No similar listings data available</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title fw-bold mb-4">
+                                        <i class="bi bi-pin-map me-2 text-primary"></i>Location Statistics
+                                    </h5>
+                                    <div id="locationStatsContent">
+                                        <div class="d-flex justify-content-between py-2 border-bottom">
+                                            <span class="text-muted">Market Tier</span>
+                                            <span class="fw-semibold" id="marketTier">--</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between py-2 border-bottom">
+                                            <span class="text-muted">Avg Price/sq ft</span>
+                                            <span class="fw-semibold" id="avgPriceSqft">--</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between py-2 border-bottom">
+                                            <span class="text-muted">Total Listings</span>
+                                            <span class="fw-semibold" id="totalListings">--</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between py-2 border-bottom">
+                                            <span class="text-muted">Median Price</span>
+                                            <span class="fw-semibold" id="medianPrice">--</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between py-2">
+                                            <span class="text-muted">Historical Flag Rate</span>
+                                            <span class="fw-semibold" id="locationFraudRate">--</span>
+                                        </div>
+                                        <div class="pt-1">
+                                            <small class="text-muted" style="font-size: 0.75rem;">
+                                                % of past listings in this location flagged by the heuristic
+                                                label — not a verified fraud rate, and separate from this
+                                                listing's own score above.
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title fw-bold mb-4">
+                                        <i class="bi bi-info-circle me-2 text-secondary"></i>Recommendation
+                                    </h5>
+                                    <div id="recommendationContent">
+                                        <p class="text-muted">Run an analysis to see recommendations.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- end row result -->
+                </div><!-- end #resultSection -->
+
+            </div><!-- end col-lg-12 -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+
+    <!-- Toast notification -->
+    <div id="toastNotification" class="toast" role="alert" aria-live="assertive">
+        <span class="toast-icon" id="toastIcon">ℹ</span>
+        <span id="toastMessage">Notification</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmjNTSmJU3Cl8EEK1lMuIH5HmL4" crossorigin="anonymous"></script>
+
+    <script>
+    // ─── Toast helper ──────────────────────────────────────────────────────────
+    function showToast(message, type = 'info') {
+        const icons = { success: '✓', error: '✗', warning: '⚠', info: 'ℹ' };
+        const toast = document.getElementById('toastNotification');
+        toast.className = `toast toast-${type}`;
+        document.getElementById('toastIcon').textContent = icons[type] || 'ℹ';
+        document.getElementById('toastMessage').textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // ─── API health check on load ───────────────────────────────────────────────
+    async function checkApiHealth() {
+        try {
+            const res = await fetch('/health');
+            if (res.ok) {
+                const data = await res.json();
+                document.getElementById('apiStatusIndicator').className = 'badge bg-success rounded-circle p-2 me-2';
+                document.getElementById('apiStatusText').textContent = 'API Connected';
+            } else {
+                throw new Error('not ok');
+            }
+        } catch {
+            document.getElementById('apiStatusIndicator').className = 'badge bg-danger rounded-circle p-2 me-2';
+            document.getElementById('apiStatusText').textContent = 'API Offline';
+        }
+    }
+    checkApiHealth();
+
+    // ─── Location stats lookup (pre-computed from training data) ─────────────────
+    const LOCATION_STATS = {"APP Employees Co-operative Housing Society": {"total": 2, "median_price": 39000000, "median_ppsqft": 8953, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "ASF Housing Scheme": {"total": 4, "median_price": 4428000, "median_ppsqft": 4013, "fraud_rate": 0.0, "market_tier": "Affordable"}, "ASF Tower": {"total": 13, "median_price": 5400000, "median_ppsqft": 3673, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Abdullah Ahmed Road": {"total": 3, "median_price": 5000000, "median_ppsqft": 3673, "fraud_rate": 0.0, "market_tier": "Elite"}, "Abdullah Haroon Road": {"total": 7, "median_price": 13000000, "median_ppsqft": 5510, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Abid Town": {"total": 13, "median_price": 8150000, "median_ppsqft": 6734, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Abul Hassan Isphani Road": {"total": 140, "median_price": 5500000, "median_ppsqft": 4397, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Airport": {"total": 92, "median_price": 15000000, "median_ppsqft": 5437, "fraud_rate": 59.8, "market_tier": "Middle Class"}, "Aisha Manzil": {"total": 43, "median_price": 8700000, "median_ppsqft": 6887, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Al-Hilal Society": {"total": 11, "median_price": 17500000, "median_ppsqft": 9183, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Al-Jadeed Residency": {"total": 6, "median_price": 7550000, "median_ppsqft": 5576, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Al-Manzar Society": {"total": 5, "median_price": 12000000, "median_ppsqft": 5510, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Al-Safaa Garden": {"total": 2, "median_price": 5750000, "median_ppsqft": 5215, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Allama Iqbal Town": {"total": 2, "median_price": 48500000, "median_ppsqft": 12369, "fraud_rate": 0.0, "market_tier": "Elite"}, "Altaf Hussain Road": {"total": 1, "median_price": 7000000, "median_ppsqft": 8035, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Amil Colony": {"total": 9, "median_price": 28500000, "median_ppsqft": 11244, "fraud_rate": 0.0, "market_tier": "Elite"}, "Amir Khusro": {"total": 26, "median_price": 43000000, "median_ppsqft": 17677, "fraud_rate": 0.0, "market_tier": "Elite"}, "Anda Mor Road": {"total": 20, "median_price": 9150000, "median_ppsqft": 5931, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Azam Town": {"total": 20, "median_price": 9000000, "median_ppsqft": 10463, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "BMCHS": {"total": 6, "median_price": 14750000, "median_ppsqft": 9212, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Bagh-e-Korangi": {"total": 21, "median_price": 9000000, "median_ppsqft": 8609, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Bahria Town Karachi": {"total": 7682, "median_price": 13000000, "median_ppsqft": 5969, "fraud_rate": 18.8, "market_tier": "Middle Class"}, "Baldia Town": {"total": 28, "median_price": 4600000, "median_ppsqft": 4263, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Baloch Colony": {"total": 22, "median_price": 15500000, "median_ppsqft": 7964, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Bath Island": {"total": 197, "median_price": 46000000, "median_ppsqft": 17971, "fraud_rate": 0.0, "market_tier": "Elite"}, "Bilal Town": {"total": 3, "median_price": 9500000, "median_ppsqft": 10904, "fraud_rate": 0.0, "market_tier": "Elite"}, "Bin Qasim Town": {"total": 211, "median_price": 7000000, "median_ppsqft": 5877, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Blue Bell Residency": {"total": 2, "median_price": 30500000, "median_ppsqft": 15131, "fraud_rate": 0.0, "market_tier": "Elite"}, "Britto Road": {"total": 7, "median_price": 12000000, "median_ppsqft": 6579, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Cantt": {"total": 1035, "median_price": 38000000, "median_ppsqft": 11409, "fraud_rate": 11.8, "market_tier": "Elite"}, "Catholic Colony": {"total": 3, "median_price": 12500000, "median_ppsqft": 7970, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Chapal Courtyard": {"total": 6, "median_price": 8250000, "median_ppsqft": 8765, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Chapal Skymark": {"total": 2, "median_price": 41250000, "median_ppsqft": 14424, "fraud_rate": 0.0, "market_tier": "Elite"}, "Chapal Uptown": {"total": 5, "median_price": 8500000, "median_ppsqft": 6504, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Civil Lines": {"total": 126, "median_price": 39000000, "median_ppsqft": 15336, "fraud_rate": 0.0, "market_tier": "Elite"}, "Clifton": {"total": 1037, "median_price": 30000000, "median_ppsqft": 12626, "fraud_rate": 0.4, "market_tier": "Elite"}, "Cosmopolitan Society": {"total": 16, "median_price": 27500000, "median_ppsqft": 12132, "fraud_rate": 0.0, "market_tier": "Elite"}, "Cotton Export Cooperative Housing Society": {"total": 8, "median_price": 7750000, "median_ppsqft": 4340, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Cutchi Memon Cooperative Housing Society": {"total": 9, "median_price": 40000000, "median_ppsqft": 13548, "fraud_rate": 0.0, "market_tier": "Elite"}, "DHA City Karachi": {"total": 20, "median_price": 19400000, "median_ppsqft": 6667, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "DHA Defence": {"total": 6327, "median_price": 55000000, "median_ppsqft": 16093, "fraud_rate": 3.4, "market_tier": "Elite"}, "Dalmia Cement Factory Road": {"total": 9, "median_price": 7500000, "median_ppsqft": 6628, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Darul Aman Society": {"total": 4, "median_price": 125000000, "median_ppsqft": 29117, "fraud_rate": 0.0, "market_tier": "Elite"}, "Dastgir Colony": {"total": 40, "median_price": 9000000, "median_ppsqft": 6425, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Defence Garden": {"total": 5, "median_price": 13000000, "median_ppsqft": 9948, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Defence View Society": {"total": 110, "median_price": 14250000, "median_ppsqft": 9532, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Delhi Colony": {"total": 86, "median_price": 3950000, "median_ppsqft": 3929, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Dhabeji": {"total": 1, "median_price": 25000000, "median_ppsqft": 459, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Diamond City": {"total": 19, "median_price": 7000000, "median_ppsqft": 7805, "fraud_rate": 31.6, "market_tier": "Upper Middle"}, "Dr Daud Pota Road": {"total": 2, "median_price": 18750000, "median_ppsqft": 10612, "fraud_rate": 0.0, "market_tier": "Elite"}, "Erum Villas": {"total": 1, "median_price": 5000000, "median_ppsqft": 3465, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Etawa Society": {"total": 28, "median_price": 15750000, "median_ppsqft": 8150, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Falaknaz Dynasty": {"total": 3, "median_price": 2500000, "median_ppsqft": 1874, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Falaknaz Presidency": {"total": 22, "median_price": 7750000, "median_ppsqft": 6643, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Falcon Complex Faisal": {"total": 12, "median_price": 102500000, "median_ppsqft": 22170, "fraud_rate": 0.0, "market_tier": "Elite"}, "Fazaia Housing Scheme": {"total": 180, "median_price": 6642000, "median_ppsqft": 3073, "fraud_rate": 26.1, "market_tier": "Affordable"}, "Federal B Area": {"total": 2010, "median_price": 8000000, "median_ppsqft": 6559, "fraud_rate": 12.1, "market_tier": "Middle Class"}, "Frere Town": {"total": 128, "median_price": 31200000, "median_ppsqft": 13461, "fraud_rate": 0.0, "market_tier": "Elite"}, "Gadap Road": {"total": 1, "median_price": 4500000, "median_ppsqft": 2755, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Gadap Town": {"total": 2849, "median_price": 5000000, "median_ppsqft": 4723, "fraud_rate": 23.2, "market_tier": "Affordable"}, "Garden West": {"total": 201, "median_price": 7000000, "median_ppsqft": 5383, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Gizri": {"total": 104, "median_price": 7500000, "median_ppsqft": 5527, "fraud_rate": 12.5, "market_tier": "Middle Class"}, "Gizri Road": {"total": 11, "median_price": 8900000, "median_ppsqft": 5739, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Gobal Town": {"total": 1, "median_price": 6500000, "median_ppsqft": 3316, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Golimar": {"total": 43, "median_price": 9000000, "median_ppsqft": 6747, "fraud_rate": 23.3, "market_tier": "Upper Middle"}, "Goth Ibrahim Haidri": {"total": 1, "median_price": 12000000, "median_ppsqft": 7733, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Gujjar Chowk": {"total": 2, "median_price": 10250000, "median_ppsqft": 11096, "fraud_rate": 0.0, "market_tier": "Elite"}, "Gulberg Town": {"total": 123, "median_price": 7000000, "median_ppsqft": 6122, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Gulistan-e-Jauhar": {"total": 4735, "median_price": 9500000, "median_ppsqft": 6428, "fraud_rate": 9.9, "market_tier": "Middle Class"}, "Gulistan-e-Malir": {"total": 2, "median_price": 5750000, "median_ppsqft": 6600, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Gulshan-e-Amin": {"total": 4, "median_price": 7250000, "median_ppsqft": 5767, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Gulshan-e-Areesha": {"total": 4, "median_price": 14500000, "median_ppsqft": 11096, "fraud_rate": 0.0, "market_tier": "Elite"}, "Gulshan-e-Ghazian": {"total": 1, "median_price": 4000000, "median_ppsqft": 3126, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Gulshan-e-Iqbal Town": {"total": 3223, "median_price": 13000000, "median_ppsqft": 7496, "fraud_rate": 2.6, "market_tier": "Upper Middle"}, "Gulshan-e-Jami": {"total": 1, "median_price": 20000000, "median_ppsqft": 12244, "fraud_rate": 0.0, "market_tier": "Elite"}, "Gulshan-e-Malir": {"total": 2, "median_price": 5750000, "median_ppsqft": 6600, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Gulshan-e-Millat": {"total": 8, "median_price": 7200000, "median_ppsqft": 5596, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Gulshan-e-Umair": {"total": 3, "median_price": 12000000, "median_ppsqft": 5949, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Gulshan-e-Usman Housing Society": {"total": 10, "median_price": 10750000, "median_ppsqft": 7652, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Guru Mandir Chorangi": {"total": 9, "median_price": 15000000, "median_ppsqft": 8805, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Hassan Goth": {"total": 14, "median_price": 1750000, "median_ppsqft": 2009, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Hawks Bay Scheme 42": {"total": 4, "median_price": 7000000, "median_ppsqft": 3137, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Hill Park": {"total": 37, "median_price": 22500000, "median_ppsqft": 10566, "fraud_rate": 0.0, "market_tier": "Elite"}, "Hoshang Road": {"total": 1, "median_price": 17000000, "median_ppsqft": 16432, "fraud_rate": 0.0, "market_tier": "Elite"}, "Hub River Road": {"total": 6, "median_price": 11750000, "median_ppsqft": 2870, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Humaira Town": {"total": 1, "median_price": 9500000, "median_ppsqft": 6584, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "I. I. Chundrigar Road": {"total": 3, "median_price": 5000000, "median_ppsqft": 5102, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Intelligence Colony": {"total": 3, "median_price": 5000000, "median_ppsqft": 9183, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Jamaluddin Afghani Road": {"total": 1, "median_price": 15000000, "median_ppsqft": 8223, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Jamshed Road": {"total": 155, "median_price": 8500000, "median_ppsqft": 6428, "fraud_rate": 16.8, "market_tier": "Middle Class"}, "Jamshed Town": {"total": 1043, "median_price": 23500000, "median_ppsqft": 10766, "fraud_rate": 1.2, "market_tier": "Elite"}, "Javed Bahria Coopretive Housing Society": {"total": 2, "median_price": 36750000, "median_ppsqft": 8437, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Jinnah Avenue": {"total": 175, "median_price": 13000000, "median_ppsqft": 5969, "fraud_rate": 27.4, "market_tier": "Middle Class"}, "KDA Scheme 1": {"total": 70, "median_price": 57500000, "median_ppsqft": 18143, "fraud_rate": 2.9, "market_tier": "Elite"}, "Kamran Chowrangi": {"total": 19, "median_price": 11000000, "median_ppsqft": 6696, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Karachi Golf City": {"total": 1, "median_price": 4950000, "median_ppsqft": 909, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Karachi Motorway": {"total": 23, "median_price": 7500000, "median_ppsqft": 4723, "fraud_rate": 13.0, "market_tier": "Affordable"}, "Karachi, Sindh": {"total": 1, "median_price": 12000000, "median_ppsqft": 9183, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Kashmir Colony": {"total": 11, "median_price": 4500000, "median_ppsqft": 8724, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Kashmir Road": {"total": 12, "median_price": 26000000, "median_ppsqft": 14724, "fraud_rate": 0.0, "market_tier": "Elite"}, "Kemari Town": {"total": 14, "median_price": 6250000, "median_ppsqft": 4271, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Khalid Bin Walid Road": {"total": 126, "median_price": 28000000, "median_ppsqft": 11172, "fraud_rate": 4.0, "market_tier": "Elite"}, "Khaliq-uz-Zaman Road": {"total": 7, "median_price": 32000000, "median_ppsqft": 12626, "fraud_rate": 0.0, "market_tier": "Elite"}, "Khayaban-e-Ittehad Road": {"total": 9, "median_price": 70000000, "median_ppsqft": 18365, "fraud_rate": 0.0, "market_tier": "Elite"}, "Khuda Ki Basti": {"total": 16, "median_price": 2500000, "median_ppsqft": 2697, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Khudadad Colony": {"total": 13, "median_price": 6500000, "median_ppsqft": 7022, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Korangi": {"total": 760, "median_price": 4000000, "median_ppsqft": 4331, "fraud_rate": 6.8, "market_tier": "Affordable"}, "Korangi Road": {"total": 31, "median_price": 5200000, "median_ppsqft": 5510, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Lalukhet": {"total": 8, "median_price": 2750000, "median_ppsqft": 3444, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Landhi": {"total": 68, "median_price": 6000000, "median_ppsqft": 7270, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Laraib Garden": {"total": 4, "median_price": 5500000, "median_ppsqft": 5583, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Liaquat Avenue": {"total": 4, "median_price": 6775000, "median_ppsqft": 5143, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Liaquatabad": {"total": 444, "median_price": 3000000, "median_ppsqft": 4408, "fraud_rate": 20.9, "market_tier": "Affordable"}, "Lines Area": {"total": 4, "median_price": 5500000, "median_ppsqft": 10458, "fraud_rate": 0.0, "market_tier": "Elite"}, "Lyari Expressway": {"total": 15, "median_price": 2800000, "median_ppsqft": 2410, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Lyari Town": {"total": 19, "median_price": 3200000, "median_ppsqft": 3673, "fraud_rate": 0.0, "market_tier": "Affordable"}, "M. A. Jinnah Road": {"total": 33, "median_price": 8500000, "median_ppsqft": 5575, "fraud_rate": 3.0, "market_tier": "Middle Class"}, "MT Khan Road": {"total": 5, "median_price": 8300000, "median_ppsqft": 6428, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Malir": {"total": 1021, "median_price": 12900000, "median_ppsqft": 9009, "fraud_rate": 5.1, "market_tier": "Upper Middle"}, "Malir Housing Scheme 1": {"total": 2, "median_price": 75000000, "median_ppsqft": 13169, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Malir Link To Super Highway": {"total": 92, "median_price": 14000000, "median_ppsqft": 5685, "fraud_rate": 66.3, "market_tier": "Middle Class"}, "Manghopir Road": {"total": 10, "median_price": 6400000, "median_ppsqft": 4017, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Mangopir": {"total": 2, "median_price": 5250000, "median_ppsqft": 4017, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Manzoor Colony": {"total": 54, "median_price": 7500000, "median_ppsqft": 8861, "fraud_rate": 1.9, "market_tier": "Upper Middle"}, "Maqboolabad Society": {"total": 3, "median_price": 25000000, "median_ppsqft": 10318, "fraud_rate": 0.0, "market_tier": "Elite"}, "Maskan Chowrangi": {"total": 11, "median_price": 7600000, "median_ppsqft": 6367, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Mauripur Road": {"total": 1, "median_price": 3500000, "median_ppsqft": 2009, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Mehmoodabad": {"total": 191, "median_price": 4000000, "median_ppsqft": 4452, "fraud_rate": 3.1, "market_tier": "Affordable"}, "Muslimabad Society": {"total": 22, "median_price": 25750000, "median_ppsqft": 13206, "fraud_rate": 0.0, "market_tier": "Elite"}, "National Highway": {"total": 12, "median_price": 5750000, "median_ppsqft": 3826, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Naval Colony": {"total": 18, "median_price": 11500000, "median_ppsqft": 10044, "fraud_rate": 0.0, "market_tier": "Elite"}, "Naval Housing Scheme": {"total": 26, "median_price": 113750000, "median_ppsqft": 27548, "fraud_rate": 0.0, "market_tier": "Elite"}, "Navy Housing Scheme Karsaz": {"total": 145, "median_price": 105000000, "median_ppsqft": 24553, "fraud_rate": 0.0, "market_tier": "Elite"}, "Naya Nazimabad": {"total": 92, "median_price": 11500000, "median_ppsqft": 7040, "fraud_rate": 6.5, "market_tier": "Upper Middle"}, "Nazimabad": {"total": 1272, "median_price": 7500000, "median_ppsqft": 5794, "fraud_rate": 14.9, "market_tier": "Middle Class"}, "New Karachi": {"total": 276, "median_price": 7000000, "median_ppsqft": 7691, "fraud_rate": 4.0, "market_tier": "Upper Middle"}, "Nishtar Road (Lawrence Road)": {"total": 9, "median_price": 3500000, "median_ppsqft": 3838, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Nooriabad": {"total": 1, "median_price": 6200000, "median_ppsqft": 4297, "fraud_rate": 100.0, "market_tier": "Middle Class"}, "North Karachi": {"total": 2380, "median_price": 9000000, "median_ppsqft": 8418, "fraud_rate": 4.9, "market_tier": "Upper Middle"}, "North Nazimabad": {"total": 2412, "median_price": 14000000, "median_ppsqft": 7447, "fraud_rate": 6.7, "market_tier": "Upper Middle"}, "Northern Bypass": {"total": 83, "median_price": 6642000, "median_ppsqft": 4174, "fraud_rate": 8.4, "market_tier": "Affordable"}, "Numaish Chowrangi": {"total": 11, "median_price": 16000000, "median_ppsqft": 9183, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Old Clifton": {"total": 1, "median_price": 110000000, "median_ppsqft": 20202, "fraud_rate": 0.0, "market_tier": "Elite"}, "Old Queens Road": {"total": 1, "median_price": 22500000, "median_ppsqft": 9499, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Old Ravians Co-Operative Housing Society": {"total": 4, "median_price": 40000000, "median_ppsqft": 9183, "fraud_rate": 0.0, "market_tier": "Elite"}, "Orangi Town": {"total": 123, "median_price": 4000000, "median_ppsqft": 3826, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Others": {"total": 3, "median_price": 15000000, "median_ppsqft": 11478, "fraud_rate": 0.0, "market_tier": "Elite"}, "P & T Colony": {"total": 82, "median_price": 6000000, "median_ppsqft": 4321, "fraud_rate": 0.0, "market_tier": "Affordable"}, "PAF Housing Scheme": {"total": 6, "median_price": 68500000, "median_ppsqft": 12580, "fraud_rate": 0.0, "market_tier": "Elite"}, "PTV Society": {"total": 14, "median_price": 11250000, "median_ppsqft": 8609, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Pakistan Chowk": {"total": 11, "median_price": 5200000, "median_ppsqft": 5306, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Peoples Colony": {"total": 1, "median_price": 8200000, "median_ppsqft": 6275, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Police Society": {"total": 4, "median_price": 23750000, "median_ppsqft": 9168, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Punjab Chowrangi": {"total": 10, "median_price": 7750000, "median_ppsqft": 4454, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Punjab Colony": {"total": 27, "median_price": 4000000, "median_ppsqft": 3784, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Qayyumabad": {"total": 7, "median_price": 7000000, "median_ppsqft": 10790, "fraud_rate": 0.0, "market_tier": "Elite"}, "Rabia City": {"total": 12, "median_price": 3650000, "median_ppsqft": 3044, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Ranchore Line Bazar": {"total": 4, "median_price": 3500000, "median_ppsqft": 3123, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Rashid Minhas Road": {"total": 61, "median_price": 8200000, "median_ppsqft": 5922, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Royal Defence Tower": {"total": 1, "median_price": 16000000, "median_ppsqft": 7632, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Rufi Lake Drive Apartments": {"total": 12, "median_price": 12500000, "median_ppsqft": 5127, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Rufi Rose Petals": {"total": 3, "median_price": 15000000, "median_ppsqft": 11019, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Saadi Road": {"total": 57, "median_price": 8500000, "median_ppsqft": 5739, "fraud_rate": 26.3, "market_tier": "Middle Class"}, "Saddar Town": {"total": 134, "median_price": 7100000, "median_ppsqft": 5496, "fraud_rate": 0.7, "market_tier": "Middle Class"}, "Saima Luxury Homes": {"total": 21, "median_price": 9500000, "median_ppsqft": 5739, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Sakhi Hassan Chowrangi": {"total": 9, "median_price": 4500000, "median_ppsqft": 4591, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Scheme 33": {"total": 2527, "median_price": 11500000, "median_ppsqft": 6600, "fraud_rate": 7.8, "market_tier": "Middle Class"}, "Scheme 45": {"total": 40, "median_price": 4748000, "median_ppsqft": 3444, "fraud_rate": 7.5, "market_tier": "Affordable"}, "Sea View Apartments": {"total": 93, "median_price": 40000000, "median_ppsqft": 14044, "fraud_rate": 6.5, "market_tier": "Elite"}, "Shadman 2": {"total": 17, "median_price": 6840000, "median_ppsqft": 6612, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Shah Faisal Town": {"total": 185, "median_price": 7000000, "median_ppsqft": 5510, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Shah Rasool Colony": {"total": 3, "median_price": 14000000, "median_ppsqft": 7142, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Shah Town": {"total": 4, "median_price": 6000000, "median_ppsqft": 5557, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Shaheed Millat Road": {"total": 112, "median_price": 26250000, "median_ppsqft": 12646, "fraud_rate": 0.0, "market_tier": "Elite"}, "Shaheed-e-Millat Expressway": {"total": 9, "median_price": 15000000, "median_ppsqft": 7805, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Shahra-e-Faisal": {"total": 163, "median_price": 8500000, "median_ppsqft": 7652, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Shahra-e-Jahangir": {"total": 1, "median_price": 8000000, "median_ppsqft": 5997, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Shahra-e-Liaquat": {"total": 1, "median_price": 7500000, "median_ppsqft": 6559, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Shahra-e-Qaideen": {"total": 9, "median_price": 20000000, "median_ppsqft": 12381, "fraud_rate": 0.0, "market_tier": "Elite"}, "Shahra-e-Usman": {"total": 5, "median_price": 4350000, "median_ppsqft": 3814, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Shahrah-e-Pakistan": {"total": 10, "median_price": 5900000, "median_ppsqft": 5968, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Sher Shah Suri Road": {"total": 2, "median_price": 4575000, "median_ppsqft": 4070, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Sindh Industrial Trading Estate (SITE)": {"total": 19, "median_price": 9000000, "median_ppsqft": 7273, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Siraj-ud-Daula Road": {"total": 4, "median_price": 94250000, "median_ppsqft": 21235, "fraud_rate": 0.0, "market_tier": "Elite"}, "Stadium Road": {"total": 13, "median_price": 43000000, "median_ppsqft": 13162, "fraud_rate": 0.0, "market_tier": "Elite"}, "State Bank of Pakistan Staff Co-Operative Housing Society": {"total": 4, "median_price": 4550000, "median_ppsqft": 4598, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Suparco Road": {"total": 18, "median_price": 5900000, "median_ppsqft": 4813, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Super Highway": {"total": 36, "median_price": 10000000, "median_ppsqft": 2552, "fraud_rate": 2.8, "market_tier": "Affordable"}, "Surti Muslim Co-Operative Housing Society": {"total": 2, "median_price": 32250000, "median_ppsqft": 5923, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Tariq Road": {"total": 43, "median_price": 11500000, "median_ppsqft": 7871, "fraud_rate": 0.0, "market_tier": "Upper Middle"}, "Teacher Society": {"total": 5, "median_price": 30000000, "median_ppsqft": 11478, "fraud_rate": 0.0, "market_tier": "Elite"}, "Teachers Society": {"total": 4, "median_price": 7900000, "median_ppsqft": 5366, "fraud_rate": 0.0, "market_tier": "Middle Class"}, "Times Residency": {"total": 2, "median_price": 3650000, "median_ppsqft": 3156, "fraud_rate": 0.0, "market_tier": "Affordable"}, "Tipu Sultan Road": {"total": 16, "median_price": 32750000, "median_ppsqft": 12830, "fraud_rate": 0.0, "market_tier": "Elite"}, "University Road": {"total": 186, "median_price": 8000000, "median_ppsqft": 5440, "fraud_rate": 7.5, "market_tier": "Middle Class"}, "Zamzama": {"total": 25, "median_price": 155000000, "median_ppsqft": 40666, "fraud_rate": 0.0, "market_tier": "Elite"}, "circular road": {"total": 3, "median_price": 9000000, "median_ppsqft": 6887, "fraud_rate": 0.0, "market_tier": "Middle Class"}};
+
+    // ─── Similar listings lookup ───────────────────────────────────────────────
+    const SIMILAR_LISTINGS = {"Gulshan-e-Iqbal Town": [{"price": 12000000, "area": 1334, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 8995}, {"price": 38000000, "area": 2614, "beds": 6, "baths": 6, "type": "House", "ppsqft": 14539}, {"price": 52500000, "area": 4356, "beds": 6, "baths": 6, "type": "House", "ppsqft": 12052}, {"price": 8500000, "area": 1198, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 7096}, {"price": 23000000, "area": 2178, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 10560}, {"price": 8500000, "area": 1361, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 6244}], "Bahria Town Karachi": [{"price": 17700000, "area": 2178, "beds": 3, "baths": 3, "type": "House", "ppsqft": 8127}, {"price": 14700000, "area": 1661, "beds": 3, "baths": 3, "type": "House", "ppsqft": 8852}, {"price": 13400000, "area": 1634, "beds": 3, "baths": 3, "type": "House", "ppsqft": 8203}, {"price": 14500000, "area": 2178, "beds": 3, "baths": 3, "type": "House", "ppsqft": 6657}, {"price": 13900000, "area": 2178, "beds": 3, "baths": 3, "type": "House", "ppsqft": 6382}, {"price": 5800000, "area": 1143, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5072}], "Nazimabad": [{"price": 9000000, "area": 1443, "beds": 3, "baths": 3, "type": "Lower Portion", "ppsqft": 6237}, {"price": 7000000, "area": 1035, "beds": 2, "baths": 3, "type": "Flat", "ppsqft": 6766}, {"price": 17000000, "area": 2423, "beds": 4, "baths": 4, "type": "Upper Portion", "ppsqft": 7016}, {"price": 3000000, "area": 572, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5247}, {"price": 7000000, "area": 1198, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5844}, {"price": 6500000, "area": 1443, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4505}], "Gulistan-e-Jauhar": [{"price": 13000000, "area": 4438, "beds": 6, "baths": 7, "type": "Flat", "ppsqft": 2929}, {"price": 21000000, "area": 3267, "beds": 4, "baths": 3, "type": "Penthouse", "ppsqft": 6428}, {"price": 12500000, "area": 1497, "beds": 5, "baths": 3, "type": "Flat", "ppsqft": 8348}, {"price": 4000000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3673}, {"price": 42500000, "area": 3267, "beds": 6, "baths": 3, "type": "House", "ppsqft": 13009}, {"price": 9500000, "area": 1634, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 5816}], "DHA Defence": [{"price": 310000000, "area": 21780, "beds": 6, "baths": 6, "type": "House", "ppsqft": 14233}, {"price": 87500000, "area": 5445, "beds": 6, "baths": 6, "type": "House", "ppsqft": 16070}, {"price": 120000000, "area": 4111, "beds": 4, "baths": 5, "type": "Penthouse", "ppsqft": 29190}, {"price": 125000000, "area": 5445, "beds": 6, "baths": 6, "type": "House", "ppsqft": 22957}, {"price": 6700000, "area": 599, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 11186}, {"price": 7000000, "area": 544, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 12856}], "New Karachi": [{"price": 7900000, "area": 871, "beds": 4, "baths": 3, "type": "House", "ppsqft": 9068}, {"price": 6000000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 6887}, {"price": 5000000, "area": 871, "beds": 4, "baths": 3, "type": "House", "ppsqft": 5739}, {"price": 5100000, "area": 653, "beds": 2, "baths": 2, "type": "House", "ppsqft": 7805}, {"price": 6600000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 7576}, {"price": 8600000, "area": 871, "beds": 4, "baths": 3, "type": "House", "ppsqft": 9871}], "Bath Island": [{"price": 50000000, "area": 2668, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 18740}, {"price": 47500000, "area": 2777, "beds": 4, "baths": 5, "type": "Flat", "ppsqft": 17105}, {"price": 45000000, "area": 2423, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 18572}, {"price": 17500000, "area": 1198, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 14609}, {"price": 55000000, "area": 2886, "beds": 4, "baths": 4, "type": "House", "ppsqft": 19059}, {"price": 22500000, "area": 2178, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 10331}], "North Nazimabad": [{"price": 6000000, "area": 1198, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5009}, {"price": 19000000, "area": 3267, "beds": 4, "baths": 4, "type": "Lower Portion", "ppsqft": 5816}, {"price": 8000000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 7733}, {"price": 12500000, "area": 1579, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7916}, {"price": 5500000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5316}, {"price": 15000000, "area": 2178, "beds": 3, "baths": 3, "type": "Lower Portion", "ppsqft": 6887}], "Saima Luxury Homes": [{"price": 11000000, "area": 1742, "beds": 3, "baths": 3, "type": "House", "ppsqft": 6313}, {"price": 9000000, "area": 1742, "beds": 3, "baths": 3, "type": "House", "ppsqft": 5165}, {"price": 9000000, "area": 1742, "beds": 3, "baths": 3, "type": "House", "ppsqft": 5165}, {"price": 9000000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 6887}, {"price": 9500000, "area": 1742, "beds": 3, "baths": 3, "type": "House", "ppsqft": 5452}, {"price": 10000000, "area": 1742, "beds": 3, "baths": 3, "type": "House", "ppsqft": 5739}], "Clifton": [{"price": 35000000, "area": 2423, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 14445}, {"price": 35000000, "area": 1933, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 18107}, {"price": 27000000, "area": 2369, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 11399}, {"price": 60000000, "area": 4846, "beds": 6, "baths": 4, "type": "Penthouse", "ppsqft": 12381}, {"price": 35000000, "area": 2668, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 13118}, {"price": 120000000, "area": 5445, "beds": 4, "baths": 5, "type": "House", "ppsqft": 22039}], "North Karachi": [{"price": 3000000, "area": 844, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3555}, {"price": 20000000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 15305}, {"price": 7500000, "area": 871, "beds": 4, "baths": 4, "type": "House", "ppsqft": 8609}, {"price": 14500000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 11096}, {"price": 12500000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 9565}, {"price": 12500000, "area": 1307, "beds": 6, "baths": 6, "type": "House", "ppsqft": 9565}], "Scheme 33": [{"price": 16500000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 12626}, {"price": 9500000, "area": 1525, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 6231}, {"price": 13000000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 9948}, {"price": 23000000, "area": 2614, "beds": 6, "baths": 7, "type": "House", "ppsqft": 8800}, {"price": 12500000, "area": 1388, "beds": 4, "baths": 4, "type": "House", "ppsqft": 9003}, {"price": 4500000, "area": 980, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4591}], "Korangi": [{"price": 3000000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2755}, {"price": 2800000, "area": 926, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 3025}, {"price": 1600000, "area": 490, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 3265}, {"price": 3500000, "area": 1143, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 3061}, {"price": 9500000, "area": 1307, "beds": 2, "baths": 1, "type": "House", "ppsqft": 7270}, {"price": 7500000, "area": 1307, "beds": 8, "baths": 9, "type": "House", "ppsqft": 5739}], "Gadap Town": [{"price": 1425000, "area": 544, "beds": 1, "baths": 1, "type": "Flat", "ppsqft": 2617}, {"price": 10800000, "area": 1742, "beds": 3, "baths": 3, "type": "House", "ppsqft": 6198}, {"price": 2900000, "area": 653, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4438}, {"price": 6500000, "area": 926, "beds": 4, "baths": 2, "type": "House", "ppsqft": 7022}, {"price": 6079000, "area": 1280, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4751}, {"price": 590000, "area": 762, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 774}], "Federal B Area": [{"price": 3600000, "area": 844, "beds": 2, "baths": 2, "type": "Upper Portion", "ppsqft": 4266}, {"price": 5800000, "area": 1089, "beds": 2, "baths": 2, "type": "Upper Portion", "ppsqft": 5326}, {"price": 8500000, "area": 1307, "beds": 2, "baths": 2, "type": "Upper Portion", "ppsqft": 6504}, {"price": 17000000, "area": 1307, "beds": 5, "baths": 4, "type": "House", "ppsqft": 13009}, {"price": 4500000, "area": 708, "beds": 2, "baths": 2, "type": "Lower Portion", "ppsqft": 6357}, {"price": 7000000, "area": 1307, "beds": 4, "baths": 3, "type": "Upper Portion", "ppsqft": 5357}], "Garden West": [{"price": 4000000, "area": 653, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6122}, {"price": 2400000, "area": 735, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3265}, {"price": 7500000, "area": 980, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 7652}, {"price": 6500000, "area": 1824, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3563}, {"price": 2600000, "area": 735, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3537}, {"price": 2600000, "area": 735, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3537}], "Civil Lines": [{"price": 62500000, "area": 3267, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 19131}, {"price": 26500000, "area": 2423, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 10937}, {"price": 50000000, "area": 2913, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 17164}, {"price": 22500000, "area": 1634, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 13774}, {"price": 65000000, "area": 3158, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 20582}, {"price": 52500000, "area": 2178, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 24105}], "Gulshan-e-Jami": [{"price": 20000000, "area": 1634, "beds": 4, "baths": 6, "type": "House", "ppsqft": 12244}], "Cantt": [{"price": 42000000, "area": 3621, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 11599}, {"price": 42000000, "area": 3621, "beds": 3, "baths": 5, "type": "Flat", "ppsqft": 11599}, {"price": 32000000, "area": 3104, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 10310}, {"price": 39000000, "area": 3376, "beds": 3, "baths": 3, "type": "House", "ppsqft": 11552}, {"price": 35000000, "area": 3594, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 9739}, {"price": 59500000, "area": 5445, "beds": 4, "baths": 4, "type": "House", "ppsqft": 10927}], "Malir": [{"price": 13000000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 9948}, {"price": 9000000, "area": 762, "beds": 6, "baths": 6, "type": "House", "ppsqft": 11806}, {"price": 14500000, "area": 1225, "beds": 4, "baths": 4, "type": "House", "ppsqft": 11836}, {"price": 59500000, "area": 3812, "beds": 4, "baths": 4, "type": "House", "ppsqft": 15611}, {"price": 5000000, "area": 762, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6559}, {"price": 54500000, "area": 3812, "beds": 4, "baths": 5, "type": "House", "ppsqft": 14299}], "Jamshed Town": [{"price": 7000000, "area": 1089, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6428}, {"price": 11500000, "area": 1089, "beds": 2, "baths": 2, "type": "Upper Portion", "ppsqft": 10560}, {"price": 450000000, "area": 21780, "beds": 11, "baths": 10, "type": "House", "ppsqft": 20661}, {"price": 35000000, "area": 3267, "beds": 4, "baths": 4, "type": "Lower Portion", "ppsqft": 10713}, {"price": 15200000, "area": 1280, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 11879}, {"price": 46000000, "area": 5445, "beds": 4, "baths": 4, "type": "Upper Portion", "ppsqft": 8448}], "Gizri": [{"price": 12000000, "area": 1443, "beds": 2, "baths": 2, "type": "Penthouse", "ppsqft": 8316}, {"price": 8500000, "area": 1143, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7434}, {"price": 8500000, "area": 1525, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5575}, {"price": 13000000, "area": 1443, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 9009}, {"price": 11000000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 10101}, {"price": 11000000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 10101}], "Dastgir Colony": [{"price": 21000000, "area": 1307, "beds": 4, "baths": 5, "type": "House", "ppsqft": 16070}, {"price": 4500000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4350}, {"price": 9000000, "area": 1443, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 6237}, {"price": 18000000, "area": 1307, "beds": 11, "baths": 6, "type": "House", "ppsqft": 13774}, {"price": 14000000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 10713}, {"price": 7500000, "area": 1307, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 5739}], "Shah Faisal Town": [{"price": 3500000, "area": 708, "beds": 2, "baths": 2, "type": "Lower Portion", "ppsqft": 4945}, {"price": 4500000, "area": 980, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4591}, {"price": 5300000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 6084}, {"price": 2700000, "area": 844, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3199}, {"price": 11000000, "area": 2178, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 5051}, {"price": 7000000, "area": 871, "beds": 4, "baths": 4, "type": "House", "ppsqft": 8035}], "Kashmir Road": [{"price": 25000000, "area": 1824, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 13706}, {"price": 27000000, "area": 2178, "beds": 4, "baths": 4, "type": "Lower Portion", "ppsqft": 12397}, {"price": 93800000, "area": 4084, "beds": 6, "baths": 6, "type": "House", "ppsqft": 22969}, {"price": 19000000, "area": 1525, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 12462}, {"price": 57000000, "area": 2341, "beds": 4, "baths": 4, "type": "House", "ppsqft": 24345}, {"price": 60000000, "area": 2341, "beds": 4, "baths": 5, "type": "House", "ppsqft": 25626}], "Gulberg Town": [{"price": 4500000, "area": 653, "beds": 5, "baths": 4, "type": "House", "ppsqft": 6887}, {"price": 17000000, "area": 1307, "beds": 3, "baths": 2, "type": "House", "ppsqft": 13009}, {"price": 7500000, "area": 408, "beds": 4, "baths": 4, "type": "House", "ppsqft": 18365}, {"price": 75000000, "area": 2614, "beds": 4, "baths": 6, "type": "House", "ppsqft": 28696}, {"price": 3900000, "area": 626, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 6228}, {"price": 7000000, "area": 1307, "beds": 4, "baths": 4, "type": "Upper Portion", "ppsqft": 5357}], "Jamshed Road": [{"price": 8000000, "area": 980, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 8162}, {"price": 3500000, "area": 517, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 6766}, {"price": 19000000, "area": 1634, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 11631}, {"price": 13000000, "area": 2178, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 5969}, {"price": 8500000, "area": 1634, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 5204}, {"price": 11000000, "area": 1688, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6517}], "Shaheed Millat Road": [{"price": 16000000, "area": 1280, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 12504}, {"price": 23700000, "area": 2369, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 10006}, {"price": 17500000, "area": 1334, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 13118}, {"price": 23500000, "area": 2124, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 11066}, {"price": 27500000, "area": 1933, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 14227}, {"price": 23500000, "area": 1824, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 12883}], "Liaquatabad": [{"price": 4000000, "area": 871, "beds": 2, "baths": 1, "type": "Upper Portion", "ppsqft": 4591}, {"price": 4300000, "area": 1143, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3761}, {"price": 1400000, "area": 354, "beds": 1, "baths": 1, "type": "Upper Portion", "ppsqft": 3956}, {"price": 6000000, "area": 980, "beds": 2, "baths": 2, "type": "Upper Portion", "ppsqft": 6122}, {"price": 5500000, "area": 490, "beds": 2, "baths": 2, "type": "House", "ppsqft": 11223}, {"price": 2200000, "area": 490, "beds": 2, "baths": 1, "type": "Upper Portion", "ppsqft": 4489}], "Mehmoodabad": [{"price": 2700000, "area": 653, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4132}, {"price": 4800000, "area": 1388, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3457}, {"price": 5400000, "area": 1089, "beds": 3, "baths": 3, "type": "Lower Portion", "ppsqft": 4959}, {"price": 7500000, "area": 1443, "beds": 3, "baths": 3, "type": "Lower Portion", "ppsqft": 5198}, {"price": 4800000, "area": 1388, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3457}, {"price": 5800000, "area": 544, "beds": 4, "baths": 2, "type": "House", "ppsqft": 10652}], "Aisha Manzil": [{"price": 15000000, "area": 1579, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 9499}, {"price": 5500000, "area": 871, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6313}, {"price": 8000000, "area": 1198, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6678}, {"price": 12500000, "area": 980, "beds": 4, "baths": 2, "type": "House", "ppsqft": 12754}, {"price": 4600000, "area": 1143, "beds": 2, "baths": 3, "type": "Flat", "ppsqft": 4023}, {"price": 6000000, "area": 871, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 6887}], "Abul Hassan Isphani Road": [{"price": 2300000, "area": 708, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3249}, {"price": 4000000, "area": 1361, "beds": 4, "baths": 3, "type": "Flat", "ppsqft": 2938}, {"price": 4500000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4132}, {"price": 8000000, "area": 1443, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 5544}, {"price": 2200000, "area": 844, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2607}, {"price": 3200000, "area": 1307, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 2449}], "Nishtar Road (Lawrence Road)": [{"price": 2500000, "area": 109, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 22957}, {"price": 5000000, "area": 1388, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3601}, {"price": 6200000, "area": 1143, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5422}, {"price": 1300000, "area": 653, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 1990}, {"price": 7000000, "area": 1824, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 3838}], "Baldia Town": [{"price": 2800000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 2143}, {"price": 1350000, "area": 572, "beds": 4, "baths": 4, "type": "House", "ppsqft": 2361}, {"price": 2350000, "area": 871, "beds": 4, "baths": 4, "type": "House", "ppsqft": 2697}, {"price": 8500000, "area": 871, "beds": 7, "baths": 7, "type": "House", "ppsqft": 9757}, {"price": 5800000, "area": 871, "beds": 4, "baths": 4, "type": "House", "ppsqft": 6657}, {"price": 1800000, "area": 871, "beds": 2, "baths": 1, "type": "House", "ppsqft": 2066}], "Anda Mor Road": [{"price": 13500000, "area": 1634, "beds": 6, "baths": 6, "type": "House", "ppsqft": 8264}, {"price": 5000000, "area": 817, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6122}, {"price": 3400000, "area": 790, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4306}, {"price": 9800000, "area": 1307, "beds": 2, "baths": 3, "type": "House", "ppsqft": 7499}, {"price": 2700000, "area": 980, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2755}, {"price": 5500000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5051}], "KDA Scheme 1": [{"price": 280000000, "area": 16335, "beds": 5, "baths": 5, "type": "House", "ppsqft": 17141}, {"price": 120000000, "area": 4356, "beds": 6, "baths": 6, "type": "House", "ppsqft": 27548}, {"price": 500000000, "area": 17424, "beds": 7, "baths": 7, "type": "House", "ppsqft": 28696}, {"price": 250000000, "area": 10890, "beds": 6, "baths": 6, "type": "House", "ppsqft": 22957}, {"price": 26500000, "area": 2178, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 12167}, {"price": 37500000, "area": 2695, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 13913}], "P & T Colony": [{"price": 5000000, "area": 1198, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 4174}, {"price": 6500000, "area": 2178, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2984}, {"price": 5300000, "area": 1824, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 2906}, {"price": 6500000, "area": 1879, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3460}, {"price": 3000000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2900}, {"price": 3000000, "area": 898, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3339}], "Zamzama": [{"price": 10000000, "area": 1143, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 8745}, {"price": 190000000, "area": 3812, "beds": 5, "baths": 5, "type": "House", "ppsqft": 49849}, {"price": 55000000, "area": 7078, "beds": 3, "baths": 3, "type": "Penthouse", "ppsqft": 7770}, {"price": 270000000, "area": 5445, "beds": 5, "baths": 5, "type": "House", "ppsqft": 49587}, {"price": 130000000, "area": 8712, "beds": 5, "baths": 5, "type": "House", "ppsqft": 14922}, {"price": 155000000, "area": 3812, "beds": 5, "baths": 5, "type": "House", "ppsqft": 40666}], "Punjab Colony": [{"price": 2000000, "area": 436, "beds": 2, "baths": 2, "type": "House", "ppsqft": 4591}, {"price": 3200000, "area": 790, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4053}, {"price": 5000000, "area": 1089, "beds": 2, "baths": 3, "type": "Flat", "ppsqft": 4591}, {"price": 2500000, "area": 1089, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 2296}, {"price": 4300000, "area": 1089, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 3949}, {"price": 1300000, "area": 544, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 2388}], "PTV Society": [{"price": 3200000, "area": 980, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3265}, {"price": 13500000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 10331}, {"price": 9500000, "area": 1307, "beds": 2, "baths": 3, "type": "House", "ppsqft": 7270}, {"price": 13500000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 10331}, {"price": 13500000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 10331}, {"price": 13500000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 10331}], "Sea View Apartments": [{"price": 55000000, "area": 2777, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 19806}, {"price": 53500000, "area": 3267, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 16376}, {"price": 52500000, "area": 2668, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 19677}, {"price": 38000000, "area": 3267, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 11631}, {"price": 40000000, "area": 3158, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 12666}, {"price": 59000000, "area": 3267, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 18059}], "Manzoor Colony": [{"price": 5500000, "area": 599, "beds": 4, "baths": 2, "type": "House", "ppsqft": 9183}, {"price": 4300000, "area": 871, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4936}, {"price": 9500000, "area": 1089, "beds": 5, "baths": 2, "type": "House", "ppsqft": 8724}, {"price": 12000000, "area": 1089, "beds": 4, "baths": 2, "type": "House", "ppsqft": 11019}, {"price": 6500000, "area": 653, "beds": 2, "baths": 2, "type": "House", "ppsqft": 9948}, {"price": 10500000, "area": 1307, "beds": 4, "baths": 2, "type": "House", "ppsqft": 8035}], "Saddar Town": [{"price": 2500000, "area": 790, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3166}, {"price": 18000000, "area": 1634, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 11019}, {"price": 15000000, "area": 2178, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 6887}, {"price": 7000000, "area": 1906, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 3673}, {"price": 9000000, "area": 1742, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 5165}, {"price": 4200000, "area": 1443, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 2911}], "Jinnah Avenue": [{"price": 11500000, "area": 1606, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 7159}, {"price": 13400000, "area": 1634, "beds": 4, "baths": 5, "type": "House", "ppsqft": 8203}, {"price": 7500000, "area": 1579, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4750}, {"price": 16500000, "area": 1361, "beds": 3, "baths": 3, "type": "House", "ppsqft": 12121}, {"price": 16000000, "area": 1742, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 9183}, {"price": 4600000, "area": 1143, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4023}], "Frere Town": [{"price": 30000000, "area": 2178, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 13774}, {"price": 45000000, "area": 2423, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 18572}, {"price": 60000000, "area": 3158, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 18999}, {"price": 28500000, "area": 2178, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 13085}, {"price": 50000000, "area": 2913, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 17164}, {"price": 22000000, "area": 1824, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 12061}], "Naval Colony": [{"price": 11000000, "area": 1307, "beds": 6, "baths": 5, "type": "House", "ppsqft": 8418}, {"price": 11000000, "area": 871, "beds": 5, "baths": 5, "type": "House", "ppsqft": 12626}, {"price": 15000000, "area": 1307, "beds": 7, "baths": 8, "type": "House", "ppsqft": 11478}, {"price": 4150000, "area": 653, "beds": 2, "baths": 1, "type": "House", "ppsqft": 6351}, {"price": 12000000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 9183}, {"price": 3200000, "area": 653, "beds": 2, "baths": 2, "type": "House", "ppsqft": 4897}], "Defence View Society": [{"price": 24000000, "area": 1307, "beds": 6, "baths": 7, "type": "House", "ppsqft": 18365}, {"price": 7500000, "area": 1307, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5739}, {"price": 17500000, "area": 1443, "beds": 4, "baths": 6, "type": "House", "ppsqft": 12128}, {"price": 23500000, "area": 1307, "beds": 6, "baths": 6, "type": "House", "ppsqft": 17983}, {"price": 23500000, "area": 1307, "beds": 8, "baths": 8, "type": "House", "ppsqft": 17983}, {"price": 8500000, "area": 1307, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6504}], "Bin Qasim Town": [{"price": 3600000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 2755}, {"price": 4300000, "area": 1089, "beds": 2, "baths": 2, "type": "House", "ppsqft": 3949}, {"price": 11500000, "area": 1307, "beds": 6, "baths": 4, "type": "House", "ppsqft": 8800}, {"price": 2800000, "area": 708, "beds": 3, "baths": 2, "type": "House", "ppsqft": 3956}, {"price": 4500000, "area": 653, "beds": 4, "baths": 4, "type": "House", "ppsqft": 6887}, {"price": 10000000, "area": 1416, "beds": 7, "baths": 7, "type": "House", "ppsqft": 7064}], "Airport": [{"price": 5600000, "area": 1307, "beds": 3, "baths": 2, "type": "House", "ppsqft": 4285}, {"price": 2400000, "area": 762, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3148}, {"price": 5500000, "area": 653, "beds": 6, "baths": 5, "type": "House", "ppsqft": 8418}, {"price": 14000000, "area": 2287, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6122}, {"price": 16000000, "area": 1307, "beds": 6, "baths": 6, "type": "House", "ppsqft": 12244}, {"price": 18500000, "area": 3757, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 4924}], "Diamond City": [{"price": 3500000, "area": 898, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3896}, {"price": 7000000, "area": 871, "beds": 4, "baths": 2, "type": "House", "ppsqft": 8035}, {"price": 8000000, "area": 1307, "beds": 4, "baths": 2, "type": "House", "ppsqft": 6122}, {"price": 7000000, "area": 871, "beds": 4, "baths": 2, "type": "House", "ppsqft": 8035}, {"price": 4700000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 5395}], "Khalid Bin Walid Road": [{"price": 42500000, "area": 2668, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 15929}, {"price": 37000000, "area": 2968, "beds": 4, "baths": 5, "type": "Flat", "ppsqft": 12468}, {"price": 25000000, "area": 2178, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 11478}, {"price": 42500000, "area": 3267, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 13009}, {"price": 22500000, "area": 1634, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 13774}, {"price": 15000000, "area": 1280, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 11723}], "Saadi Road": [{"price": 6650000, "area": 1579, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4211}, {"price": 13000000, "area": 2369, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5489}, {"price": 11000000, "area": 1797, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6122}, {"price": 7500000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 5739}, {"price": 12000000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 9183}, {"price": 7300000, "area": 1470, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4965}], "Hill Park": [{"price": 16000000, "area": 1525, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 10495}, {"price": 22500000, "area": 4111, "beds": 3, "baths": 3, "type": "Penthouse", "ppsqft": 5473}, {"price": 14500000, "area": 1824, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7949}, {"price": 15000000, "area": 1742, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 8609}, {"price": 27500000, "area": 3267, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 8418}, {"price": 20000000, "area": 1824, "beds": 3, "baths": 3, "type": "Penthouse", "ppsqft": 10964}], "Navy Housing Scheme Karsaz": [{"price": 125000000, "area": 3812, "beds": 5, "baths": 6, "type": "House", "ppsqft": 32795}, {"price": 150000000, "area": 5336, "beds": 5, "baths": 5, "type": "Penthouse", "ppsqft": 28110}, {"price": 85000000, "area": 3812, "beds": 5, "baths": 6, "type": "House", "ppsqft": 22301}, {"price": 172500000, "area": 5445, "beds": 6, "baths": 8, "type": "House", "ppsqft": 31680}, {"price": 95000000, "area": 5336, "beds": 5, "baths": 5, "type": "Flat", "ppsqft": 17803}, {"price": 118500000, "area": 5445, "beds": 5, "baths": 5, "type": "Flat", "ppsqft": 21763}], "Delhi Colony": [{"price": 2700000, "area": 871, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 3099}, {"price": 4300000, "area": 1089, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 3949}, {"price": 1600000, "area": 817, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 1959}, {"price": 6000000, "area": 653, "beds": 3, "baths": 3, "type": "House", "ppsqft": 9183}, {"price": 1700000, "area": 735, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 2313}, {"price": 5000000, "area": 1198, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 4174}], "Etawa Society": [{"price": 19500000, "area": 2178, "beds": 6, "baths": 7, "type": "House", "ppsqft": 8953}, {"price": 19500000, "area": 2178, "beds": 6, "baths": 6, "type": "House", "ppsqft": 8953}, {"price": 9800000, "area": 1307, "beds": 2, "baths": 3, "type": "House", "ppsqft": 7499}, {"price": 19500000, "area": 2178, "beds": 3, "baths": 3, "type": "House", "ppsqft": 8953}, {"price": 18000000, "area": 2178, "beds": 3, "baths": 3, "type": "House", "ppsqft": 8264}], "Baloch Colony": [{"price": 15000000, "area": 2178, "beds": 2, "baths": 2, "type": "Lower Portion", "ppsqft": 6887}, {"price": 5200000, "area": 653, "beds": 6, "baths": 5, "type": "House", "ppsqft": 7958}, {"price": 130000000, "area": 5445, "beds": 5, "baths": 5, "type": "House", "ppsqft": 23875}, {"price": 85000000, "area": 5445, "beds": 6, "baths": 5, "type": "House", "ppsqft": 15611}, {"price": 5000000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4591}, {"price": 15000000, "area": 1388, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 10803}], "Guru Mandir Chorangi": [{"price": 14000000, "area": 1443, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 9703}, {"price": 20000000, "area": 1443, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 13861}, {"price": 22000000, "area": 1933, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 11381}, {"price": 17500000, "area": 1987, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 8805}, {"price": 22500000, "area": 2287, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 9839}, {"price": 15000000, "area": 2069, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7250}], "Fazaia Housing Scheme": [{"price": 6642000, "area": 1361, "beds": 3, "baths": 3, "type": "House", "ppsqft": 4879}, {"price": 3000000, "area": 1715, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 1749}, {"price": 12500000, "area": 2995, "beds": 4, "baths": 5, "type": "House", "ppsqft": 4174}, {"price": 5136000, "area": 1933, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 2657}, {"price": 4090000, "area": 1552, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2636}, {"price": 8400000, "area": 2668, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3148}], "Malir Link To Super Highway": [{"price": 5350000, "area": 1307, "beds": 2, "baths": 4, "type": "Flat", "ppsqft": 4094}, {"price": 8000000, "area": 1143, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6996}, {"price": 8500000, "area": 1334, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6372}, {"price": 19500000, "area": 3757, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 5190}, {"price": 4500000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4132}, {"price": 14000000, "area": 2287, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6122}], "Korangi Road": [{"price": 14000000, "area": 817, "beds": 5, "baths": 3, "type": "House", "ppsqft": 17141}, {"price": 15000000, "area": 1361, "beds": 3, "baths": 4, "type": "House", "ppsqft": 11019}, {"price": 25000000, "area": 3131, "beds": 10, "baths": 6, "type": "House", "ppsqft": 7985}, {"price": 4000000, "area": 599, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6678}, {"price": 2500000, "area": 817, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3061}, {"price": 3800000, "area": 1307, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 2908}], "Tariq Road": [{"price": 35000000, "area": 1933, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 18107}, {"price": 4500000, "area": 599, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 7513}, {"price": 5500000, "area": 708, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 7770}, {"price": 300000000, "area": 21780, "beds": 7, "baths": 8, "type": "House", "ppsqft": 13774}, {"price": 6500000, "area": 790, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 8233}, {"price": 2600000, "area": 844, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3081}], "Orangi Town": [{"price": 5000000, "area": 1307, "beds": 3, "baths": 2, "type": "House", "ppsqft": 3826}, {"price": 6000000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 4591}, {"price": 2650000, "area": 653, "beds": 4, "baths": 2, "type": "House", "ppsqft": 4056}, {"price": 2500000, "area": 871, "beds": 2, "baths": 1, "type": "House", "ppsqft": 2870}, {"price": 2500000, "area": 1089, "beds": 3, "baths": 2, "type": "House", "ppsqft": 2296}, {"price": 8000000, "area": 708, "beds": 5, "baths": 3, "type": "House", "ppsqft": 11302}], "Naya Nazimabad": [{"price": 8400000, "area": 1307, "beds": 2, "baths": 3, "type": "House", "ppsqft": 6428}, {"price": 8600000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 6581}, {"price": 12200000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 9336}, {"price": 19000000, "area": 1742, "beds": 4, "baths": 5, "type": "House", "ppsqft": 10904}, {"price": 18400000, "area": 2614, "beds": 3, "baths": 3, "type": "House", "ppsqft": 7040}, {"price": 20000000, "area": 2614, "beds": 4, "baths": 4, "type": "House", "ppsqft": 7652}], "University Road": [{"price": 13700000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 10484}, {"price": 2800000, "area": 926, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3025}, {"price": 3500000, "area": 1334, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2624}, {"price": 6500000, "area": 1307, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4974}, {"price": 7000000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6766}, {"price": 16500000, "area": 1307, "beds": 6, "baths": 5, "type": "House", "ppsqft": 12626}], "National Highway": [{"price": 12000000, "area": 3267, "beds": 3, "baths": 2, "type": "House", "ppsqft": 3673}, {"price": 3800000, "area": 871, "beds": 3, "baths": 3, "type": "House", "ppsqft": 4362}, {"price": 2500000, "area": 653, "beds": 1, "baths": 2, "type": "Lower Portion", "ppsqft": 3826}, {"price": 5000000, "area": 1960, "beds": 3, "baths": 3, "type": "House", "ppsqft": 2551}], "Shaheed-e-Millat Expressway": [{"price": 15000000, "area": 2151, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6974}, {"price": 18500000, "area": 2151, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 8602}, {"price": 6600000, "area": 844, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7820}, {"price": 26500000, "area": 3076, "beds": 4, "baths": 5, "type": "Flat", "ppsqft": 8614}, {"price": 7700000, "area": 980, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7856}], "Shahra-e-Faisal": [{"price": 11500000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 8800}, {"price": 2000000, "area": 790, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2533}, {"price": 4600000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 5280}, {"price": 25000000, "area": 2668, "beds": 3, "baths": 5, "type": "Flat", "ppsqft": 9370}, {"price": 16500000, "area": 2668, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6184}, {"price": 5500000, "area": 1824, "beds": 4, "baths": 3, "type": "Flat", "ppsqft": 3015}], "ASF Housing Scheme": [{"price": 5800000, "area": 1143, "beds": 4, "baths": 2, "type": "Flat", "ppsqft": 5072}, {"price": 2800000, "area": 1388, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2017}, {"price": 7000000, "area": 1307, "beds": 4, "baths": 5, "type": "House", "ppsqft": 5357}, {"price": 3056000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2954}], "M. A. Jinnah Road": [{"price": 7800000, "area": 1280, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6096}, {"price": 4500000, "area": 1198, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3757}, {"price": 7500000, "area": 1416, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5298}, {"price": 5500000, "area": 1280, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4298}, {"price": 6500000, "area": 1525, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4263}], "Al-Jadeed Residency": [{"price": 4600000, "area": 1143, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4023}, {"price": 18000000, "area": 2614, "beds": 7, "baths": 8, "type": "House", "ppsqft": 6887}, {"price": 15000000, "area": 1742, "beds": 7, "baths": 8, "type": "House", "ppsqft": 8609}, {"price": 3600000, "area": 844, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4266}], "Rashid Minhas Road": [{"price": 13500000, "area": 2450, "beds": 3, "baths": 4, "type": "Upper Portion", "ppsqft": 5510}, {"price": 45000000, "area": 2614, "beds": 3, "baths": 4, "type": "House", "ppsqft": 17218}, {"price": 6700000, "area": 1198, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 5593}, {"price": 11500000, "area": 1579, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7283}, {"price": 5000000, "area": 1579, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3166}, {"price": 41000000, "area": 3321, "beds": 4, "baths": 5, "type": "Flat", "ppsqft": 12344}], "Landhi": [{"price": 3600000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 4132}, {"price": 9500000, "area": 1307, "beds": 2, "baths": 1, "type": "Upper Portion", "ppsqft": 7270}, {"price": 15000000, "area": 3376, "beds": 8, "baths": 6, "type": "House", "ppsqft": 4443}, {"price": 4600000, "area": 653, "beds": 4, "baths": 2, "type": "House", "ppsqft": 7040}, {"price": 4000000, "area": 871, "beds": 3, "baths": 3, "type": "House", "ppsqft": 4591}, {"price": 6500000, "area": 2614, "beds": 7, "baths": 5, "type": "House", "ppsqft": 2487}], "Northern Bypass": [{"price": 6642000, "area": 1361, "beds": 3, "baths": 3, "type": "House", "ppsqft": 4879}, {"price": 7960000, "area": 2668, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 2983}, {"price": 2200000, "area": 43560, "beds": 3, "baths": 3, "type": "Farm House", "ppsqft": 51}, {"price": 9205000, "area": 2995, "beds": 3, "baths": 4, "type": "House", "ppsqft": 3074}, {"price": 5136000, "area": 1933, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 2657}, {"price": 6642000, "area": 1361, "beds": 3, "baths": 3, "type": "House", "ppsqft": 4879}], "Naval Housing Scheme": [{"price": 80000000, "area": 5091, "beds": 5, "baths": 6, "type": "Flat", "ppsqft": 15714}, {"price": 115000000, "area": 3812, "beds": 5, "baths": 5, "type": "House", "ppsqft": 30172}, {"price": 140000000, "area": 3812, "beds": 5, "baths": 5, "type": "House", "ppsqft": 36731}, {"price": 115000000, "area": 3812, "beds": 5, "baths": 5, "type": "House", "ppsqft": 30172}, {"price": 120000000, "area": 3812, "beds": 5, "baths": 5, "type": "House", "ppsqft": 31484}, {"price": 115000000, "area": 3812, "beds": 5, "baths": 5, "type": "House", "ppsqft": 30172}], "Lyari Town": [{"price": 2100000, "area": 817, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2571}, {"price": 2150000, "area": 572, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3761}, {"price": 2800000, "area": 980, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 2857}, {"price": 4000000, "area": 844, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4739}], "Golimar": [{"price": 3400000, "area": 1307, "beds": 3, "baths": 2, "type": "House", "ppsqft": 2602}, {"price": 10000000, "area": 653, "beds": 3, "baths": 3, "type": "House", "ppsqft": 15305}, {"price": 9000000, "area": 1334, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6747}, {"price": 15000000, "area": 2423, "beds": 2, "baths": 2, "type": "Upper Portion", "ppsqft": 6191}, {"price": 12500000, "area": 1688, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7405}, {"price": 12500000, "area": 1688, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7405}], "Lines Area": [{"price": 3000000, "area": 653, "beds": 4, "baths": 2, "type": "House", "ppsqft": 4591}, {"price": 8000000, "area": 490, "beds": 2, "baths": 1, "type": "House", "ppsqft": 16325}, {"price": 27500000, "area": 1470, "beds": 11, "baths": 10, "type": "House", "ppsqft": 18706}], "Bagh-e-Korangi": [{"price": 7000000, "area": 871, "beds": 4, "baths": 2, "type": "House", "ppsqft": 8035}, {"price": 7500000, "area": 871, "beds": 6, "baths": 4, "type": "House", "ppsqft": 8609}, {"price": 9000000, "area": 871, "beds": 2, "baths": 3, "type": "House", "ppsqft": 10331}, {"price": 10000000, "area": 1742, "beds": 3, "baths": 3, "type": "House", "ppsqft": 5739}, {"price": 4500000, "area": 817, "beds": 3, "baths": 2, "type": "House", "ppsqft": 5510}, {"price": 7500000, "area": 1089, "beds": 5, "baths": 3, "type": "House", "ppsqft": 6887}], "Amir Khusro": [{"price": 8800000, "area": 1035, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 8506}, {"price": 28000000, "area": 4628, "beds": 4, "baths": 3, "type": "Lower Portion", "ppsqft": 6050}, {"price": 11500000, "area": 1688, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6813}, {"price": 47500000, "area": 1715, "beds": 9, "baths": 9, "type": "House", "ppsqft": 27694}, {"price": 70000000, "area": 2505, "beds": 5, "baths": 5, "type": "Lower Portion", "ppsqft": 27947}, {"price": 55000000, "area": 1742, "beds": 8, "baths": 6, "type": "House", "ppsqft": 31566}], "Amil Colony": [{"price": 30000000, "area": 2668, "beds": 4, "baths": 4, "type": "Upper Portion", "ppsqft": 11244}, {"price": 50000000, "area": 2178, "beds": 5, "baths": 5, "type": "House", "ppsqft": 22957}, {"price": 9000000, "area": 1143, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 7871}, {"price": 75000000, "area": 2559, "beds": 5, "baths": 5, "type": "House", "ppsqft": 29307}], "Abdullah Haroon Road": [{"price": 12500000, "area": 1824, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 6853}, {"price": 6500000, "area": 2614, "beds": 2, "baths": 2, "type": "House", "ppsqft": 2487}, {"price": 4500000, "area": 1416, "beds": 3, "baths": 3, "type": "House", "ppsqft": 3179}], "Shahra-e-Qaideen": [{"price": 27500000, "area": 3076, "beds": 4, "baths": 2, "type": "Flat", "ppsqft": 8939}, {"price": 13500000, "area": 1089, "beds": 2, "baths": 3, "type": "Upper Portion", "ppsqft": 12397}, {"price": 16000000, "area": 2124, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7535}, {"price": 21000000, "area": 1634, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 12856}, {"price": 21000000, "area": 1634, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 12856}, {"price": 20000000, "area": 1634, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 12244}], "Khudadad Colony": [{"price": 26000000, "area": 1416, "beds": 4, "baths": 4, "type": "House", "ppsqft": 18365}, {"price": 5000000, "area": 1089, "beds": 2, "baths": 2, "type": "Penthouse", "ppsqft": 4591}, {"price": 7500000, "area": 817, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 9183}, {"price": 6500000, "area": 926, "beds": 2, "baths": 2, "type": "Upper Portion", "ppsqft": 7022}, {"price": 26000000, "area": 1416, "beds": 4, "baths": 4, "type": "House", "ppsqft": 18365}, {"price": 5000000, "area": 1089, "beds": 2, "baths": 2, "type": "Penthouse", "ppsqft": 4591}], "Falcon Complex Faisal": [{"price": 92500000, "area": 3920, "beds": 4, "baths": 5, "type": "House", "ppsqft": 23595}, {"price": 112000000, "area": 5445, "beds": 5, "baths": 5, "type": "House", "ppsqft": 20569}, {"price": 93000000, "area": 3812, "beds": 5, "baths": 5, "type": "House", "ppsqft": 24400}, {"price": 120000000, "area": 5445, "beds": 5, "baths": 5, "type": "House", "ppsqft": 22039}, {"price": 10000000, "area": 5445, "beds": 5, "baths": 8, "type": "House", "ppsqft": 1837}], "Karachi Motorway": [{"price": 11000000, "area": 1742, "beds": 4, "baths": 4, "type": "House", "ppsqft": 6313}, {"price": 9500000, "area": 1742, "beds": 3, "baths": 3, "type": "House", "ppsqft": 5452}, {"price": 3300000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 2525}, {"price": 6400000, "area": 1334, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4798}], "Rabia City": [{"price": 4500000, "area": 1198, "beds": 4, "baths": 2, "type": "Flat", "ppsqft": 3757}, {"price": 4000000, "area": 1334, "beds": 4, "baths": 2, "type": "Flat", "ppsqft": 2998}, {"price": 2750000, "area": 1361, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2020}, {"price": 4000000, "area": 1143, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3498}, {"price": 5500000, "area": 1361, "beds": 5, "baths": 3, "type": "Flat", "ppsqft": 4040}], "PAF Housing Scheme": [{"price": 69000000, "area": 5445, "beds": 5, "baths": 5, "type": "House", "ppsqft": 12672}, {"price": 71000000, "area": 5445, "beds": 5, "baths": 5, "type": "House", "ppsqft": 13039}, {"price": 68000000, "area": 5445, "beds": 5, "baths": 6, "type": "House", "ppsqft": 12489}, {"price": 3760000, "area": 1416, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2656}], "Gizri Road": [{"price": 5000000, "area": 1143, "beds": 2, "baths": 3, "type": "Flat", "ppsqft": 4373}, {"price": 6500000, "area": 1634, "beds": 4, "baths": 2, "type": "Upper Portion", "ppsqft": 3979}, {"price": 6000000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5510}, {"price": 10000000, "area": 871, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 11478}, {"price": 4000000, "area": 1035, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 3866}], "State Bank of Pakistan Staff Co-Operative Housing Society": [{"price": 15000000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 11478}, {"price": 3200000, "area": 708, "beds": 3, "baths": 2, "type": "Lower Portion", "ppsqft": 4521}, {"price": 3500000, "area": 790, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 4433}, {"price": 5600000, "area": 1198, "beds": 2, "baths": 3, "type": "Upper Portion", "ppsqft": 4675}], "Gulshan-e-Amin": [{"price": 9800000, "area": 1198, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 8181}, {"price": 7000000, "area": 1933, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3621}, {"price": 7500000, "area": 1143, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6559}, {"price": 6500000, "area": 1307, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 4974}], "Sindh Industrial Trading Estate (SITE)": [{"price": 13500000, "area": 871, "beds": 10, "baths": 7, "type": "House", "ppsqft": 15496}, {"price": 12500000, "area": 980, "beds": 4, "baths": 6, "type": "House", "ppsqft": 12754}, {"price": 11000000, "area": 980, "beds": 4, "baths": 2, "type": "House", "ppsqft": 11223}, {"price": 8000000, "area": 1307, "beds": 5, "baths": 3, "type": "House", "ppsqft": 6122}, {"price": 9000000, "area": 1361, "beds": 8, "baths": 4, "type": "House", "ppsqft": 6612}], "Teacher Society": [{"price": 33000000, "area": 2178, "beds": 9, "baths": 3, "type": "House", "ppsqft": 15152}, {"price": 30000000, "area": 2614, "beds": 6, "baths": 3, "type": "House", "ppsqft": 11478}, {"price": 6800000, "area": 1443, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 4713}], "ASF Tower": [{"price": 7900000, "area": 1879, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4205}, {"price": 8000000, "area": 2178, "beds": 4, "baths": 5, "type": "Flat", "ppsqft": 3673}, {"price": 6000000, "area": 1307, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4591}, {"price": 5300000, "area": 1634, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3245}, {"price": 5000000, "area": 1388, "beds": 6, "baths": 6, "type": "Flat", "ppsqft": 3601}, {"price": 5500000, "area": 2423, "beds": 4, "baths": 5, "type": "Flat", "ppsqft": 2270}], "Pakistan Chowk": [{"price": 5200000, "area": 980, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5306}, {"price": 7000000, "area": 1634, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4285}, {"price": 7000000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6428}], "Cosmopolitan Society": [{"price": 27500000, "area": 2423, "beds": 4, "baths": 4, "type": "Lower Portion", "ppsqft": 11349}, {"price": 35000000, "area": 2069, "beds": 4, "baths": 4, "type": "Upper Portion", "ppsqft": 16916}, {"price": 15000000, "area": 1280, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 11723}, {"price": 35000000, "area": 2423, "beds": 5, "baths": 5, "type": "Flat", "ppsqft": 14445}, {"price": 35000000, "area": 2423, "beds": 5, "baths": 5, "type": "Flat", "ppsqft": 14445}, {"price": 12500000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 12083}], "Chapal Skymark": [{"price": 42500000, "area": 2722, "beds": 6, "baths": 6, "type": "House", "ppsqft": 15611}, {"price": 40000000, "area": 3022, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 13236}], "Suparco Road": [{"price": 5800000, "area": 1198, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4842}, {"price": 12000000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 11599}, {"price": 8000000, "area": 1089, "beds": 5, "baths": 5, "type": "House", "ppsqft": 7346}, {"price": 15000000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 11478}, {"price": 14000000, "area": 1361, "beds": 3, "baths": 3, "type": "House", "ppsqft": 10285}, {"price": 4950000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4785}], "Scheme 45": [{"price": 8050000, "area": 1388, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 5798}, {"price": 7500000, "area": 2178, "beds": 2, "baths": 2, "type": "House", "ppsqft": 3444}, {"price": 7000000, "area": 1443, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4851}, {"price": 4665000, "area": 1579, "beds": 2, "baths": 3, "type": "Flat", "ppsqft": 2954}, {"price": 4900000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4500}, {"price": 4500000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 3444}], "Kemari Town": [{"price": 4000000, "area": 1035, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 3866}, {"price": 7000000, "area": 1497, "beds": 3, "baths": 2, "type": "House", "ppsqft": 4675}, {"price": 8000000, "area": 1307, "beds": 8, "baths": 6, "type": "House", "ppsqft": 6122}, {"price": 2600000, "area": 1307, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 1990}], "Punjab Chowrangi": [{"price": 3000000, "area": 762, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 3935}, {"price": 15000000, "area": 2668, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 5622}, {"price": 37500000, "area": 3267, "beds": 8, "baths": 6, "type": "Flat", "ppsqft": 11478}, {"price": 15500000, "area": 2178, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7117}, {"price": 5500000, "area": 1198, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4591}, {"price": 7000000, "area": 1742, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4017}], "Kamran Chowrangi": [{"price": 3000000, "area": 436, "beds": 1, "baths": 1, "type": "Flat", "ppsqft": 6887}, {"price": 11000000, "area": 1634, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 6734}, {"price": 14000000, "area": 1307, "beds": 4, "baths": 5, "type": "House", "ppsqft": 10713}, {"price": 9800000, "area": 2124, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 4615}], "Gulshan-e-Umair": [{"price": 11500000, "area": 1933, "beds": 3, "baths": 3, "type": "House", "ppsqft": 5949}, {"price": 12500000, "area": 1388, "beds": 2, "baths": 3, "type": "House", "ppsqft": 9003}, {"price": 12000000, "area": 2124, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 5651}], "Laraib Garden": [{"price": 5200000, "area": 708, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 7346}, {"price": 4300000, "area": 953, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4513}, {"price": 5800000, "area": 980, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5918}], "Stadium Road": [{"price": 41000000, "area": 3621, "beds": 4, "baths": 6, "type": "Flat", "ppsqft": 11323}, {"price": 180000000, "area": 6534, "beds": 11, "baths": 7, "type": "House", "ppsqft": 27548}, {"price": 200000000, "area": 6534, "beds": 11, "baths": 7, "type": "House", "ppsqft": 30609}, {"price": 14000000, "area": 2069, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6766}, {"price": 180000000, "area": 6534, "beds": 11, "baths": 7, "type": "House", "ppsqft": 27548}], "Lalukhet": [{"price": 3000000, "area": 980, "beds": 3, "baths": 3, "type": "Penthouse", "ppsqft": 3061}, {"price": 5500000, "area": 762, "beds": 6, "baths": 4, "type": "House", "ppsqft": 7215}, {"price": 3500000, "area": 1198, "beds": 8, "baths": 4, "type": "House", "ppsqft": 2922}, {"price": 30000000, "area": 980, "beds": 6, "baths": 3, "type": "House", "ppsqft": 30609}], "MT Khan Road": [{"price": 20000000, "area": 2015, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 9927}, {"price": 4000000, "area": 871, "beds": 3, "baths": 2, "type": "House", "ppsqft": 4591}, {"price": 7000000, "area": 1089, "beds": 5, "baths": 3, "type": "House", "ppsqft": 6428}, {"price": 8300000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 6351}], "Britto Road": [{"price": 3000000, "area": 980, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 3061}, {"price": 9000000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 8699}, {"price": 16000000, "area": 2232, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 7167}, {"price": 11000000, "area": 1688, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6517}, {"price": 12000000, "area": 1824, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6579}], "Qayyumabad": [{"price": 4700000, "area": 436, "beds": 4, "baths": 2, "type": "House", "ppsqft": 10790}, {"price": 11500000, "area": 871, "beds": 11, "baths": 9, "type": "Flat", "ppsqft": 13200}, {"price": 7000000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6428}], "Khuda Ki Basti": [{"price": 8000000, "area": 2178, "beds": 8, "baths": 4, "type": "House", "ppsqft": 3673}, {"price": 1700000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 1951}, {"price": 2500000, "area": 871, "beds": 1, "baths": 1, "type": "House", "ppsqft": 2870}, {"price": 3000000, "area": 871, "beds": 5, "baths": 3, "type": "House", "ppsqft": 3444}, {"price": 2500000, "area": 871, "beds": 5, "baths": 4, "type": "House", "ppsqft": 2870}, {"price": 1700000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 1951}], "Shadman 2": [{"price": 27500000, "area": 1307, "beds": 9, "baths": 7, "type": "House", "ppsqft": 21044}, {"price": 6770000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6544}, {"price": 4800000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4640}, {"price": 5500000, "area": 1143, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4810}], "Sakhi Hassan Chowrangi": [{"price": 5000000, "area": 871, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5739}, {"price": 4000000, "area": 653, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6122}, {"price": 3600000, "area": 708, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5086}, {"price": 5500000, "area": 1252, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4392}, {"price": 4500000, "area": 980, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4591}, {"price": 3600000, "area": 708, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 5086}], "Mauripur Road": [{"price": 3500000, "area": 1742, "beds": 2, "baths": 3, "type": "House", "ppsqft": 2009}], "DHA City Karachi": [{"price": 95000000, "area": 6534, "beds": 5, "baths": 5, "type": "House", "ppsqft": 14539}, {"price": 46000000, "area": 21780, "beds": 3, "baths": 4, "type": "Farm House", "ppsqft": 2112}, {"price": 5500000, "area": 544, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 10101}, {"price": 12900000, "area": 1987, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6491}, {"price": 50000000, "area": 21780, "beds": 3, "baths": 4, "type": "Farm House", "ppsqft": 2296}, {"price": 9000000, "area": 1143, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7871}], "Falaknaz Presidency": [{"price": 5300000, "area": 1280, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4142}, {"price": 3650000, "area": 599, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6094}, {"price": 6000000, "area": 1035, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5800}, {"price": 15000000, "area": 1361, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 11019}, {"price": 4500000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4132}, {"price": 7300000, "area": 1280, "beds": 2, "baths": 2, "type": "House", "ppsqft": 5705}], "Abid Town": [{"price": 8500000, "area": 1933, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4397}, {"price": 23000000, "area": 1307, "beds": 5, "baths": 5, "type": "House", "ppsqft": 17600}, {"price": 5500000, "area": 817, "beds": 1, "baths": 2, "type": "House", "ppsqft": 6734}], "Chapal Uptown": [{"price": 7470000, "area": 1742, "beds": 3, "baths": 3, "type": "House", "ppsqft": 4287}, {"price": 11000000, "area": 980, "beds": 4, "baths": 5, "type": "House", "ppsqft": 11223}, {"price": 8700000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 6657}, {"price": 8500000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 6504}, {"price": 7500000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 5739}], "Hub River Road": [{"price": 12500000, "area": 4356, "beds": 4, "baths": 5, "type": "House", "ppsqft": 2870}, {"price": 1500000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 1148}, {"price": 11000000, "area": 1307, "beds": 7, "baths": 5, "type": "House", "ppsqft": 8418}, {"price": 12500000, "area": 4356, "beds": 4, "baths": 5, "type": "House", "ppsqft": 2870}], "Azam Town": [{"price": 25000000, "area": 1307, "beds": 6, "baths": 6, "type": "House", "ppsqft": 19131}, {"price": 4050000, "area": 762, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5313}, {"price": 5500000, "area": 1307, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4209}, {"price": 18000000, "area": 1307, "beds": 6, "baths": 6, "type": "House", "ppsqft": 13774}, {"price": 9000000, "area": 871, "beds": 2, "baths": 4, "type": "House", "ppsqft": 10331}, {"price": 5200000, "area": 898, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5788}], "I. I. Chundrigar Road": [{"price": 12000000, "area": 1307, "beds": 3, "baths": 4, "type": "House", "ppsqft": 9183}, {"price": 4800000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4408}, {"price": 5000000, "area": 980, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5102}], "Super Highway": [{"price": 8500000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 6504}, {"price": 21000000, "area": 27225, "beds": 6, "baths": 6, "type": "Farm House", "ppsqft": 771}, {"price": 6500000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 4974}, {"price": 21000000, "area": 27225, "beds": 6, "baths": 6, "type": "Farm House", "ppsqft": 771}, {"price": 100000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 77}, {"price": 18000000, "area": 25047, "beds": 4, "baths": 4, "type": "Farm House", "ppsqft": 719}], "BMCHS": [{"price": 13000000, "area": 1334, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 9745}, {"price": 12000000, "area": 1280, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 9378}, {"price": 30000000, "area": 2124, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 14127}, {"price": 37000000, "area": 7623, "beds": 6, "baths": 6, "type": "Penthouse", "ppsqft": 4854}], "Numaish Chowrangi": [{"price": 28000000, "area": 2668, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 10495}, {"price": 16500000, "area": 1824, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 9046}, {"price": 16000000, "area": 1933, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 8277}, {"price": 12000000, "area": 1497, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 8014}], "Al-Hilal Society": [{"price": 17500000, "area": 1824, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 9594}, {"price": 35000000, "area": 3267, "beds": 4, "baths": 4, "type": "Lower Portion", "ppsqft": 10713}, {"price": 70000000, "area": 4356, "beds": 7, "baths": 5, "type": "House", "ppsqft": 16070}, {"price": 2500000, "area": 436, "beds": 5, "baths": 2, "type": "House", "ppsqft": 5739}, {"price": 7500000, "area": 817, "beds": 4, "baths": 2, "type": "Flat", "ppsqft": 9183}, {"price": 26000000, "area": 2423, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 10730}], "Siraj-ud-Daula Road": [{"price": 300000000, "area": 9801, "beds": 4, "baths": 4, "type": "House", "ppsqft": 30609}, {"price": 9850000, "area": 1171, "beds": 3, "baths": 1, "type": "Flat", "ppsqft": 8414}, {"price": 28500000, "area": 2178, "beds": 4, "baths": 1, "type": "Flat", "ppsqft": 13085}, {"price": 160000000, "area": 5445, "beds": 4, "baths": 4, "type": "House", "ppsqft": 29385}], "Hawks Bay Scheme 42": [{"price": 40000000, "area": 13068, "beds": 4, "baths": 3, "type": "House", "ppsqft": 3061}, {"price": 2800000, "area": 871, "beds": 4, "baths": 2, "type": "House", "ppsqft": 3214}, {"price": 10500000, "area": 6534, "beds": 5, "baths": 7, "type": "House", "ppsqft": 1607}, {"price": 3500000, "area": 871, "beds": 5, "baths": 5, "type": "House", "ppsqft": 4017}], "Tipu Sultan Road": [{"price": 25000000, "area": 1987, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 12579}, {"price": 32500000, "area": 2450, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 13264}, {"price": 55000000, "area": 1742, "beds": 4, "baths": 4, "type": "House", "ppsqft": 31566}, {"price": 19000000, "area": 1824, "beds": 2, "baths": 3, "type": "Flat", "ppsqft": 10416}, {"price": 25000000, "area": 1742, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 14348}], "circular road": [{"price": 9000000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 6887}, {"price": 6000000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 4591}, {"price": 14000000, "area": 1307, "beds": 4, "baths": 5, "type": "House", "ppsqft": 10713}], "Rufi Lake Drive Apartments": [{"price": 11500000, "area": 2341, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4912}, {"price": 12500000, "area": 2232, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 5599}, {"price": 3400000, "area": 735, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4625}, {"price": 20000000, "area": 2614, "beds": 6, "baths": 6, "type": "Flat", "ppsqft": 7652}, {"price": 13500000, "area": 2913, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 4634}, {"price": 14500000, "area": 2913, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 4978}], "Police Society": [{"price": 12500000, "area": 1307, "beds": 2, "baths": 6, "type": "House", "ppsqft": 9565}, {"price": 42500000, "area": 4846, "beds": 5, "baths": 5, "type": "House", "ppsqft": 8770}, {"price": 12500000, "area": 1307, "beds": 2, "baths": 6, "type": "House", "ppsqft": 9565}], "Blue Bell Residency": [{"price": 55000000, "area": 2178, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 25253}, {"price": 6000000, "area": 1198, "beds": 7, "baths": 4, "type": "House", "ppsqft": 5009}], "Old Queens Road": [{"price": 22500000, "area": 2369, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 9499}], "Gulshan-e-Usman Housing Society": [{"price": 9000000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 6887}, {"price": 8500000, "area": 1361, "beds": 3, "baths": 3, "type": "House", "ppsqft": 6244}, {"price": 11000000, "area": 1307, "beds": 4, "baths": 3, "type": "House", "ppsqft": 8418}, {"price": 11500000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 8800}, {"price": 10500000, "area": 1552, "beds": 6, "baths": 6, "type": "House", "ppsqft": 6766}, {"price": 12000000, "area": 1307, "beds": 5, "baths": 6, "type": "House", "ppsqft": 9183}], "Gulshan-e-Millat": [{"price": 13000000, "area": 1307, "beds": 9, "baths": 6, "type": "House", "ppsqft": 9948}, {"price": 7200000, "area": 898, "beds": 4, "baths": 3, "type": "House", "ppsqft": 8014}, {"price": 9000000, "area": 1307, "beds": 6, "baths": 6, "type": "House", "ppsqft": 6887}, {"price": 4600000, "area": 980, "beds": 2, "baths": 2, "type": "House", "ppsqft": 4693}, {"price": 2650000, "area": 653, "beds": 1, "baths": 1, "type": "Flat", "ppsqft": 4056}, {"price": 13500000, "area": 2614, "beds": 3, "baths": 3, "type": "House", "ppsqft": 5165}], "Allama Iqbal Town": [{"price": 80000000, "area": 4356, "beds": 6, "baths": 4, "type": "House", "ppsqft": 18365}, {"price": 17000000, "area": 2668, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 6372}], "Jamaluddin Afghani Road": [{"price": 15000000, "area": 1824, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 8223}], "Kashmir Colony": [{"price": 15000000, "area": 1525, "beds": 5, "baths": 2, "type": "House", "ppsqft": 9839}, {"price": 1500000, "area": 1579, "beds": 5, "baths": 3, "type": "Flat", "ppsqft": 950}, {"price": 3800000, "area": 436, "beds": 2, "baths": 2, "type": "House", "ppsqft": 8724}, {"price": 7000000, "area": 653, "beds": 2, "baths": 2, "type": "House", "ppsqft": 10713}, {"price": 1500000, "area": 1579, "beds": 5, "baths": 3, "type": "Flat", "ppsqft": 950}], "Hoshang Road": [{"price": 17000000, "area": 1035, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 16432}], "Hassan Goth": [{"price": 1700000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 1951}, {"price": 1600000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 1837}, {"price": 2000000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 2296}, {"price": 1800000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 2066}, {"price": 1600000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 1837}], "Shahrah-e-Pakistan": [{"price": 6800000, "area": 871, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 7805}, {"price": 230000000, "area": 6534, "beds": 6, "baths": 6, "type": "House", "ppsqft": 35200}, {"price": 5000000, "area": 1171, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 4271}, {"price": 5000000, "area": 898, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5565}, {"price": 16000000, "area": 1933, "beds": 4, "baths": 2, "type": "Flat", "ppsqft": 8277}], "Abdullah Ahmed Road": [{"price": 130000000, "area": 5445, "beds": 5, "baths": 5, "type": "House", "ppsqft": 23875}, {"price": 2900000, "area": 1361, "beds": 5, "baths": 5, "type": "House", "ppsqft": 2130}, {"price": 5000000, "area": 1361, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3673}], "Gulshan-e-Areesha": [{"price": 15000000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 11478}, {"price": 15000000, "area": 1307, "beds": 8, "baths": 6, "type": "House", "ppsqft": 11478}, {"price": 14000000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 10713}, {"price": 13500000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 10331}], "Ranchore Line Bazar": [{"price": 2000000, "area": 844, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 2370}, {"price": 4200000, "area": 1035, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4060}, {"price": 3800000, "area": 980, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 3877}, {"price": 3200000, "area": 2722, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 1175}], "Lyari Expressway": [{"price": 10500000, "area": 1443, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 7277}, {"price": 1200000, "area": 871, "beds": 2, "baths": 2, "type": "House", "ppsqft": 1377}, {"price": 4200000, "area": 871, "beds": 3, "baths": 3, "type": "House", "ppsqft": 4821}, {"price": 2100000, "area": 871, "beds": 5, "baths": 2, "type": "House", "ppsqft": 2410}, {"price": 3100000, "area": 871, "beds": 6, "baths": 3, "type": "House", "ppsqft": 3558}, {"price": 3200000, "area": 21780, "beds": 4, "baths": 3, "type": "House", "ppsqft": 147}], "Sher Shah Suri Road": [{"price": 3150000, "area": 1198, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 2630}, {"price": 6000000, "area": 1089, "beds": 4, "baths": 2, "type": "Flat", "ppsqft": 5510}], "Cotton Export Cooperative Housing Society": [{"price": 15000000, "area": 1307, "beds": 4, "baths": 6, "type": "House", "ppsqft": 11478}, {"price": 14000000, "area": 1307, "beds": 4, "baths": 6, "type": "House", "ppsqft": 10713}, {"price": 7300000, "area": 1307, "beds": 2, "baths": 3, "type": "House", "ppsqft": 5586}, {"price": 5200000, "area": 2423, "beds": 5, "baths": 3, "type": "Flat", "ppsqft": 2146}, {"price": 9000000, "area": 1307, "beds": 2, "baths": 3, "type": "Penthouse", "ppsqft": 6887}], "Dr Daud Pota Road": [{"price": 30500000, "area": 2232, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 13662}, {"price": 7000000, "area": 926, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 7562}], "Dhabeji": [{"price": 25000000, "area": 54450, "beds": 6, "baths": 6, "type": "Farm House", "ppsqft": 459}], "Teachers Society": [{"price": 4600000, "area": 2614, "beds": 5, "baths": 3, "type": "Flat", "ppsqft": 1760}, {"price": 8000000, "area": 1443, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 5544}, {"price": 7800000, "area": 1443, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 5406}], "Chapal Courtyard": [{"price": 6000000, "area": 626, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 9582}, {"price": 26000000, "area": 1007, "beds": 3, "baths": 4, "type": "House", "ppsqft": 25811}, {"price": 18000000, "area": 1960, "beds": 3, "baths": 3, "type": "House", "ppsqft": 9183}], "Mangopir": [{"price": 8200000, "area": 1307, "beds": 3, "baths": 2, "type": "House", "ppsqft": 6275}, {"price": 2300000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 1760}], "Shahra-e-Usman": [{"price": 2700000, "area": 708, "beds": 5, "baths": 3, "type": "House", "ppsqft": 3814}, {"price": 4350000, "area": 1198, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3631}, {"price": 4500000, "area": 1307, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3444}, {"price": 2300000, "area": 517, "beds": 1, "baths": 1, "type": "Flat", "ppsqft": 4446}, {"price": 5700000, "area": 1307, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4362}], "Manghopir Road": [{"price": 4000000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 3061}, {"price": 4000000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 3061}, {"price": 8500000, "area": 1307, "beds": 2, "baths": 2, "type": "House", "ppsqft": 6504}, {"price": 8500000, "area": 1742, "beds": 3, "baths": 3, "type": "House", "ppsqft": 4878}], "Intelligence Colony": [{"price": 9200000, "area": 762, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 12069}, {"price": 5000000, "area": 544, "beds": 4, "baths": 2, "type": "House", "ppsqft": 9183}, {"price": 4000000, "area": 898, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 4452}], "Cutchi Memon Cooperative Housing Society": [{"price": 178600000, "area": 9256, "beds": 3, "baths": 3, "type": "House", "ppsqft": 19295}, {"price": 270000000, "area": 13068, "beds": 3, "baths": 3, "type": "House", "ppsqft": 20661}, {"price": 40000000, "area": 3267, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 12244}, {"price": 22500000, "area": 1661, "beds": 6, "baths": 5, "type": "Flat", "ppsqft": 13548}], "Gujjar Chowk": [{"price": 15000000, "area": 1089, "beds": 6, "baths": 3, "type": "House", "ppsqft": 13774}, {"price": 5500000, "area": 653, "beds": 2, "baths": 1, "type": "House", "ppsqft": 8418}], "Erum Villas": [{"price": 5000000, "area": 1443, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 3465}], "Shah Rasool Colony": [{"price": 14000000, "area": 1960, "beds": 5, "baths": 4, "type": "House", "ppsqft": 7142}, {"price": 6200000, "area": 1143, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 5422}, {"price": 180000000, "area": 10346, "beds": 5, "baths": 4, "type": "House", "ppsqft": 17399}], "Gulshan-e-Malir": [{"price": 5500000, "area": 871, "beds": 3, "baths": 2, "type": "House", "ppsqft": 6313}, {"price": 6000000, "area": 871, "beds": 2, "baths": 2, "type": "Lower Portion", "ppsqft": 6887}], "Shah Town": [{"price": 6500000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 4974}, {"price": 5500000, "area": 1307, "beds": 2, "baths": 3, "type": "Lower Portion", "ppsqft": 4209}, {"price": 5350000, "area": 871, "beds": 6, "baths": 6, "type": "House", "ppsqft": 6141}, {"price": 13000000, "area": 1307, "beds": 10, "baths": 7, "type": "House", "ppsqft": 9948}], "Khayaban-e-Ittehad Road": [{"price": 12500000, "area": 1143, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 10932}, {"price": 90000000, "area": 4900, "beds": 5, "baths": 5, "type": "House", "ppsqft": 18365}, {"price": 70000000, "area": 3267, "beds": 4, "baths": 4, "type": "House", "ppsqft": 21426}, {"price": 110000000, "area": 5445, "beds": 8, "baths": 6, "type": "House", "ppsqft": 20202}], "Maqboolabad Society": [{"price": 25000000, "area": 2423, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 10318}, {"price": 35000000, "area": 2532, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 13823}, {"price": 15000000, "area": 1634, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 9183}], "Muslimabad Society": [{"price": 75000000, "area": 2450, "beds": 4, "baths": 5, "type": "House", "ppsqft": 30609}, {"price": 24000000, "area": 1742, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 13774}, {"price": 27500000, "area": 2913, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 9440}, {"price": 21500000, "area": 2069, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 10391}, {"price": 32000000, "area": 2532, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 12639}, {"price": 52500000, "area": 3131, "beds": 4, "baths": 4, "type": "House", "ppsqft": 16768}], "Liaquat Avenue": [{"price": 5350000, "area": 1062, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 5039}, {"price": 8000000, "area": 1307, "beds": 3, "baths": 3, "type": "House", "ppsqft": 6122}, {"price": 6000000, "area": 1143, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 5247}, {"price": 7550000, "area": 1525, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 4952}], "Maskan Chowrangi": [{"price": 8000000, "area": 1198, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 6678}, {"price": 5500000, "area": 817, "beds": 2, "baths": 1, "type": "Flat", "ppsqft": 6734}, {"price": 7600000, "area": 1280, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5939}, {"price": 5100000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4683}, {"price": 16500000, "area": 2178, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 7576}, {"price": 6500000, "area": 1089, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5969}], "Falaknaz Dynasty": [{"price": 1300000, "area": 1307, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 995}, {"price": 2500000, "area": 1334, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 1874}, {"price": 7200000, "area": 1334, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5397}], "Darul Aman Society": [{"price": 170000000, "area": 5227, "beds": 11, "baths": 10, "type": "House", "ppsqft": 32522}, {"price": 180000000, "area": 5173, "beds": 9, "baths": 11, "type": "House", "ppsqft": 34798}, {"price": 80000000, "area": 5445, "beds": 4, "baths": 3, "type": "Upper Portion", "ppsqft": 14692}, {"price": 70000000, "area": 2722, "beds": 5, "baths": 4, "type": "House", "ppsqft": 25712}], "Khaliq-uz-Zaman Road": [{"price": 27500000, "area": 2178, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 12626}, {"price": 32000000, "area": 2532, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 12639}, {"price": 27500000, "area": 2423, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 11349}, {"price": 85000000, "area": 7623, "beds": 4, "baths": 4, "type": "Flat", "ppsqft": 11150}, {"price": 79500000, "area": 5445, "beds": 6, "baths": 7, "type": "Flat", "ppsqft": 14601}], "Dalmia Cement Factory Road": [{"price": 23000000, "area": 3648, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 6305}, {"price": 7500000, "area": 871, "beds": 5, "baths": 2, "type": "House", "ppsqft": 8609}, {"price": 17000000, "area": 1089, "beds": 10, "baths": 6, "type": "Flat", "ppsqft": 15611}, {"price": 24000000, "area": 3621, "beds": 5, "baths": 5, "type": "House", "ppsqft": 6628}], "Al-Manzar Society": [{"price": 3500000, "area": 1634, "beds": 4, "baths": 6, "type": "House", "ppsqft": 2143}, {"price": 12000000, "area": 2614, "beds": 3, "baths": 3, "type": "House", "ppsqft": 4591}, {"price": 12000000, "area": 2178, "beds": 4, "baths": 2, "type": "House", "ppsqft": 5510}], "Royal Defence Tower": [{"price": 16000000, "area": 2096, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 7632}], "Surti Muslim Co-Operative Housing Society": [{"price": 30500000, "area": 5445, "beds": 3, "baths": 3, "type": "House", "ppsqft": 5601}, {"price": 34000000, "area": 5445, "beds": 6, "baths": 6, "type": "House", "ppsqft": 6244}], "Gobal Town": [{"price": 6500000, "area": 1960, "beds": 3, "baths": 4, "type": "Flat", "ppsqft": 3316}], "Catholic Colony": [{"price": 11500000, "area": 1443, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 7970}, {"price": 21000000, "area": 2232, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 9407}, {"price": 12500000, "area": 2069, "beds": 3, "baths": 2, "type": "Flat", "ppsqft": 6041}], "Defence Garden": [{"price": 13000000, "area": 1307, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 9948}, {"price": 11500000, "area": 1280, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 8987}, {"price": 11500000, "area": 1198, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 9600}], "Gulistan-e-Malir": [{"price": 6000000, "area": 871, "beds": 4, "baths": 2, "type": "House", "ppsqft": 6887}, {"price": 5500000, "area": 871, "beds": 4, "baths": 4, "type": "House", "ppsqft": 6313}], "Old Ravians Co-Operative Housing Society": [{"price": 45000000, "area": 4356, "beds": 4, "baths": 5, "type": "House", "ppsqft": 10331}, {"price": 45000000, "area": 4900, "beds": 6, "baths": 8, "type": "House", "ppsqft": 9183}, {"price": 35000000, "area": 4356, "beds": 6, "baths": 6, "type": "House", "ppsqft": 8035}], "Gulshan-e-Ghazian": [{"price": 4000000, "area": 1280, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 3126}], "Bilal Town": [{"price": 9500000, "area": 871, "beds": 6, "baths": 3, "type": "House", "ppsqft": 10904}, {"price": 12500000, "area": 871, "beds": 11, "baths": 10, "type": "House", "ppsqft": 14348}, {"price": 7000000, "area": 1307, "beds": 3, "baths": 3, "type": "Upper Portion", "ppsqft": 5357}], "Humaira Town": [{"price": 9500000, "area": 1443, "beds": 3, "baths": 3, "type": "House", "ppsqft": 6584}], "Rufi Rose Petals": [{"price": 6500000, "area": 1334, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4872}, {"price": 15000000, "area": 1361, "beds": 3, "baths": 3, "type": "House", "ppsqft": 11019}, {"price": 15000000, "area": 1361, "beds": 3, "baths": 4, "type": "House", "ppsqft": 11019}], "Karachi Golf City": [{"price": 4950000, "area": 5445, "beds": 3, "baths": 1, "type": "House", "ppsqft": 909}], "Others": [{"price": 31000000, "area": 2396, "beds": 6, "baths": 3, "type": "House", "ppsqft": 12939}, {"price": 15000000, "area": 1307, "beds": 9, "baths": 9, "type": "House", "ppsqft": 11478}, {"price": 15000000, "area": 2369, "beds": 3, "baths": 3, "type": "House", "ppsqft": 6333}], "APP Employees Co-operative Housing Society": [{"price": 39000000, "area": 4356, "beds": 8, "baths": 6, "type": "House", "ppsqft": 8953}, {"price": 39000000, "area": 4356, "beds": 8, "baths": 9, "type": "House", "ppsqft": 8953}], "Peoples Colony": [{"price": 8200000, "area": 1307, "beds": 4, "baths": 5, "type": "House", "ppsqft": 6275}], "Shahra-e-Jahangir": [{"price": 8000000, "area": 1334, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 5997}], "Al-Safaa Garden": [{"price": 8000000, "area": 1334, "beds": 2, "baths": 7, "type": "Flat", "ppsqft": 5997}, {"price": 3500000, "area": 790, "beds": 2, "baths": 2, "type": "Flat", "ppsqft": 4433}], "Shahra-e-Liaquat": [{"price": 7500000, "area": 1143, "beds": 2, "baths": 3, "type": "Flat", "ppsqft": 6559}], "Times Residency": [{"price": 4700000, "area": 1198, "beds": 2, "baths": 4, "type": "Flat", "ppsqft": 3924}, {"price": 2600000, "area": 1089, "beds": 2, "baths": 4, "type": "Flat", "ppsqft": 2388}], "Old Clifton": [{"price": 110000000, "area": 5445, "beds": 5, "baths": 5, "type": "House", "ppsqft": 20202}], "Karachi, Sindh": [{"price": 12000000, "area": 1307, "beds": 4, "baths": 4, "type": "House", "ppsqft": 9183}], "Altaf Hussain Road": [{"price": 7000000, "area": 871, "beds": 7, "baths": 4, "type": "House", "ppsqft": 8035}], "Goth Ibrahim Haidri": [{"price": 12000000, "area": 1552, "beds": 9, "baths": 6, "type": "Flat", "ppsqft": 7733}], "Gadap Road": [{"price": 4500000, "area": 1634, "beds": 3, "baths": 3, "type": "Flat", "ppsqft": 2755}], "Nooriabad": [{"price": 6200000, "area": 1443, "beds": 5, "baths": 4, "type": "Flat", "ppsqft": 4297}], "Javed Bahria Coopretive Housing Society": [{"price": 25000000, "area": 4356, "beds": 5, "baths": 7, "type": "House", "ppsqft": 5739}, {"price": 48500000, "area": 4356, "beds": 5, "baths": 7, "type": "House", "ppsqft": 11134}], "Malir Housing Scheme 1": [{"price": 72500000, "area": 5990, "beds": 8, "baths": 8, "type": "House", "ppsqft": 12105}, {"price": 77500000, "area": 5445, "beds": 4, "baths": 4, "type": "House", "ppsqft": 14233}]};
+
+    function findLocation(location) {
+        if (!location) return null;
+        // 1. Exact match
+        if (LOCATION_STATS[location]) return location;
+        // 2. Case-insensitive exact
+        const lower = location.toLowerCase();
+        for (const k of Object.keys(LOCATION_STATS)) {
+            if (k.toLowerCase() === lower) return k;
+        }
+        // 3. Partial match — input is contained in key OR key is contained in input
+        for (const k of Object.keys(LOCATION_STATS)) {
+            const kl = k.toLowerCase();
+            if (kl.includes(lower) || lower.includes(kl)) return k;
+        }
+        return null;
+    }
+
+    function getLocationStats(location) {
+        const key = findLocation(location);
+        return key ? LOCATION_STATS[key] : null;
+    }
+
+    function getSimilarListings(location) {
+        const key = findLocation(location);
+        return key ? (SIMILAR_LISTINGS[key] || []) : [];
+    }
+
+    // ─── Location autocomplete ──────────────────────────────────────────────────
+    // Replaces the native <input list> + <datalist> combo, which (a) triggered the
+    // browser's own spell-check suggestion popup on words like "Defence" and
+    // (b) was previously backed by a hand-typed list that included locations not
+    // actually present in the sales dataset (e.g. "DHA Phase 1", "PECHS"). This
+    // version sources suggestions live from LOCATION_STATS, i.e. only Karachi
+    // areas that genuinely exist in the training data, while still letting the
+    // person type a custom value if their location isn't covered.
+    function initLocationAutocomplete() {
+        const input = document.getElementById('location');
+        const panel = document.getElementById('locationSuggestions');
+        if (!input || !panel) return;
+
+        const allLocations = Object.keys(LOCATION_STATS).sort((a, b) => a.localeCompare(b));
+        let currentMatches = [];
+        let activeIndex = -1;
+
+        function escapeHtml(s) {
+            return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function highlight(text, query) {
+            if (!query) return escapeHtml(text);
+            const idx = text.toLowerCase().indexOf(query.toLowerCase());
+            if (idx === -1) return escapeHtml(text);
+            return escapeHtml(text.slice(0, idx)) +
+                '<mark>' + escapeHtml(text.slice(idx, idx + query.length)) + '</mark>' +
+                escapeHtml(text.slice(idx + query.length));
+        }
+
+        function getMatches(query) {
+            const q = query.trim().toLowerCase();
+            if (!q) return allLocations.slice(0, 8);
+            const startsWith = [];
+            const contains = [];
+            for (const loc of allLocations) {
+                const lower = loc.toLowerCase();
+                if (lower.startsWith(q)) startsWith.push(loc);
+                else if (lower.includes(q)) contains.push(loc);
+            }
+            return [...startsWith, ...contains].slice(0, 8);
+        }
+
+        function setActive(index) {
+            const items = panel.querySelectorAll('.suggestion-item');
+            items.forEach(el => el.classList.remove('active'));
+            if (index >= 0 && index < items.length) {
+                items[index].classList.add('active');
+                items[index].scrollIntoView({ block: 'nearest' });
+            }
+            activeIndex = index;
+        }
+
+        function render(query) {
+            currentMatches = getMatches(query);
+            activeIndex = -1;
+            if (currentMatches.length === 0) {
+                panel.innerHTML = '<div class="suggestion-empty">No matching Karachi areas in the dataset — you can still type a custom location.</div>';
+            } else {
+                panel.innerHTML = currentMatches.map((loc, i) =>
+                    `<div class="suggestion-item" data-index="${i}">${highlight(loc, query)}</div>`
+                ).join('');
+            }
+            panel.classList.remove('d-none');
+            input.setAttribute('aria-expanded', 'true');
+        }
+
+        function close() {
+            panel.classList.add('d-none');
+            panel.innerHTML = '';
+            activeIndex = -1;
+            input.setAttribute('aria-expanded', 'false');
+        }
+
+        function selectLocation(loc) {
+            input.value = loc;
+            close();
+        }
+
+        input.addEventListener('input', () => render(input.value));
+        input.addEventListener('focus', () => render(input.value));
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (panel.classList.contains('d-none')) { render(input.value); return; }
+                setActive(Math.min(activeIndex + 1, currentMatches.length - 1));
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                setActive(Math.max(activeIndex - 1, 0));
+            } else if (e.key === 'Enter') {
+                if (!panel.classList.contains('d-none') && activeIndex >= 0 && currentMatches[activeIndex]) {
+                    e.preventDefault();
+                    selectLocation(currentMatches[activeIndex]);
+                }
+            } else if (e.key === 'Escape') {
+                close();
+            }
+        });
+
+        // mousedown (not click) fires before the input's blur event, so a tap on
+        // a suggestion registers before the panel would otherwise get closed.
+        panel.addEventListener('mousedown', (e) => {
+            const item = e.target.closest('.suggestion-item');
+            if (!item) return;
+            e.preventDefault();
+            const idx = parseInt(item.dataset.index, 10);
+            if (currentMatches[idx]) selectLocation(currentMatches[idx]);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!input.contains(e.target) && !panel.contains(e.target)) close();
+        });
+    }
+    initLocationAutocomplete();
+
+    // ─── Session stats (in-memory) ─────────────────────────────────────────────
+    let sessionStats = { total: 0, anomalies: 0, highRisk: 0, scoreSum: 0 };
+
+    function updateSessionStats(result) {
+        sessionStats.total++;
+        if (result.is_anomaly) sessionStats.anomalies++;
+        if (result.risk_level === 'CRITICAL' || result.risk_level === 'HIGH') sessionStats.highRisk++;
+        sessionStats.scoreSum += result.anomaly_probability;
+        document.getElementById('statTotalAnalyzed').textContent = sessionStats.total;
+        document.getElementById('statAnomalies').textContent = sessionStats.anomalies;
+        document.getElementById('statHighRisk').textContent = sessionStats.highRisk;
+        document.getElementById('statAvgScore').textContent =
+            (sessionStats.scoreSum / sessionStats.total).toFixed(2);
+    }
+
+    // ─── Risk gauge chart ──────────────────────────────────────────────────────
+    let gaugeChart = null;
+
+    function drawGauge(score, riskLevel) {
+        const ctx = document.getElementById('riskGauge').getContext('2d');
+        const pct = Math.round(score * 100);
+        // FIX: this used to color by fixed absolute score cutoffs (>=0.75/0.50/0.33),
+        // which assumed the model's threshold sat near [0.01, 0.20]. The real
+        // threshold NB06 produces is ~0.58, so those cutoffs were unreachable —
+        // the gauge always rendered green regardless of actual risk, even when
+        // the alert box above correctly said HIGH/CRITICAL. Color by the same
+        // threshold-relative risk_level the backend already computes instead,
+        // which now works correctly at any threshold value (see predict.py).
+        const color = riskLevel === 'CRITICAL' ? '#dc3545'
+                    : riskLevel === 'HIGH'     ? '#fd7e14'
+                    : riskLevel === 'MEDIUM'   ? '#ffc107'
+                    : '#28a745';
+
+        if (gaugeChart) gaugeChart.destroy();
+        gaugeChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [pct, 100 - pct],
+                    backgroundColor: [color, '#e9ecef'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                cutout: '75%',
+                rotation: -90,
+                circumference: 180,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                animation: { duration: 600 }
+            }
+        });
+        document.getElementById('riskScoreValue').textContent = score.toFixed(2);
+        document.getElementById('riskScoreValue').style.color = color;
+    }
+
+    // ─── Price comparison bar chart ────────────────────────────────────────────
+    let priceChart = null;
+
+    function drawPriceChart(listedPrice, marketAvg) {
+        const ctx = document.getElementById('priceComparisonChart').getContext('2d');
+        if (priceChart) priceChart.destroy();
+        priceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Listed Price', 'Market Average'],
+                datasets: [{
+                    data: [listedPrice, marketAvg],
+                    backgroundColor: ['#3b82f6', '#94a3b8'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: v => 'PKR ' + (v >= 1e6 ? (v / 1e6).toFixed(1) + 'M' : v.toLocaleString())
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // ─── Format helpers ────────────────────────────────────────────────────────
+    function formatPKR(n) {
+        if (n >= 1e7) return 'PKR ' + (n / 1e7).toFixed(2) + ' Cr';
+        if (n >= 1e5) return 'PKR ' + (n / 1e5).toFixed(2) + ' Lac';
+        return 'PKR ' + n.toLocaleString();
+    }
+
+    // ─── Populate single-result section ───────────────────────────────────────
+    function displayResult(result, formData) {
+        // Show the result section
+        const section = document.getElementById('resultSection');
+        section.classList.remove('d-none');
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Risk gauge
+        drawGauge(result.anomaly_probability, result.risk_level);
+
+        // Risk level alert
+        const alertEl = document.getElementById('riskLevelAlert');
+        const levelColors = { LOW: 'alert-success', MEDIUM: 'alert-warning', HIGH: 'alert-danger', CRITICAL: 'alert-danger' };
+        alertEl.className = `alert mb-0 ${levelColors[result.risk_level] || 'alert-secondary'}`;
+        document.getElementById('riskLevelText').textContent = result.risk_label;
+        document.getElementById('riskLevelDescription').textContent =
+            `Confidence: ${result.confidence_tier}  |  Threshold: ${result.threshold.toFixed(4)}`;
+
+        // Price analysis — use real location stats from pre-computed lookup
+        const price    = parseFloat(formData.get('price'));
+        const area     = parseFloat(formData.get('area_sqft'));
+        const locName  = formData.get('location') || '';
+        const locStats = getLocationStats(locName);
+
+        // Market average = median_ppsqft × submitted area (real data), fallback to listed price
+        let marketAvg = price;
+        if (locStats && locStats.median_ppsqft > 0 && area > 0) {
+            marketAvg = locStats.median_ppsqft * area;
+        }
+
+        document.getElementById('listedPrice').textContent   = formatPKR(price);
+        document.getElementById('marketAverage').textContent = formatPKR(Math.round(marketAvg));
+        const devPct = ((price - marketAvg) / marketAvg * 100).toFixed(1);
+        document.getElementById('priceDeviation').textContent =
+            (devPct > 0 ? '+' : '') + devPct + '%';
+        drawPriceChart(price, Math.round(marketAvg));
+
+        // Risk factors
+        const rfContainer = document.getElementById('riskFactorsContainer');
+        if (result.top_risk_factors.length) {
+            rfContainer.innerHTML = result.top_risk_factors.map(f => `
+                <div class="d-flex align-items-start mb-2 p-2 rounded bg-light">
+                    <i class="bi bi-exclamation-circle-fill text-warning me-2 mt-1 flex-shrink-0"></i>
+                    <span class="small">${f}</span>
+                </div>`).join('');
+        } else {
+            rfContainer.innerHTML = '<p class="text-muted small">No significant risk factors detected.</p>';
+        }
+
+        // Model decisions table
+        // FIX: this used to hardcode "Random Forest" regardless of which model
+        // was actually deployed. NB06 selects the winning algorithm dynamically
+        // (XGBoost as of the last training run), so display whatever result.model
+        // reports instead of assuming a fixed algorithm name.
+        const badgeClass = result.is_anomaly ? 'bg-danger' : 'bg-success';
+        const decision   = result.is_anomaly ? 'Anomaly' : 'Normal';
+        document.getElementById('modelDecisionsTable').innerHTML = `
+            <tr>
+                <td>${result.model}</td>
+                <td><span class="badge ${badgeClass}">${decision}</span></td>
+                <td>${(result.anomaly_probability * 100).toFixed(1)}%</td>
+            </tr>`;
+
+        // Location stats — use real pre-computed data
+        if (locStats) {
+            document.getElementById('marketTier').textContent =
+                locStats.market_tier || locName || '--';
+            document.getElementById('avgPriceSqft').textContent =
+                locStats.median_ppsqft > 0
+                    ? 'PKR ' + locStats.median_ppsqft.toLocaleString() + ' /sqft'
+                    : '--';
+            document.getElementById('totalListings').textContent =
+                locStats.total.toLocaleString();
+            document.getElementById('medianPrice').textContent =
+                formatPKR(locStats.median_price);
+            document.getElementById('locationFraudRate').textContent =
+                locStats.fraud_rate + '%';
+        } else {
+            document.getElementById('marketTier').textContent    = locName || '--';
+            document.getElementById('avgPriceSqft').textContent  =
+                area > 0 ? 'PKR ' + Math.round(price / area).toLocaleString() + ' /sqft' : '--';
+            document.getElementById('totalListings').textContent = 'N/A';
+            document.getElementById('medianPrice').textContent   = formatPKR(Math.round(marketAvg));
+            document.getElementById('locationFraudRate').textContent = 'N/A';
+        }
+
+        // Recommendation
+        const recEl = document.getElementById('recommendationContent');
+        const recs = {
+            LOW:      { cls: 'alert-success',  icon: 'bi-check-circle-fill text-success',  text: 'This listing appears normal. No major anomaly signals detected. Proceed with standard due diligence.' },
+            MEDIUM:   { cls: 'alert-warning',  icon: 'bi-exclamation-circle-fill text-warning', text: 'Some anomaly signals present. Review the risk factors above and verify pricing with a local agent before proceeding.' },
+            HIGH:     { cls: 'alert-danger',   icon: 'bi-x-circle-fill text-danger',  text: 'Suspicious listing detected. Multiple risk factors triggered. Conduct thorough verification before any transaction.' },
+            CRITICAL: { cls: 'alert-danger',   icon: 'bi-shield-fill-exclamation text-danger', text: 'High-alert anomaly. Strong indicators of fraudulent or misleading listing. Avoid proceeding without independent verification.' }
+        };
+        const r = recs[result.risk_level] || recs.LOW;
+        recEl.innerHTML = `
+            <div class="alert ${r.cls} mb-3">
+                <i class="bi ${r.icon} me-2"></i><strong>${result.risk_label}</strong>
+            </div>
+            <p class="small text-muted mb-2">${r.text}</p>
+            <hr>
+            <p class="small text-muted mb-0"><i class="bi bi-info-circle me-1"></i>${result.caveat}</p>`;
+
+        // Similar listings — real data from training set
+        const similarData = getSimilarListings(locName);
+        if (similarData.length > 0) {
+            document.getElementById('similarListingsTable').innerHTML = similarData.map(s => `
+                <tr>
+                    <td>${s.type}</td>
+                    <td>${formatPKR(s.price)}</td>
+                    <td>${s.area.toLocaleString()}</td>
+                    <td>${s.beds}</td>
+                    <td>${s.baths}</td>
+                    <td>PKR ${s.ppsqft.toLocaleString()}</td>
+                </tr>`).join('');
+        } else {
+            document.getElementById('similarListingsTable').innerHTML =
+                '<tr><td colspan="6" class="text-center text-muted small">No similar listings found for this location.</td></tr>';
+        }
+
+        // Update session counters
+        updateSessionStats(result);
+    }
+
+    // ─── Single listing form submit ────────────────────────────────────────────
+    document.getElementById('listingForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = this.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Analyzing…';
+
+        const fd = new FormData(this);
+        const payload = {
+            price:         parseFloat(fd.get('price')),
+            area_sqft:     parseFloat(fd.get('area_sqft')),
+            bedrooms:      parseInt(fd.get('bedrooms'), 10),
+            baths:         parseInt(fd.get('baths'), 10),
+            property_type: fd.get('property_type'),
+            location:      fd.get('location'),
+            date_added:    fd.get('date_added') || new Date().toISOString().split('T')[0]
+        };
+
+        try {
+            const res = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({ detail: 'Unknown error' }));
+                throw new Error(err.detail || `HTTP ${res.status}`);
+            }
+            const result = await res.json();
+            displayResult(result, fd);
+            showToast('Analysis complete', 'success');
+        } catch (err) {
+            showToast('Error: ' + err.message, 'error');
+            console.error(err);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-search me-2"></i>Analyze Listing';
+        }
+    });
+
+    // ─── Load model info on page load ──────────────────────────────────────────
+    async function loadModelInfo() {
+        try {
+            const res = await fetch('/model/info');
+            if (res.ok) {
+                const info = await res.json();
+                // Update the model name display in the decisions table
+                document.getElementById('modelNameDisplay').textContent = info.model_name || 'Unknown Model';
+            } else {
+                document.getElementById('modelNameDisplay').textContent = 'Error loading model';
+            }
+        } catch (err) {
+            console.error('Failed to fetch model info:', err);
+            document.getElementById('modelNameDisplay').textContent = 'Model info unavailable';
+        }
+    }
+
+    // Load model info when page loads
+    loadModelInfo();
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+player,runs,mins,balls,4s,6s,sr,team,opposition,ground,is_not_out,match_date,match_year,match_month
+JJ Roy,145.0,90.0,63,20,5.0,230.15,Quetta Gladiators,Peshawar Zalmi,Rawalpindi,True,2023-03-08,2023,3
+CA Ingram,127.0,,59,12,8.0,215.25,Karachi Kings,Quetta Gladiators,Sharjah,True,2019-02-24,2019,2
+RR Rossouw,121.0,87.0,51,12,8.0,237.25,Multan Sultans,Peshawar Zalmi,Rawalpindi,False,2023-03-10,2023,3
+Usman Khan,120.0,56.0,43,12,9.0,279.06,Multan Sultans,Quetta Gladiators,Rawalpindi,False,2023-03-11,2023,3
+CS Delport,117.0,,60,13,6.0,195.0,Islamabad United,Lahore Qalandars,Karachi,True,2019-03-09,2019,3
+Sharjeel Khan,117.0,,62,12,8.0,188.7,Islamabad United,Peshawar Zalmi,Dubai (DICS),False,2016-02-21,2016,2
+MJ Guptill,117.0,102.0,67,12,5.0,174.62,Quetta Gladiators,Karachi Kings,Karachi,False,2023-02-18,2023,2
+JJ Roy,116.0,77.0,57,11,8.0,203.5,Quetta Gladiators,Lahore Qalandars,Karachi,False,2022-02-07,2022,2
+Babar Azam,115.0,102.0,65,15,3.0,176.92,Peshawar Zalmi,Quetta Gladiators,Rawalpindi,False,2023-03-08,2023,3
+Fakhar Zaman,115.0,96.0,57,8,8.0,201.75,Lahore Qalandars,Islamabad United,Rawalpindi,False,2023-03-09,2023,3
+CA Lynn,113.0,,55,12,8.0,205.45,Lahore Qalandars,Multan Sultans,Lahore,True,2020-03-15,2020,3
+Babar Azam,111.0,100.0,63,14,2.0,176.19,Peshawar Zalmi,Islamabad United,Lahore,True,2024-02-26,2024,2
+Mohammad Rizwan,110.0,101.0,64,10,4.0,171.87,Multan Sultans,Karachi Kings,Multan,True,2023-02-22,2023,2
+Kamran Akmal,107.0,,61,11,7.0,175.4,Peshawar Zalmi,Lahore Qalandars,Sharjah,True,2018-03-16,2018,3
+Usman Khan,106.0,88.0,59,10,5.0,179.66,Multan Sultans,Karachi Kings,Karachi,True,2024-03-03,2024,3
+Fakhar Zaman,106.0,,60,12,4.0,176.66,Lahore Qalandars,Karachi Kings,Karachi,False,2022-01-30,2022,1
+UT Khawaja,105.0,,56,13,3.0,187.5,Islamabad United,Peshawar Zalmi,Abu Dhabi,True,2021-06-17,2021,6
+Sharjeel Khan,105.0,100.0,59,9,8.0,177.96,Karachi Kings,Islamabad United,Karachi,False,2021-02-24,2021,2
+HE van der Dussen,104.0,95.0,52,7,6.0,200.0,Lahore Qalandars,Peshawar Zalmi,Lahore,True,2024-02-25,2024,2
+Kamran Akmal,104.0,,65,6,7.0,160.0,Peshawar Zalmi,Karachi Kings,Dubai (DICS),False,2017-03-03,2017,3
+HC Brook,102.0,87.0,49,10,5.0,208.16,Lahore Qalandars,Islamabad United,Lahore,True,2022-02-19,2022,2
+Kamran Akmal,101.0,,55,13,4.0,183.63,Peshawar Zalmi,Quetta Gladiators,Karachi,False,2020-02-22,2020,2
+RR Rossouw,100.0,,44,10,6.0,227.27,Multan Sultans,Quetta Gladiators,Multan,True,2020-02-29,2020,2
+Usman Khan,100.0,70.0,50,15,3.0,200.0,Multan Sultans,Islamabad United,Rawalpindi,True,2024-03-10,2024,3
+BR Dunk,99.0,,40,3,12.0,247.5,Lahore Qalandars,Karachi Kings,Lahore,True,2020-03-08,2020,3
+Ahmed Shehzad,99.0,,57,8,6.0,173.68,Quetta Gladiators,Karachi Kings,Karachi,False,2019-03-10,2019,3
+WCF Smeed,99.0,,60,12,3.0,165.0,Quetta Gladiators,Peshawar Zalmi,Lahore,False,2022-02-15,2022,2
+Mohammad Hafeez,98.0,,57,7,7.0,171.92,Lahore Qalandars,Islamabad United,Lahore,True,2020-02-23,2020,2
+WCF Smeed,97.0,,62,11,4.0,156.45,Quetta Gladiators,Peshawar Zalmi,Karachi,False,2022-01-28,2022,1
+Azam Khan,97.0,66.0,42,9,8.0,230.95,Islamabad United,Quetta Gladiators,Karachi,False,2023-02-24,2023,2
+Fakhar Zaman,96.0,100.0,45,3,10.0,213.33,Lahore Qalandars,Peshawar Zalmi,Lahore,False,2023-02-26,2023,2
+Usman Khan,96.0,91.0,55,11,2.0,174.54,Multan Sultans,Lahore Qalandars,Lahore,False,2024-02-27,2024,2
+L Ronchi,94.0,,39,12,5.0,241.02,Islamabad United,Karachi Kings,Dubai (DICS),True,2018-03-18,2018,3
+Fakhar Zaman,94.0,,50,9,6.0,188.0,Lahore Qalandars,Quetta Gladiators,Sharjah,False,2018-03-14,2018,3
+Umar Akmal,93.0,,40,6,8.0,232.5,Lahore Qalandars,Quetta Gladiators,Dubai (DICS),False,2016-02-08,2016,2
+BR Dunk,93.0,,43,3,10.0,216.27,Lahore Qalandars,Quetta Gladiators,Lahore,False,2020-03-03,2020,3
+Imad Wasim,92.0,67.0,54,11,2.0,170.37,Karachi Kings,Islamabad United,Rawalpindi,True,2023-03-03,2023,3
+T Kohler-Cadmore,92.0,79.0,50,7,6.0,184.0,Peshawar Zalmi,Karachi Kings,Karachi,False,2023-02-14,2023,2
+SR Watson,91.0,,55,6,6.0,165.45,Quetta Gladiators,Peshawar Zalmi,Abu Dhabi,True,2019-03-04,2019,3
+Shadab Khan,91.0,70.0,42,5,9.0,216.66,Islamabad United,Multan Sultans,Karachi,False,2022-02-01,2022,2
+SR Watson,90.0,,58,5,7.0,155.17,Quetta Gladiators,Karachi Kings,Dubai (DICS),True,2018-03-08,2018,3
+Babar Azam,90.0,94.0,60,13,1.0,150.0,Karachi Kings,Multan Sultans,Karachi,True,2021-02-27,2021,2
+C Munro,90.0,,36,12,5.0,250.0,Islamabad United,Quetta Gladiators,Abu Dhabi,True,2021-06-11,2021,6
+Babar Azam,90.0,97.0,63,12,1.0,142.85,Karachi Kings,Peshawar Zalmi,Karachi,True,2022-02-04,2022,2
+KP Pietersen,88.0,,42,3,8.0,209.52,Quetta Gladiators,Lahore Qalandars,Sharjah,True,2017-02-18,2017,2
+C Munro,88.0,,56,12,2.0,157.14,Islamabad United,Karachi Kings,Abu Dhabi,True,2021-06-14,2021,6
+Saud Shakeel,88.0,100.0,65,5,4.0,135.38,Quetta Gladiators,Lahore Qalandars,Karachi,True,2024-03-10,2024,3
+Kamran Akmal,88.0,,48,6,6.0,183.33,Peshawar Zalmi,Islamabad United,Dubai (DICS),False,2017-02-09,2017,2
+Shan Masood,88.0,91.0,58,6,4.0,151.72,Multan Sultans,Quetta Gladiators,Karachi,False,2022-01-31,2022,1
+Saim Ayub,88.0,89.0,55,8,4.0,160.0,Peshawar Zalmi,Lahore Qalandars,Lahore,False,2024-02-25,2024,2
+C Munro,87.0,,59,8,3.0,147.45,Islamabad United,Lahore Qalandars,Lahore,True,2020-03-04,2020,3
+Aamer Jamal,87.0,60.0,49,8,6.0,177.55,Peshawar Zalmi,Islamabad United,Rawalpindi,False,2024-03-04,2024,3
+LJ Wright,86.0,,53,11,4.0,162.26,Quetta Gladiators,Islamabad United,Dubai (DICS),True,2016-02-04,2016,2
+MJ Guptill,86.0,105.0,56,9,4.0,153.57,Quetta Gladiators,Karachi Kings,Rawalpindi,True,2023-03-06,2023,3
+Kamran Akmal,86.0,,48,10,5.0,179.16,Peshawar Zalmi,Karachi Kings,Karachi,False,2019-03-11,2019,3
+BJ Hodge,85.0,,45,6,6.0,188.88,Peshawar Zalmi,Karachi Kings,Dubai (DICS),True,2016-02-17,2016,2
+Sohaib Maqsood,85.0,,42,4,7.0,202.38,Multan Sultans,Peshawar Zalmi,Dubai (DICS),True,2018-03-06,2018,3
+L Ronchi,85.0,,58,9,2.0,146.55,Islamabad United,Karachi Kings,Rawalpindi,True,2020-03-01,2020,3
+Babar Azam,85.0,,63,5,4.0,134.92,Karachi Kings,Multan Sultans,Abu Dhabi,True,2021-06-10,2021,6
+Azam Khan,85.0,81.0,45,6,7.0,188.88,Islamabad United,Peshawar Zalmi,Lahore,False,2022-02-17,2022,2
+Mohammad Haris,85.0,86.0,54,11,2.0,157.4,Peshawar Zalmi,Lahore Qalandars,Lahore,False,2023-03-17,2023,3
+JM Vince,84.0,,41,7,6.0,204.87,Multan Sultans,Lahore Qalandars,Sharjah,False,2019-02-22,2019,2
+JM Vince,84.0,87.0,55,9,3.0,152.72,Multan Sultans,Peshawar Zalmi,Karachi,False,2021-02-23,2021,2
+C Munro,84.0,82.0,40,9,5.0,210.0,Islamabad United,Multan Sultans,Rawalpindi,False,2024-03-10,2024,3
+Mohammad Rizwan,83.0,108.0,54,7,3.0,153.7,Multan Sultans,Quetta Gladiators,Lahore,True,2022-02-18,2022,2
+Fakhar Zaman,83.0,88.0,54,8,4.0,153.7,Lahore Qalandars,Karachi Kings,Karachi,False,2021-02-28,2021,2
+Shan Masood,83.0,,50,14,1.0,166.0,Multan Sultans,Lahore Qalandars,Karachi,False,2022-01-29,2022,1
+Fakhar Zaman,82.0,95.0,52,8,2.0,157.69,Lahore Qalandars,Quetta Gladiators,Karachi,True,2021-02-22,2021,2
+Mohammad Rizwan,82.0,,56,9,2.0,146.42,Multan Sultans,Peshawar Zalmi,Abu Dhabi,True,2021-06-13,2021,6
+AD Hales,82.0,,54,13,1.0,151.85,Islamabad United,Peshawar Zalmi,Karachi,True,2022-01-30,2022,1
+LS Livingstone,82.0,,43,6,6.0,190.69,Karachi Kings,Multan Sultans,Dubai (DICS),False,2019-02-15,2019,2
+Mohammad Rizwan,82.0,95.0,53,8,1.0,154.71,Multan Sultans,Peshawar Zalmi,Karachi,False,2022-02-05,2022,2
+JJ Roy,82.0,92.0,64,11,,128.12,Quetta Gladiators,Karachi Kings,Lahore,False,2022-02-20,2022,2
+Mohammad Rizwan,82.0,93.0,59,9,3.0,138.98,Multan Sultans,Lahore Qalandars,Multan,False,2024-02-21,2024,2
+C Munro,82.0,69.0,47,8,4.0,174.46,Islamabad United,Karachi Kings,Karachi,False,2024-02-28,2024,2
+SR Watson,81.0,,55,6,4.0,147.27,Quetta Gladiators,Islamabad United,Dubai (DICS),True,2019-02-17,2019,2
+Sarfaraz Ahmed,81.0,63.0,40,12,1.0,202.5,Quetta Gladiators,Peshawar Zalmi,Karachi,False,2021-02-26,2021,2
+Usman Khan,81.0,64.0,50,10,3.0,162.0,Quetta Gladiators,Multan Sultans,Karachi,False,2021-03-03,2021,3
+Babar Azam,81.0,,54,7,3.0,150.0,Karachi Kings,Islamabad United,Abu Dhabi,False,2021-06-14,2021,6
+Tamim Iqbal,80.0,,58,6,3.0,137.93,Peshawar Zalmi,Islamabad United,Sharjah,True,2016-02-12,2016,2
+EJG Morgan,80.0,,57,8,3.0,140.35,Peshawar Zalmi,Karachi Kings,Dubai (DICS),True,2017-02-10,2017,2
+AD Hales,80.0,,48,6,5.0,166.66,Karachi Kings,Lahore Qalandars,Lahore,True,2020-03-08,2020,3
+Imad Wasim,80.0,89.0,47,7,4.0,170.21,Karachi Kings,Peshawar Zalmi,Karachi,True,2023-02-14,2023,2
+SR Watson,80.0,,41,7,7.0,195.12,Quetta Gladiators,Multan Sultans,Multan,False,2020-02-29,2020,2
+Shadab Khan,80.0,63.0,51,4,6.0,156.86,Islamabad United,Peshawar Zalmi,Rawalpindi,False,2024-03-04,2024,3
+Sharjeel Khan,79.0,,43,5,7.0,183.72,Islamabad United,Lahore Qalandars,Sharjah,True,2016-02-10,2016,2
+JL Denly,79.0,,46,9,4.0,171.73,Karachi Kings,Peshawar Zalmi,Lahore,True,2018-03-21,2018,3
+RR Hendricks,79.0,84.0,54,7,3.0,146.29,Multan Sultans,Karachi Kings,Multan,True,2024-02-18,2024,2
+SR Watson,79.0,,47,4,7.0,168.08,Islamabad United,Lahore Qalandars,Sharjah,False,2016-02-10,2016,2
+Mohammad Haris,79.0,66.0,39,7,5.0,202.56,Peshawar Zalmi,Islamabad United,Rawalpindi,False,2023-03-12,2023,3
+SW Billings,78.0,,50,8,3.0,156.0,Islamabad United,Quetta Gladiators,Sharjah,True,2017-02-15,2017,2
+RR Rossouw,78.0,60.0,42,9,3.0,185.71,Multan Sultans,Quetta Gladiators,Multan,True,2023-02-15,2023,2
+CS Delport,78.0,,61,6,3.0,127.86,Lahore Qalandars,Peshawar Zalmi,Sharjah,False,2016-02-13,2016,2
+JL Denly,78.0,,55,10,2.0,141.81,Karachi Kings,Multan Sultans,Dubai (DICS),False,2018-03-10,2018,3
+Babar Azam,78.0,,56,7,2.0,139.28,Karachi Kings,Peshawar Zalmi,Karachi,False,2020-02-21,2020,2
+Babar Azam,77.0,112.0,47,6,3.0,163.82,Karachi Kings,Peshawar Zalmi,Karachi,True,2021-03-03,2021,3
+Mohammad Hafeez,77.0,,47,5,6.0,163.82,Peshawar Zalmi,Quetta Gladiators,Sharjah,False,2017-02-28,2017,2
+L Ronchi,77.0,,41,5,6.0,187.8,Islamabad United,Lahore Qalandars,Dubai (DICS),False,2018-03-08,2018,3
+Kamran Akmal,77.0,,27,5,8.0,285.18,Peshawar Zalmi,Karachi Kings,Lahore,False,2018-03-21,2018,3
+Babar Azam,77.0,,59,6,1.0,130.5,Karachi Kings,Multan Sultans,Dubai (DICS),False,2019-02-15,2019,2

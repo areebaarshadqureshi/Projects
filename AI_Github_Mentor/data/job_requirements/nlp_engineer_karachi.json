@@ -1,0 +1,109 @@
+[
+  {
+    "role": "NLP Engineer",
+    "seniority": "mid",
+    "required_skills": [
+      "Excellent communication",
+      "team collaboration"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://www.glassdoor.com/Job/pakistan-nlp-jobs-SRCH_IL.0,8_IN192_KO9,12.htm",
+    "notes": "Experience range is not specified but the experience level is implied to be mid-level."
+  },
+  {
+    "role": "NLP Engineer",
+    "seniority": "mid",
+    "required_skills": [
+      "Excellent communication",
+      "team collaboration"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://www.glassdoor.sg/Job/pakistan-nlp-jobs-SRCH_IL.0,8_IN192_KO9,12.htm",
+    "notes": "The experience requirement is not specified, but the role seems to require significant experience."
+  },
+  {
+    "role": "Junior AI Engineer",
+    "seniority": "entry-level",
+    "required_skills": [
+      "programming skills in Python"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://pk.indeed.com/q-nlp-jobs.html",
+    "notes": "The snippet does not mention any specific data science projects other than overseeing their design and implementation."
+  },
+  {
+    "role": "NLP Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "time management skills"
+    ],
+    "nice_to_have": [
+      "positive and proactive attitude",
+      "capacity for independent work",
+      "adopting and experimenting with new NLP technologies"
+    ],
+    "source_url": "https://www.deel.com/job-description-templates/nlp-engineer/",
+    "notes": "The snippet does not provide specific details about the level of experience required, but the emphasis on independent work and adopting new technologies suggests an entry-mid level position."
+  },
+  {
+    "role": "NLP Engineer",
+    "seniority": "entry-level",
+    "required_skills": [],
+    "nice_to_have": [],
+    "source_url": "https://www.simplilearn.com/how-to-become-nlp-engineer-article",
+    "notes": "The snippet does not provide specific skills or seniority level."
+  },
+  {
+    "role": "NLP Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "develop and fine-tune NLP models using transformers",
+      "perform text preprocessing",
+      "implement chatbots",
+      "collaborate on language-based AI features"
+    ],
+    "nice_to_have": [
+      "sentiment analysis"
+    ],
+    "source_url": "https://www.sorce.jobs/jobs/nlp-engineer-translation-empire-j1_UF3QRuFLhdMkumQ4fDtJyOThj4QNYKF6jjgObzIm1pYydLO2CA",
+    "notes": "The role description does not specify a particular level of seniority but mentions 2+ years of NLP experience, suggesting it could be entry-mid level."
+  },
+  {
+    "role": "Natural Language Processing Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [],
+    "nice_to_have": [],
+    "source_url": "https://pk.linkedin.com/jobs/natural-language-processing-jobs",
+    "notes": "The snippet does not provide specific required or nice-to-have skills."
+  },
+  {
+    "role": "Natural Language Processing Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [],
+    "nice_to_have": [],
+    "source_url": "https://pk.linkedin.com/jobs/natural-language-processing-engineer-jobs",
+    "notes": "No specific skills mentioned in the snippet."
+  },
+  {
+    "role": "NLP Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "Programming skills (Python, Java)",
+      "Mathematics and statistics",
+      "Machine Learning",
+      "Deep learning frameworks (TensorFlow, PyTorch)",
+      "NLP techniques and tools (NLTK)"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://www.theknowledgeacademy.com/blog/nlp-engineer-job-description/",
+    "notes": "The seniority level is inferred based on the content of the job description."
+  },
+  {
+    "role": "NLP Engineer",
+    "seniority": "entry-mid",
+    "required_skills": [],
+    "nice_to_have": [],
+    "source_url": "https://pk.linkedin.com/jobs/nlp-jobs",
+    "notes": "No specific skills mentioned in the snippet."
+  }
+]

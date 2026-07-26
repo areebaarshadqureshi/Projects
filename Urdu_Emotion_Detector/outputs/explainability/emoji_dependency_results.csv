@@ -1,0 +1,2 @@
+text_original,text_stripped,pred_original,pred_stripped,prediction_changed,confidence_original,confidence_stripped,confidence_drop,note
+,,,,,,,,"No emoji-bearing examples exist (verified: 0/19,999 rows). Experiment not applicable."

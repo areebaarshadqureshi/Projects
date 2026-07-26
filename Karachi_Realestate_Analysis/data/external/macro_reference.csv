@@ -1,0 +1,9 @@
+year,avg_monthly_salary_pkr,cpi_index,cpi_raw_2015_16_base,annual_inflation_pct,cumulative_inflation_pct,salary_growth_vs_2019_pct,real_purchasing_power_index,cpi_source,salary_source
+2019,22000,100.0,116.19,7.34,0.0,0.0,100.0,PBS CPI FY2018-19 (7.34% annual avg) — SBP Annual Report 2019 — sbp.org.pk/publications/annual/,PBS PSLM FY2019 Karachi urban median — pbs.gov.pk/pslm-3/ (actual)
+2020,22500,110.74,128.67,10.74,10.74,2.27,92.35,PBS CPI FY2019-20 (10.74% annual avg) — SBP Annual Report 2020 — sbp.org.pk/publications/annual/,PBS LFS FY2019-20 national estimate — pbs.gov.pk/labour-force-statistics/
+2021,24000,120.6,140.12,8.9,20.6,9.09,90.46,PBS CPI FY2020-21 (8.90% annual avg) — SBP Annual Report 2021 — sbp.org.pk/publications/annual/,PBS LFS 2020-21 national — pbs.gov.pk/labour-force-statistics/
+2022,26500,135.31,157.21,12.2,35.31,20.45,89.02,PBS CPI FY2021-22 (12.20% annual avg) — pbs.gov.pk CPI bulletin,PBS LFS 2021-22 national — pbs.gov.pk/labour-force-statistics/
+2023,30000,174.79,203.09,29.18,74.79,36.36,78.02,PBS CPI FY2022-23 (29.18% annual avg) — pbs.gov.pk CPI bulletin,PBS LFS 2022-23 national — pbs.gov.pk/labour-force-statistics/
+2024,35000,215.71,250.63,23.41,115.71,59.09,73.75,PBS CPI FY2023-24 (23.41% annual avg) — SBP Annual Report provisional — sbp.org.pk/monetary/,PBS LFS 2023-24 national — pbs.gov.pk/labour-force-statistics/
+2025,39042,226.34,262.99,4.93,126.34,77.46,78.41,PBS CPI FY2024-25 (4.93% period avg) — pbs.gov.pk/price-statistics/,"PBS LFS 2024-25 OFFICIAL PKR 39,042 — pbs.gov.pk homepage (actual)"
+2026,43000,243.1,282.45,7.4,143.1,95.45,80.4,PBS April 2026 Press Release National=292.81 (2015-16=100) — pbs.gov.pk (actual+2month est),Estimated +10% from PBS LFS 2024-25 (forecast)

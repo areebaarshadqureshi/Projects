@@ -1,0 +1,32 @@
+# Data — too large, not needed for inference
+data/
+
+# Models — keep only what api/predict.py actually loads at runtime
+models/lof.pkl
+models/lof_pca.pkl
+models/lof_pca_transform.pkl
+models/isolation_forest.pkl
+models/ocsvm_clean.pkl
+models/random_forest_v1.pkl
+models/xgboost_v1.pkl
+models/lightgbm_v1.pkl
+models/artifacts/X_train*.csv
+models/artifacts/X_test*.csv
+models/artifacts/X_train*.npy
+models/artifacts/X_test*.npy
+models/artifacts/y_train.csv
+models/artifacts/y_test.csv
+models/artifacts/y_ensemble*.csv
+models/artifacts/optuna_study.db
+models/artifacts/supervised_results_registry.json
+
+# Environment
+venv/
+.env
+*.pyc
+__pycache__/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db

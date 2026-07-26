@@ -1,0 +1,10 @@
+expected_emotion,variant,text,predicted_label,confidence
+happy,english,"I am so happy today, everything is going great",happy,0.9117709398269653
+happy,roman_urdu,"aaj mein bohat khush hoon, sab acha ja raha hai",happy,0.8789108395576477
+happy,code_switched,"yaar aaj bohat khush hoon, everything is just perfect",happy,0.9133083820343018
+anger,english,I am extremely angry about this situation,sad,0.8291860222816467
+anger,roman_urdu,mujhe is baat par bohat gussa hai,neutral,0.6647135019302368
+anger,code_switched,yaar mujhe is situation par bohat gussa aa raha hai,neutral,0.5134907364845276
+sad,english,I feel really sad about what happened,sad,0.7925077080726624
+sad,roman_urdu,jo hua us par mujhe bohat dukh hua,happy,0.5788418054580688
+sad,code_switched,what happened us baat se mujhe bohat dukh hua hai,surprise,0.7101796269416809

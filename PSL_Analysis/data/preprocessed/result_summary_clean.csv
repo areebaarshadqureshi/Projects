@@ -1,0 +1,7 @@
+team,matches,won,lost,draws,tied,tie_wins,tie_losses,no_result,win_loss_ratio,win_pct,loss_pct,draw_pct,overall_pct,span_start,span_end
+Islamabad United,100,55,44,0,0,1,0,0,1.25,55.0,44.0,0.0,55.5,2016,2024
+Karachi Kings,95,36,55,0,0,1,1,2,0.654,37.89,57.89,0.0,39.78,2016,2024
+Lahore Qalandars,94,40,51,0,0,1,2,0,0.784,42.55,54.25,0.0,44.14,2016,2024
+Multan Sultans,79,45,31,0,0,0,1,2,1.451,56.96,39.24,0.0,59.09,2018,2024
+Peshawar Zalmi,104,55,47,0,0,1,0,1,1.17,52.88,45.19,0.0,53.88,2016,2024
+Quetta Gladiators,92,44,47,0,0,0,0,1,0.936,47.82,51.08,0.0,48.35,2016,2024

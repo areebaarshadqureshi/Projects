@@ -1,0 +1,7 @@
+expected_class,positive_text,positive_pred,positive_conf,negated_text,negated_pred,negated_conf,context_sensitive
+anger,mujhe gussa hai,neutral,0.6193711161613464,mujhe gussa nahi hai,neutral,0.5497923493385315,False
+happy,I am happy,happy,0.9130168557167053,I am not happy,sad,0.908335268497467,True
+sad,mujhe bohat dukh hua,happy,0.5406263470649719,mujhe dukh nahi hua,neutral,0.5078573226928711,True
+fear,mujhe darr lag raha hai,fear,0.751829206943512,mujhe darr nahi lag raha,fear,0.5000517964363098,False
+surprise,yeh dekh kar hairan hoon,neutral,0.5012016892433167,yeh dekh kar hairan nahi hoon,neutral,0.4392499625682831,False
+happy,yeh bohat acha hai,happy,0.7068044543266296,yeh acha nahi hai,neutral,0.5889688730239868,True

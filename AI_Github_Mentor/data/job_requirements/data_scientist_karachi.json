@@ -1,0 +1,155 @@
+[
+  {
+    "role": "Data Scientist",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "analytical",
+      "communication"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://www.glassdoor.com/Job/karachi-data-scientist-jobs-SRCH_IL.0,7_IM1122_KO8,22.htm",
+    "notes": "The seniority level is inferred from the context."
+  },
+  {
+    "role": "Data Scientist",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "Experience with web crawlers",
+      "Large-scale data processing workflows"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://pk.indeed.com/q-data-scientist-l-karachi-jobs.html",
+    "notes": "The role description does not specify if it is entry-level or mid-level, but mentions working with experienced team members which suggests it could be entry-mid."
+  },
+  {
+    "role": "Data Scientist",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "Python",
+      "data handling"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://pk.indeed.com/q-data-science-l-karachi-jobs.html",
+    "notes": "Flexible work hours with overlap with US hours when required."
+  },
+  {
+    "role": "Data Scientist",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "Bachelors in Computer Science",
+      "Bachelors in Software Engineering"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://pk.indeed.com/q-'data-scientist'-l-karachi-jobs.html",
+    "notes": "The seniority level is inferred from the context."
+  },
+  {
+    "role": "Data Scientist",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "Data analysis",
+      "Machine learning",
+      "Artificial intelligence",
+      "Python",
+      "NumPy",
+      "R",
+      "sci-kit",
+      "Pandas",
+      "Microsoft SQL Management Studio",
+      "Git",
+      "LaTex"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://www.upwork.com/hire/data-scientists/pk/karachi/",
+    "notes": "The seniority level is inferred based on the skills listed being foundational and not highly specialized."
+  },
+  {
+    "role": "Senior Data Scientist",
+    "seniority": "senior",
+    "required_skills": [],
+    "nice_to_have": [
+      "innovative professional"
+    ],
+    "source_url": "https://jobs.trovit.com.pk/data-science-jobs-in-karachi,-sindh",
+    "notes": "The snippet does not explicitly mention any required skills but mentions an innovative professional as preferred."
+  },
+  {
+    "role": "Data Scientist",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "Power BI",
+      "data visualization",
+      "reporting",
+      "data analysis"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://pk.indeed.com/Data-Science-jobs-in-Karachi",
+    "notes": "The job description does not mention any specific seniority level but requires 2 years of experience with Power BI."
+  },
+  {
+    "role": "Data Scientist",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "developing data pipelines"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://pk.indeed.com/q-python-data-science-l-karachi-jobs.html",
+    "notes": "The seniority is inferred from the context and the description."
+  },
+  {
+    "role": "Data Scientist",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "Strong understanding of artificial intelligence tools"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://pk.indeed.com/Business-Intelligence-jobs-in-Karachi",
+    "notes": "The job posting does not specify any seniority level or additional skills beyond maintaining confidentiality."
+  },
+  {
+    "role": "Data Scientist",
+    "seniority": "entry-mid",
+    "required_skills": [
+      "Data mining"
+    ],
+    "nice_to_have": [
+      "state-of-the-art methods"
+    ],
+    "source_url": "https://www.rozee.pk/pakistan-single-window-data-scientist-karachi-jobs-1348930",
+    "notes": "The seniority is inferred from the lack of explicit mention of seniority level."
+  },
+  {
+    "role": "Data Scientist",
+    "seniority": "senior",
+    "required_skills": [],
+    "nice_to_have": [],
+    "source_url": "https://pk.jooble.org/jobs-senior-data-scientist/Karachi",
+    "notes": "No specific skills mentioned in the snippet."
+  },
+  {
+    "role": "Data Scientist",
+    "seniority": "senior",
+    "required_skills": [
+      "8+ years of professional experience"
+    ],
+    "nice_to_have": [],
+    "source_url": "https://pk.jobted.com/data-scientist-jobs/karachi",
+    "notes": "Experience level is specified but no explicit mention of required skills other than experience."
+  },
+  {
+    "role": "Data Professional",
+    "seniority": "entry-level",
+    "required_skills": [],
+    "nice_to_have": [],
+    "source_url": "https://www.karachidotai.com/education",
+    "notes": "The snippet does not provide specific skills or seniority level."
+  },
+  {
+    "role": "Data Scientist",
+    "seniority": "entry-mid",
+    "required_skills": [],
+    "nice_to_have": [],
+    "source_url": "https://jobs.trovit.com.pk/data-scientist-jobs-in-karachi,-sindh",
+    "notes": "No specific skills mentioned in the snippet."
+  }
+]

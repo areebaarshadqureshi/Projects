@@ -1,0 +1,61 @@
+# .dockerignore - Exclude unnecessary files from Docker image
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+.pytest_cache/
+.coverage
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Data files (not needed for inference)
+data/
+notebooks/
+reports/
+
+# Development files
+.git/
+.gitignore
+.claude/
+tests/
+docs/
+*.md
+!API_README.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# Documentation
+CLAUDE.md
+README.md
+IMPLEMENTATION_SUMMARY.md
+
+# Build artifacts
+dist/
+build/
+*.egg
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large model files we'll mount as volumes
+# (keep them out of image layers)
+# models/
+# Commented out - we do need models in the image

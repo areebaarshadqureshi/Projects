@@ -1,0 +1,17 @@
+[project]
+name = "karachi-fraud-detection-api"
+version = "1.0.0"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "fastapi[standard]==0.115.8",
+    "uvicorn[standard]==0.34.0",
+    "pydantic==2.10.6",
+    "scikit-learn==1.6.1",
+    "xgboost==2.1.3",
+    "lightgbm==4.5.0",
+    "pandas==2.2.0",
+    "numpy>=1.26.0,<2.0.0",
+    "joblib==1.5.3",
+    "python-multipart==0.0.29",
+    "python-dotenv==1.0.1",
+]

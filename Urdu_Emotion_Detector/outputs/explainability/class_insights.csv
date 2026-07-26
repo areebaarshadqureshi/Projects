@@ -1,0 +1,7 @@
+class,top_tokens,most_confused_with,confusion_count,support_in_test
+anger,"['▁Bak', '▁Sham', 'hah', '▁was', '▁pha']",neutral,103,511
+fear,"['▁Aap', '▁afraid', '▁i', 'ge', '▁bhu']",neutral,13,33
+happy,"['best', '▁up', '▁baby', 'aaaaa', '▁joy']",neutral,89,549
+neutral,"['▁selling', '▁banana', '▁tickets', '▁Phir', '▁views']",anger,303,1706
+sad,"['▁bahut', '▁ruin', '▁Not', '▁Fuck', '▁pyar']",anger,26,101
+surprise,"['▁wow', '▁Wow', 'g', '▁y', '▁what']",neutral,10,31

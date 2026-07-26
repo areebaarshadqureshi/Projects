@@ -1,0 +1,42 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.Python
+build/
+dist/
+
+# --- Virtual environments ---
+venv/
+env/
+.venv/
+urdu-emotion/
+
+# --- Jupyter / Colab ---
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# --- Model weights & large artifacts (these live on Hugging Face Hub, not GitHub) ---
+outputs/model/
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# --- OS / editor junk ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Streamlit ---
+.streamlit/secrets.toml
+
+# --- Environment variables / secrets ---
+.env
+*.env
+
+# --- Logs ---
+*.log
