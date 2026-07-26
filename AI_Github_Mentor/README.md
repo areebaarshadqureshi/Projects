@@ -69,11 +69,16 @@ Open-source models only -- the LLM served can change host, but stays
 open-source. Switched by `configs/settings.py`'s `ENVIRONMENT` flag:
 
 - `"colab"` -- loads the model locally in a Colab notebook (GPU required)
-- `"groq"` (default) -- Llama 3.3 70B via [Groq](https://console.groq.com)'s
+- `"groq"` (default) -- Llama 3.1 8B Instant via [Groq](https://console.groq.com)'s
   hosted API. Still an open-source model, just served through a faster
   host with a genuinely usable free tier -- switched to this after
   Hugging Face's own free monthly Inference Providers credit ran out
-  under regular testing/demo use
+  under regular testing/demo use. Using the 8B model specifically
+  rather than 70B: Groq's free tier caps `llama-3.3-70b-versatile` at
+  only 1,000 requests/day and 30 RPM, while `llama-3.1-8b-instant` gets
+  14,400 requests/day -- a single report can fire 10-20+ LLM calls, so
+  the 70B model's daily cap was a real, recurring `RateLimitError` in
+  practice, not a theoretical concern
 - `"production"` -- the original Hugging Face Inference Providers path,
   kept available as an alternative
 
@@ -241,7 +246,8 @@ Setup:
 
 ## Tech Stack
 
-Python, LangChain (LCEL), Groq (Llama 3.3 70B) / Hugging Face Inference
+Python, LangChain (LCEL), Groq (Llama 3.1 8B Instant) / Hugging Face
+Inference
 Providers, FAISS, Streamlit, Plotly, Pydantic, `ddgs` (DuckDuckGo
 search), LangSmith, pytest, Google Colab (development environment).
 

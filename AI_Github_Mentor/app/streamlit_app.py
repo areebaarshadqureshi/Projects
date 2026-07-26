@@ -12,22 +12,6 @@ Three-phase flow, driven by pipeline_state["phase"]:
                "Generate Full Report" button
   "done"    -> final report, download button, "Start Over"
 
-v2 changes from the prior version:
-  - All pipeline calls now go through core/pipeline.py (renamed from
-    app/orchestrator.py) instead of app/orchestrator.py directly.
-  - Session state consolidated into a single pipeline_state dict instead
-    of ~10 scattered top-level keys (username, repos_data, report,
-    user_touched_role, pending_role_suggestion, etc.) -- see Stage 1
-    planning notes for why.
-  - check_username_exists, is_valid_github_profile_url, looks_like_url
-    moved to utils/github_api_client.py; suggest_target_role moved to
-    utils/skill_extractor.py; has_ai_signal removed entirely (it
-    duplicated utils.skill_extractor.has_ai_domain_signal, which already
-    existed and is more complete).
-  - max_repos / max_issues are fixed constants (MAX_REPOS_DEFAULT,
-    MAX_ISSUES_DEFAULT below), not exposed as UI sliders -- a deliberate
-    choice to keep the input form simple, even though core.pipeline now
-    supports overriding them.
 
 Run locally with: streamlit run app/streamlit_app.py
 Requires: pip install streamlit plotly
@@ -37,7 +21,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from collections import Counter
-import uuid
+
 import plotly.graph_objects as go
 import streamlit as st
 
@@ -691,6 +675,16 @@ if state["phase"] == "input":
                         )
                     except GitHubAPIError as error:
                         render_popup(str(error), kind="danger")
+                        repos_data, audit_results = None, None
+                    except Exception as error:
+                        # Catches LLM-side failures (e.g. Groq rate limits) that
+                        # GitHubAPIError doesn't cover -- without this, those
+                        # errors crash the whole script with a raw traceback
+                        # instead of a message the user can actually act on.
+                        render_popup(
+                            f"Something went wrong running the audit: {error}",
+                            kind="danger",
+                        )
                         repos_data, audit_results = None, None
 
                 if repos_data is not None:

@@ -19,7 +19,7 @@ ENVIRONMENT = "groq"
 
 LOCAL_MODEL_ID = "Qwen/Qwen2.5-7B-Instruct"
 HOSTED_MODEL_ID = "Qwen/Qwen2.5-7B-Instruct"
-GROQ_MODEL_ID = "llama-3.3-70b-versatile"  # open-source Llama 3.3, hosted on Groq's LPU inference
+GROQ_MODEL_ID = "llama-3.1-8b-instant"  
 
 TOP_K_RETRIEVAL = 5
 
