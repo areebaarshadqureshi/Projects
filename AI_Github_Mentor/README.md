@@ -25,6 +25,14 @@ to test, and easier to explain in an interview than an agent would be.
 
 ![Demo](docs/project.gif)
 
+| Input | AI Summary |
+|---|---|
+| ![GitHub profile input](docs/input.png) | ![AI summary with recruiter readiness score](docs/report.png) |
+
+| Skill Radar | Recommended Portfolio Projects |
+|---|---|
+| ![Skill radar and documentation vs structure chart](docs/radar.png) | ![Personalized project suggestions](docs/Projects.png) |
+
 ## Architecture
 
 <p align="center">
