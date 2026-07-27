@@ -34,7 +34,7 @@ from utils.skill_extractor import extract_skills_from_repos
 def run_audit_phase(llm, username: str, max_repos: int = 20):
     repos_data = github_repo_tool.invoke({"username": username, "max_repos": max_repos})
     chain = build_full_audit_chain(llm)
-    audit_results = chain.batch(repos_data, config={"max_concurrency": 3})
+    audit_results = chain.batch(repos_data, config={"max_concurrency": 2})
     return repos_data, audit_results
 
 
@@ -68,14 +68,26 @@ def _pick_most_impressive_and_worst_repo(audit_results: list) -> tuple[str, str]
     return best_str, worst_str
 
 
-def _build_repo_summaries_text(audit_results: list) -> str:
+def _build_repo_summaries_text(audit_results: list, max_repos_summarized: int = 10, notes_char_cap: int = 200) -> str:
+    """
+    Feeds into portfolio_narrative_chain's prompt. Previously unbounded --
+    for a profile with many repos, this could grow into a large block of
+    text (every repo's full notes field, no length cap), which was a real
+    contributor to hitting Groq's tokens-per-minute limit. Capped to the
+    top N repos by doc_quality_score (most informative first) and a
+    per-repo notes length limit.
+    """
+    if not audit_results:
+        return "No repositories audited."
+    ranked = sorted(audit_results, key=lambda r: r.doc_quality_score, reverse=True)
     lines = []
-    for repo in audit_results:
+    for repo in ranked[:max_repos_summarized]:
+        notes = repo.notes[:notes_char_cap]
         lines.append(
             f"- {repo.repo_name}: documentation {repo.doc_quality_score}/10, "
-            f"structure {repo.structure_score}/10, confidence {repo.confidence}. {repo.notes}"
+            f"structure {repo.structure_score}/10, confidence {repo.confidence}. {notes}"
         )
-    return "\n".join(lines) if lines else "No repositories audited."
+    return "\n".join(lines)
 
 
 def run_synthesis_phase(llm, username: str, repos_data: list[dict],

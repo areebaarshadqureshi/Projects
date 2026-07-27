@@ -174,3 +174,23 @@ def test_build_repo_summaries_text_includes_every_repo():
     text = pipeline._build_repo_summaries_text(results)
     assert "repo-a" in text
     assert "repo-b" in text
+
+
+def test_build_repo_summaries_text_caps_to_top_n_by_score():
+    """
+    Regression test: this used to be unbounded, a real contributor to
+    hitting Groq's tokens-per-minute limit for profiles with many repos.
+    Now capped to the top N by doc_quality_score -- most informative
+    repos first, rather than an arbitrary/alphabetical subset.
+    """
+    results = [_fake_audit_result(f"repo-{i}", doc_quality_score=i) for i in range(15)]
+    text = pipeline._build_repo_summaries_text(results, max_repos_summarized=3)
+    included = [f"repo-{i}" for i in range(15) if f"- repo-{i}:" in text]
+    assert set(included) == {"repo-12", "repo-13", "repo-14"}  # top 3 scores
+
+
+def test_build_repo_summaries_text_truncates_long_notes():
+    result = _fake_audit_result("repo-a", notes="x" * 500)
+    text = pipeline._build_repo_summaries_text([result], notes_char_cap=50)
+    assert "x" * 500 not in text
+    assert "x" * 50 in text

@@ -12,19 +12,36 @@ Three-phase flow, driven by pipeline_state["phase"]:
                "Generate Full Report" button
   "done"    -> final report, download button, "Start Over"
 
+v2 changes from the prior version:
+  - All pipeline calls now go through core/pipeline.py (renamed from
+    app/orchestrator.py) instead of app/orchestrator.py directly.
+  - Session state consolidated into a single pipeline_state dict instead
+    of ~10 scattered top-level keys (username, repos_data, report,
+    user_touched_role, pending_role_suggestion, etc.) -- see Stage 1
+    planning notes for why.
+  - check_username_exists, is_valid_github_profile_url, looks_like_url
+    moved to utils/github_api_client.py; suggest_target_role moved to
+    utils/skill_extractor.py; has_ai_signal removed entirely (it
+    duplicated utils.skill_extractor.has_ai_domain_signal, which already
+    existed and is more complete).
+  - max_repos / max_issues are fixed constants (MAX_REPOS_DEFAULT,
+    MAX_ISSUES_DEFAULT below), not exposed as UI sliders -- a deliberate
+    choice to keep the input form simple, even though core.pipeline now
+    supports overriding them.
 
 Run locally with: streamlit run app/streamlit_app.py
 Requires: pip install streamlit plotly
 """
 import sys
 import os
+import uuid
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from collections import Counter
 
 import plotly.graph_objects as go
 import streamlit as st
-import uuid
+
 from configs.llm_client import get_llm
 from core.pipeline import run_audit_phase, run_synthesis_phase
 from utils.github_api_client import (
@@ -55,7 +72,11 @@ TARGET_ROLES = {
 # Fixed, not user-facing sliders -- a deliberate simplicity choice for
 # the input form. core.pipeline supports overriding both if that ever
 # changes.
-MAX_REPOS_DEFAULT = 20
+MAX_REPOS_DEFAULT = 10  # was 20 -- each repo costs an audit LLM call, plus a
+                          # line in portfolio_narrative_chain's prompt; halving
+                          # this directly cuts cumulative tokens-per-minute
+                          # usage for larger profiles, which is what actually
+                          # triggered Groq's TPM rate limit in practice
 MAX_ISSUES_DEFAULT = 10
 
 # --- Palette (single source of truth -- Python side, mirrored in CSS below) ---
