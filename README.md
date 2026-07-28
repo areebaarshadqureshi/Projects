@@ -2,8 +2,6 @@
 
 A collection of data science and machine learning projects built as part of my portfolio.
 
-## Projects
-
 ### [Urdu Code-Switch Emotion Detector](Urdu_Emotion_Detector)
 Fine-tuned XLM-RoBERTa model for 6-class emotion detection on Roman Urdu–English code-switched text, with a deployed Streamlit demo and a documented bias/robustness audit.
 
