@@ -23,7 +23,7 @@ to test, and easier to explain in an interview than an agent would be.
 
 ## Demo / Screenshot
 
-![Demo](docs/project.gif)
+![Demo](docs/projects.gif)
 
 | Input | AI Summary |
 |---|---|
