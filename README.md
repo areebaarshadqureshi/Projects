@@ -1,6 +1,8 @@
 # Projects
-
 A collection of data science and machine learning projects built as part of my portfolio.
+
+### [AI GitHub Mentor](AI_GitHub_Mentor)
+GenAI portfolio auditor and skill-gap analyzer built as a deterministic LangChain (LCEL) pipeline — repo scoring, FAISS-based RAG skill-gap analysis against job-market data, and automated open-source contribution matching, with Pydantic-validated outputs, LangSmith tracing, and 80+ automated tests. Deployed as a Streamlit app powered by Groq-hosted Llama 3.1 8B.
 
 ### [Urdu Code-Switch Emotion Detector](Urdu_Emotion_Detector)
 Fine-tuned XLM-RoBERTa model for 6-class emotion detection on Roman Urdu–English code-switched text, with a deployed Streamlit demo and a documented bias/robustness audit.
@@ -15,5 +17,4 @@ End-to-end pseudo-labeled anomaly detection pipeline on ~47,000 Karachi property
 End-to-end EDA of Pakistan Super League performance data across a 5-notebook pipeline, with an interactive 5-page Streamlit dashboard covering team, player, match, and season-level insights.
 
 ---
-
 Each folder contains its own README with full project details, methodology, and results.
