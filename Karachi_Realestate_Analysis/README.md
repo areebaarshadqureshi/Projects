@@ -15,7 +15,6 @@
   </tr>
   <tr>
     <td align="center"><b>2019 vs 2026 Comparison</b><br><img src="outputs/comparison_2019_vs_2026.png" width="600"/></td>
-    <td></td>
   </tr>
 </table>
 
