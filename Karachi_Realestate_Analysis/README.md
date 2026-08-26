@@ -3,9 +3,22 @@
 
 ---
 
-<p align="center">
-  <img src="outputs/dashboard_preview.png" alt="Dashboard Preview" width="500"/>
-</p>
+## Dashboard Screenshots
+
+### Market Overview
+![Market Overview](outputs/market_overview.png)
+
+### Area Deep Dive
+![Area Deep Dive](outputs/area_deepdive.png)
+
+### Deal Finder
+![Deal Finder](outputs/deal_finder.png)
+
+### Affordability Analysis
+![Affordability Analysis](outputs/affordability.png)
+
+### 2019 vs 2026 Comparison
+![2019 vs 2026](outputs/comparison_2019_vs_2026.png)
 
 ## Project at a Glance
 
