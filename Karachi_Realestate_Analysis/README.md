@@ -2,23 +2,22 @@
 ### Historical Snapshot (2018–2019) & Affordability Timeline (2019–2026)
 
 ---
-
 ## Dashboard Screenshots
 
-### Market Overview
-![Market Overview](outputs/market_overview.png)
-
-### Area Deep Dive
-![Area Deep Dive](outputs/area_deepdive.png)
-
-### Deal Finder
-![Deal Finder](outputs/deal_finder.png)
-
-### Affordability Analysis
-![Affordability Analysis](outputs/affordability.png)
-
-### 2019 vs 2026 Comparison
-![2019 vs 2026](outputs/comparison_2019_vs_2026.png)
+<table>
+  <tr>
+    <td><b>Market Overview</b><br><img src="images/market_overview.png" width="400"/></td>
+    <td><b>Area Deep Dive</b><br><img src="images/Area_deepdive.png" width="400"/></td>
+  </tr>
+  <tr>
+    <td><b>Deal Finder</b><br><img src="images/deal_finder.png" width="400"/></td>
+    <td><b>Affordability Analysis</b><br><img src="images/affordability.png" width="400"/></td>
+  </tr>
+  <tr>
+    <td><b>2019 vs 2026 Comparison</b><br><img src="images/comparison_2019_vs_2026.png" width="400"/></td>
+    <td></td>
+  </tr>
+</table>
 
 ## Project at a Glance
 
