@@ -6,15 +6,16 @@
 
 <table>
   <tr>
-    <td><b>Market Overview</b><br><img src="outputs/market_overview.png" width="600"/></td>
-    <td><b>Area Deep Dive</b><br><img src="outputs/Area_deepdive.png" width="600"/></td>
+    <td align="center"><b>Market Overview</b><br><img src="outputs/market_overview.png" width="600"/></td>
+    <td align="center"><b>Area Deep Dive</b><br><img src="outputs/Area_deepdive.png" width="600"/></td>
   </tr>
   <tr>
-    <td><b>Deal Finder</b><br><img src="outputs/deal_finder.png" width="600"/></td>
-    <td><b>Affordability Analysis</b><br><img src="outputs/affordability.png" width="600"/></td>
+    <td align="center"><b>Deal Finder</b><br><img src="outputs/deal_finder.png" width="600"/></td>
+    <td align="center"><b>Affordability Analysis</b><br><img src="outputs/affordability.png" width="600"/></td>
   </tr>
   <tr>
-    <td><b>2019 vs 2026 Comparison</b><br><img src="outputs/comparison_2019_vs_2026.png" width="600"/></td>
+    <td align="center"><b>2019 vs 2026 Comparison</b><br><img src="outputs/comparison_2019_vs_2026.png" width="600"/></td>
+    <td></td>
   </tr>
 </table>
 
