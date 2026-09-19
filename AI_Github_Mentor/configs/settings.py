@@ -19,7 +19,7 @@ ENVIRONMENT = "groq"
 
 LOCAL_MODEL_ID = "Qwen/Qwen2.5-7B-Instruct"
 HOSTED_MODEL_ID = "Qwen/Qwen2.5-7B-Instruct"
-GROQ_MODEL_ID = "llama-3.1-8b-instant"  
+GROQ_MODEL_ID = "openai/gpt-oss-20b"  
 
 TOP_K_RETRIEVAL = 5
 
