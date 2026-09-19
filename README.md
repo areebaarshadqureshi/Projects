@@ -2,7 +2,7 @@
 
 A collection of data science and AI projects built as part of my portfolio.
 
-### [AI GitHub Mentor](AI_GitHub_Mentor)
+### [AI GitHub Mentor](AI_Github_Mentor)
 
 GenAI portfolio auditor and skill-gap analyzer built as a deterministic LangChain (LCEL) pipeline — repo scoring, FAISS-based RAG skill-gap analysis against job-market data, and automated open-source contribution matching, with Pydantic-validated outputs, LangSmith tracing, and 80+ automated tests. Deployed as a Streamlit app powered by Groq-hosted Llama 3.1 8B.
 
