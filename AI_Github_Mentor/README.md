@@ -185,7 +185,7 @@ pip install -r requirements.txt
 # 2. Configure environment variables
 cp .env.example .env
 # then edit .env: set GITHUB_TOKEN (raises the GitHub API rate limit
-# from 60/hr to 5000/hr) and HF_API_TOKEN (required to run any LLM call)
+# from 60/hr to 5000/hr) 
 
 # 3. Build the job-requirements FAISS index (run once, and again after
 #    editing data/job_requirements/)
@@ -203,7 +203,6 @@ streamlit run app/streamlit_app.py
 | Variable | Required | Purpose |
 |---|---|---|
 | `GROQ_API_KEY` | Yes (default `ENVIRONMENT = "groq"`) | Groq API calls |
-| `HF_API_TOKEN` | Only if `ENVIRONMENT = "production"` | Hugging Face Inference Providers |
 | `GITHUB_TOKEN` | Recommended | Raises GitHub API rate limit from 60/hr to 5000/hr |
 
 ## Live Demo / API
