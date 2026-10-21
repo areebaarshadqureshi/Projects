@@ -100,7 +100,7 @@ never accidentally built with different models.
 
 ## Evaluation
 
-Automated tests: **60+ passing**, covering every tool, chain, and the
+Automated tests: **80+ passing**, covering every tool, chain, and the
 pipeline boundary itself (`tests/test_pipeline.py` specifically proves
 `core/pipeline.py` has no Streamlit dependency). Run with:
 
